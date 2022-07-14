@@ -23,13 +23,8 @@ h1 {
 }
 
 /* Media Queries */
-
-// Example use with break point variable:
-// @media only screen and (min-width: $tablet-width) {
-//   body {
-//     font-size: 30px;
-//   }
-//   h1 {
-//     color: purple;
-//   }
-// }
+@media screen and (min-width: $tablet-width) {
+  .mobile-nav {
+    display: none !important;
+  }
+}

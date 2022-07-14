@@ -4,10 +4,10 @@ import React from 'react';
 export const MobileNav = () => {
   return (
     <>
-      <AppBar position="sticky">
+      <AppBar position="sticky" className="mobile-nav">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <span>Hamburger</span>
-          <span>Logo</span>
+          <span>iEV</span>
           <span>Search Bar</span>
         </Toolbar>
       </AppBar>
