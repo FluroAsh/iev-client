@@ -1,13 +1,19 @@
 import { createTheme } from '@mui/material';
-import { green } from '@mui/material/colors';
+import { green, yellow } from '@mui/material/colors';
 
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#888',
+      main: yellow[700],
     },
     secondary: {
       main: green[500],
     },
+  },
+  breakpoints: {
+    xs: 375,
+    md: 800,
+    lg: 1366,
+    xl: 1920,
   },
 });
