@@ -1,0 +1,35 @@
+@import 'mixins';
+
+/* Break Points (Width) */
+$mobile-width: 375px;
+$tablet-width: 800px;
+$laptop-width: 1366px;
+$desktop-width: 1920px;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  color: red;
+}
+
+/* Media Queries */
+
+// Example use with break point variable:
+// @media only screen and (min-width: $tablet-width) {
+//   body {
+//     font-size: 30px;
+//   }
+//   h1 {
+//     color: purple;
+//   }
+// }
