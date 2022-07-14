@@ -1,11 +1,13 @@
 import React from 'react';
 
 import './styles/main.scss';
+import { MobileNav } from './components/MobileNav';
 
 function App() {
   return (
     <div className="app">
-      <h1>Hello World!</h1>
+      <MobileNav />
+      <h1>Content</h1>
     </div>
   );
 }
