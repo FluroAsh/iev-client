@@ -1,14 +1,25 @@
-import { Toolbar, AppBar } from '@mui/material';
 import React from 'react';
+import { Toolbar, AppBar, Typography } from '@mui/material';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+
+import { SearchBar } from '../components/SearchBar';
 
 export const MobileNav = () => {
+  const toggleMenu = () => {
+    console.log('Opened menu!');
+  };
+
   return (
     <>
       <AppBar position="sticky" className="mobile-nav">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <span>Hamburger</span>
-          <span>iEV</span>
-          <span>Search Bar</span>
+          <div className="menu-btn">
+            <MenuRoundedIcon onClick={toggleMenu} />
+          </div>
+          <Typography className="logo" variant="h5">
+            iEV
+          </Typography>
+          <SearchBar />
         </Toolbar>
       </AppBar>
     </>
