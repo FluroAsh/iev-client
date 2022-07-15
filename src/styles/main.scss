@@ -51,16 +51,18 @@ input[name='searchbar'] {
   }
 
   & li {
+    text-align: center;
     list-style: none;
     padding: 0.5em;
   }
-
-  transition: ease-in 0.5s;
 }
 
 .menu-btn {
   display: flex;
   align-items: center;
+  background: #1f1f1f20;
+  padding: 5px;
+  border-radius: 5px;
   &:hover {
     cursor: pointer;
   }
