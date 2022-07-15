@@ -10,7 +10,7 @@ export const MobileMenu = () => {
         <li>Edit Vehicle</li>
       </ul>
       <span>
-        <a>Log Out</a>
+        <a href="">Log Out</a>
       </span>
     </div>
   );

@@ -28,9 +28,33 @@ input[name='searchbar'] {
   padding: 5px;
 }
 
-.menu-menu {
+.mobile-menu {
+  background: aqua;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  padding-top: 56px;
+  left: 0;
+  bottom: 0;
   width: 100vw;
   height: 100vh;
+  &__back {
+    position: absolute;
+    top: 80px;
+    left: 30px;
+  }
+  & ul {
+    list-style: none;
+  }
+
+  & li {
+    list-style: none;
+    padding: 0.5em;
+  }
+
+  transition: ease-in 0.5s;
 }
 
 .menu-btn {
