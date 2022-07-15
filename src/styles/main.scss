@@ -28,7 +28,14 @@ input[name='searchbar'] {
   padding: 5px;
 }
 
+.menu-menu {
+  width: 100vw;
+  height: 100vh;
+}
+
 .menu-btn {
+  display: flex;
+  align-items: center;
   &:hover {
     cursor: pointer;
   }

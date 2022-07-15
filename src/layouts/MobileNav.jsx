@@ -3,6 +3,7 @@ import { Toolbar, AppBar, Typography } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 
 import { SearchBar } from '../components/SearchBar';
+import { MobileMenu } from './MobileMenu';
 
 export const MobileNav = () => {
   const toggleMenu = () => {
