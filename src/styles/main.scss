@@ -24,33 +24,34 @@ h1 {
 
 input[name='searchbar'] {
   width: 100%;
-  // width: 35%;
   border-radius: 15px;
   padding: 5px;
 }
 
 .mobile-menu {
-  background: aqua;
+  background: #00ffff80;
   display: flex;
   justify-content: space-around;
   flex-direction: column;
   align-items: center;
   position: fixed;
-  padding-top: 56px;
+  top: 56px; /* */
   left: 0;
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  &__back {
+  overflow: &__back {
     position: absolute;
     top: 80px;
     left: 30px;
   }
-  & ul {
-    list-style: none;
+
+  ul {
+    position: relative;
+    top: 56px;
   }
 
-  & li {
+  li {
     text-align: center;
     list-style: none;
     padding: 0.5em;
@@ -61,7 +62,7 @@ input[name='searchbar'] {
   display: flex;
   align-items: center;
   background: #1f1f1f20;
-  padding: 5px;
+  padding: 2px;
   border-radius: 5px;
   &:hover {
     cursor: pointer;
@@ -70,15 +71,15 @@ input[name='searchbar'] {
 
 .logo {
   position: absolute;
-  left: 45%;
+  left: calc(50% - 20px);
   padding: 5px;
   color: #000;
   text-decoration: none;
 }
 
 /* Media Queries */
-@media screen and (min-width: $tablet-width) {
-  .mobile-nav {
-    display: none !important;
-  }
-}
+// @media screen and (min-width: $tablet-width) {
+//   .mobile-nav {
+//     display: none !important;
+//   }
+// }

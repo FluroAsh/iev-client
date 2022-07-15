@@ -7,13 +7,13 @@ export const SearchBar = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // need to fix this so it replaces spaces with '+' symbol...
     console.log('Submitted!', input);
     navigate(`/search?location=${input}`);
     setInput('');
   };
 
   const handleChange = (e) => {
-    e.preventDefault();
     setInput(e.target.value);
   };
 
@@ -25,7 +25,7 @@ export const SearchBar = () => {
         onChange={handleChange}
         name="searchbar"
         id="searchbar"
-        placeholder="Search..."s
+        placeholder="Search..."
       />
     </form>
   );
