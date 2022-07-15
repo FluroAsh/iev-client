@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 
 import { ThemeProvider } from '@mui/material';
-import { theme } from './theme';
+import { theme } from './context/theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

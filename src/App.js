@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 
 import './styles/main.scss';
-import { MobileNav } from './components/MobileNav';
+import { MobileNav } from './layouts/MobileNav';
 
 function App() {
   return (
