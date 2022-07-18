@@ -77,6 +77,28 @@ input[name='searchbar'] {
   text-decoration: none;
 }
 
+
+.nav-link {
+  text-decoration: none;
+  
+  color: "white";
+  font-size: "20px";
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+
+.menu-links {
+  display: flex;
+}
+
+.menu-link-item {
+  list-style: none;
+  margin-right: 20px; 
+
+}
+
 /* Media Queries */
 // @media screen and (min-width: $tablet-width) {
 //   .mobile-nav {

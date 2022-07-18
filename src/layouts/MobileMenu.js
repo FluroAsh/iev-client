@@ -1,5 +1,11 @@
 import React from 'react';
 
+
+// TODO: need to make sure the links have the below so when it's clicked the MobileMenu is collapsed
+// const [openDrawer, setOpenDrawer] = useState(false);
+{/* <ListItem onClick={() => setOpenDrawer(false)}> */}
+
+
 export const MobileMenu = () => {
   return (
     <div className="mobile-menu">
