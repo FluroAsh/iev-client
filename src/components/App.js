@@ -9,6 +9,8 @@ import {
 import '../styles/main.scss';
 import { Navbar } from '../layouts/Navbar.js';
 import SignupForm from './SignupForm';
+import SigninForm from './SigninForm';
+
 import { reducer } from '../utils/reducer';
 import { StateContext } from '../utils/stateContext';
 import {NotFound} from './NotFound';
@@ -34,6 +36,7 @@ function App() {
             <Route path="/" element={<h1>Root Path!</h1>} />
             <Route path="/search" element={<h1>Search Path!</h1>} />
             <Route path="/auth/signup" element={<SignupForm />} />
+            <Route path="/auth/signin" element={<SigninForm />} />
 
             <Route path="*" element={<h1>404 Path!</h1>} />
           </Routes>
