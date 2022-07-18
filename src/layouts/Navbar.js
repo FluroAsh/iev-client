@@ -7,15 +7,34 @@ import {
   Typography,
 } from "@mui/material";
 // import { makeStyles } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SearchBar } from "../components/SearchBar";
 
 import { MobileNavbar } from "../components/MobileNavbar";
+import { useGlobalState } from "../utils/stateContext";
 
 export const Navbar = () => {
   /** For access to MUI Breakpoints */
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { store, dispatch } = useGlobalState();
+  const { loggedInUser } = store;
+  const navigate = useNavigate()
+
+  const logout = (e) => {
+    e.preventDefault()
+    sessionStorage.clear()
+    dispatch({
+        type: "setLoggedInUser",
+        data: null 
+    })
+    dispatch({
+        type: "setToken",
+        data: null 
+    })
+    navigate("/")
+  }
+
 
   return (
     <>
@@ -43,9 +62,20 @@ export const Navbar = () => {
                 </li>
                 <li className="menu-link-item">
                   <span>
-                    <a href="/" className="nav-link">
-                      Log Out
-                    </a>
+                    {loggedInUser ? (
+                      <a href="/" className="nav-link" onClick={logout}>
+                        Log Out
+                      </a>
+                    ) : (
+                      <ul>
+                        <Link to="/auth/signin" className="nav-link">
+                          Sign in
+                        </Link>
+                        <Link to="/auth/signup" className="nav-link">
+                          Sign up
+                        </Link>
+                      </ul>
+                    )}
                   </span>
                 </li>
               </ul>
