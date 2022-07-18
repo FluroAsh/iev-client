@@ -7,13 +7,13 @@ import {
 } from 'react-router-dom';
 
 import './styles/main.scss';
-import { MobileNav } from './layouts/MobileNav';
+import { Navbar } from './layouts/Navbar.js';
 
 function App() {
   return (
     <div className="app">
       <Router>
-        <MobileNav className="mobile-nav" />
+        <Navbar />
         <Routes>
           <Route path="/" element={<h1>Root Path!</h1>} />
           <Route path="/search" element={<h1>Search Path!</h1>} />
