@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { MobileMenu } from '../layouts/MobileMenu';
+import { SearchBar } from './SearchBar';
 
 export const MobileNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -27,7 +28,7 @@ export const MobileNavbar = () => {
       >
         <MenuRoundedIcon fontSize={'large'} aria-label="mobile- menu-button" />
       </div>
-
+      <SearchBar setMenuOpen={setMenuOpen} />
       {/* TODO: Add footer */}
     </>
   );

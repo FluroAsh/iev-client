@@ -85,7 +85,7 @@ export const Navbar = () => {
           <Typography className="logo" component={Link} to="/">
             iEV
           </Typography>
-          <SearchBar />
+
         </Toolbar>
       </AppBar>
     </>
