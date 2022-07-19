@@ -22,7 +22,7 @@ export const MobileMenu = ({ setMenuOpen }) => {
     >
       {/* These change to link later */}
       <div className="mobile-links">
-        <Link to="/" onClick={() => setMenuOpen(false)}>
+        <Link tabIndex={0} to="/" onClick={() => setMenuOpen(false)}>
           <FontAwesomeIcon icon={faBookOpenReader} />
           Bookings
         </Link>

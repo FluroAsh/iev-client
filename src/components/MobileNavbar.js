@@ -14,6 +14,7 @@ export const MobileNavbar = () => {
         {menuOpen && <MobileMenu setMenuOpen={setMenuOpen} />}
       </AnimatePresence>
       <div
+        tabIndex={0}
         className="menu-btn"
         onClick={() => setMenuOpen((prevMenuOpen) => !prevMenuOpen)}
       >
