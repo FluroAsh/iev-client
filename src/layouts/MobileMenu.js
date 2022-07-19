@@ -21,7 +21,7 @@ export const MobileMenu = ({ setMenuOpen }) => {
       transition={{ duration: 0.5 }}
     >
       {/* These change to link later */}
-      <div className="mobile-links">
+      <div className="mobile-menu__links">
         <Link tabIndex={0} to="/" onClick={() => setMenuOpen(false)}>
           <FontAwesomeIcon icon={faBookOpenReader} />
           Bookings

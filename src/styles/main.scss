@@ -84,39 +84,39 @@ input[name='searchbar'] {
   max-width: 20vw;
   min-width: 150px;
   box-shadow: $box-shadow1;
-  a {
-    color: #000;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    transition: $transition-fast;
-    padding: 1em 0.5em;
-    &:hover,
-    &:focus {
-      color: #00000090;
-      background: $color-400;
-      box-shadow: $box-shadow1-variant;
-    }
-    &:active {
-      transition: none;
-      color: #000;
-      background: $color-on-click;
-    }
-    .svg-inline--fa {
-      font-size: 1.2em;
-      padding-right: 8px;
-      box-shadow: none;
-    }
-  }
-  .mobile-links {
+  &__links {
     display: flex;
     flex-direction: column;
     width: 100%;
-    hr {
-      margin: 0 3px;
-      color: $color-400;
-      border-radius: 1px;
+    a {
+      color: #000;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      transition: $transition-fast;
+      padding: 1em 0.5em;
+      &:hover,
+      &:focus {
+        color: #00000090;
+        background: $color-400;
+        box-shadow: $box-shadow1-variant;
+      }
+      &:active {
+        transition: none;
+        color: #000;
+        background: $color-on-click;
+      }
+      .svg-inline--fa {
+        font-size: 1.2em;
+        padding-right: 8px;
+        box-shadow: none;
+      }
     }
+  }
+  hr {
+    margin: 0 3px;
+    color: $color-400;
+    border-radius: 1px;
   }
 }
 .menu-btn {

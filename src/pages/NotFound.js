@@ -11,7 +11,7 @@ export const NotFound = () => {
           flexDirection: 'column',
         }}
       >
-        <p>404 error</p>
+        <h3>404 error</h3>
         <p>Sorry, page not found</p>
         <Link to="/" style={{ marginTop: '1em' }}>
           Go back to home page
