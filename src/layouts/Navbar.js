@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SearchBar } from "../components/SearchBar";
 
 import { MobileNavbar } from "../components/MobileNavbar";
-import { useGlobalState } from "../utils/stateContext";
+import { useGlobalState } from "../context/stateContext";
 
 export const Navbar = () => {
   /** For access to MUI Breakpoints */
