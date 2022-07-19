@@ -52,7 +52,8 @@ input[name='searchbar'] {
   /* Overrides */
   border: none;
   outline: none;
-  caret-color: transparent;
+  // caret: $color-500 block;
+  // caret-color: $color-500;
   /* Carry on... */
   width: 100%;
   max-width: 500px;
