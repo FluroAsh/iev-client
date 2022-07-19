@@ -14,6 +14,7 @@ import SigninForm from './components/SigninForm';
 import { reducer } from './utils/reducer';
 import { StateContext } from './context/stateContext';
 import { NotFound } from './pages/NotFound';
+import { Container } from '@mui/material';
 
 function App() {
   const initialState = {
@@ -29,14 +30,16 @@ function App() {
       <StateContext.Provider value={{ store, dispatch }}>
         <Router>
           <Navbar />
-          <Routes>
-            <Route path="/" element={<h1>Root Path!</h1>} />
-            <Route path="/search" element={<h1>Search Path!</h1>} />
-            <Route path="/auth/signup" element={<SignupForm />} />
-            <Route path="/auth/signin" element={<SigninForm />} />
+          <Container sx={{ pt: 2 }}>
+            <Routes>
+              <Route path="/" element={<h1>Root Path!</h1>} />
+              <Route path="/search" element={<h1>Search Path!</h1>} />
+              <Route path="/auth/signup" element={<SignupForm />} />
+              <Route path="/auth/signin" element={<SigninForm />} />
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Container>
         </Router>
       </StateContext.Provider>
     </div>

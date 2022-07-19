@@ -6,12 +6,22 @@ $tablet-width: 800px;
 $laptop-width: 1366px;
 $desktop-width: 1920px;
 
+/* Colors */
+$primary-gold: #fbc02d;
+$temp-color-bright: aqua;
+
+/* Misc Styles */
+$box-shadow1: rgba(0, 0, 0, 0.2) 0px 2px 4px,
+  rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -2px 0px inset;
+$box-shadow2: rgba(3, 102, 214, 0.3) 0px 0px 12px 3px;
+
 *,
 *::before,
 *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: inherit;
 }
 
 body {
@@ -23,19 +33,34 @@ h1 {
 }
 
 input[name='searchbar'] {
+  /* Overrides */
+  border: none;
+  outline: none;
+  caret-color: transparent;
+  /* Styles */
   width: 100%;
+  max-width: 500px;
+  float: right;
   border-radius: 15px;
-  padding: 5px;
+  padding: 8px 12px;
+  transition: 0.2s ease-in;
+  &:focus {
+    transform: translateY(-2px);
+    box-shadow: $box-shadow1;
+  }
+  &:hover:not(:focus) {
+    box-shadow: $box-shadow2;
+  }
 }
 
 .mobile-menu {
-  background: #00ffff80;
+  background: $temp-color-bright;
   display: flex;
   justify-content: space-around;
   flex-direction: column;
   align-items: center;
   position: fixed;
-  top: 56px; /* */
+  top: 56px;
   left: 0;
   bottom: 0;
   width: 100vw;
@@ -77,18 +102,16 @@ input[name='searchbar'] {
   text-decoration: none;
 }
 
-
 .nav-link {
   text-decoration: none;
-  
-  color: "white";
-  font-size: "20px";
+
+  color: 'white';
+  font-size: '20px';
   margin-right: 10px;
   &:hover {
     cursor: pointer;
   }
 }
-
 
 .menu-links {
   display: flex;
@@ -96,13 +119,12 @@ input[name='searchbar'] {
 
 .menu-link-item {
   list-style: none;
-  margin-right: 20px; 
-
+  margin-right: 20px;
 }
 
-
 .form {
-margin-left: 100px;}
+  margin-left: 100px;
+}
 /* Media Queries */
 // @media screen and (min-width: $tablet-width) {
 //   .mobile-nav {
