@@ -12,6 +12,8 @@ import {
 // TODO: Get loggedInUser and consume context to render Log Out/Log In
 
 export const MobileMenu = ({ setMenuOpen }) => {
+  const setMenuFalse = () => setMenuOpen(false);
+
   return (
     <motion.div
       className="mobile-menu"
@@ -22,22 +24,22 @@ export const MobileMenu = ({ setMenuOpen }) => {
     >
       {/* These change to link later */}
       <div className="mobile-menu__links">
-        <Link tabIndex={0} to="/" onClick={() => setMenuOpen(false)}>
+        <Link tabIndex={0} to="/" onClick={setMenuFalse}>
           <FontAwesomeIcon icon={faBookOpenReader} />
           Bookings
         </Link>
 
-        <Link to="/search" onClick={() => setMenuOpen(false)}>
+        <Link to="/search" onClick={setMenuFalse}>
           <FontAwesomeIcon icon={faPlugCirclePlus} />
           List a Charger
         </Link>
 
-        <Link to="/NotFound" onClick={() => setMenuOpen(false)}>
+        <Link to="/NotFound" onClick={setMenuFalse}>
           <FontAwesomeIcon icon={faScrewdriverWrench} />
           Edit Vehicle
         </Link>
         <hr></hr>
-        <Link to="/NotFound" onClick={() => setMenuOpen(false)}>
+        <Link to="/NotFound" onClick={setMenuFalse}>
           <FontAwesomeIcon icon={faRightFromBracket} />
           Log Out
         </Link>

@@ -115,7 +115,7 @@ input[name='searchbar'] {
   }
   hr {
     margin: 0 3px;
-    color: $color-400;
+    border: 1px solid $color-400;
     border-radius: 1px;
   }
 }
@@ -137,19 +137,27 @@ input[name='searchbar'] {
     background: $color-on-click;
   }
 }
-// .mobile-links {
-//   position: relative;
-//   top: 56px;
-//   height: calc(100vh - 56px);
-// }
 
 /* Logo Element */
-.logo {
+a.logo {
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: 600;
+  font-size: 1.6em;
+  letter-spacing: 1px;
   position: absolute;
   left: calc(50% - 20px);
   padding: 5px;
-  color: #000;
+  color: #fff;
+  text-shadow: 2px 2px 1px #00000090;
   text-decoration: none;
+  transition: $transition-fast;
+  &:active {
+    transition: none;
+    color: #000;
+  }
+  &:hover {
+    color: $color-100;
+  }
 }
 
 /* Desktop Menu/Nav */
