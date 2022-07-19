@@ -13,6 +13,7 @@ $color-300: #fefae0;
 $color-200: #e9edc9;
 $color-100: #faedcd;
 $color-link-hover: #0366d640;
+$color-on-click: #ffffff95;
 
 /* Transition */
 $transition-fast: 0.2s ease-in-out;
@@ -20,6 +21,8 @@ $transition-slow: 0.5s ease-in-out;
 /* Box Shadow */
 $box-shadow1: rgba(0, 0, 0, 0.2) 0px 2px 4px,
   rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -2px 0px inset;
+$box-shadow1-variant: rgba(0, 0, 0, 0.2) 0px 0px 2px,
+  rgba(0, 0, 0, 0.3) 0px 2px 13px -3px, rgba(0, 0, 0, 0.2) 0px 0px 0px inset;
 $box-shadow2: $color-link-hover 0px 0px 12px 3px;
 
 *,
@@ -68,35 +71,50 @@ input[name='searchbar'] {
 
 /* Mobile Menu/Nav */
 .mobile-menu {
-  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: rgba($color-300, 0.95);
   position: fixed;
   top: 56px;
   left: 0;
   bottom: 0;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 56px);
   max-width: 20vw;
   min-width: 150px;
   box-shadow: $box-shadow1;
   a {
-    text-decoration: none;
     color: #000;
-    height: 30px;
-    padding: 0 0.5em;
+    text-decoration: none;
     display: flex;
     align-items: center;
     transition: $transition-fast;
+    padding: 1em 0.5em;
     &:hover {
-      z-index: 99;
-      transform: translateY(-5px);
+      color: #00000090;
       background: $color-400;
+      box-shadow: $box-shadow1-variant;
+    }
+    &:active {
+      transition: none;
+      color: #000;
+      background: $color-on-click;
+    }
+    .svg-inline--fa {
+      font-size: 1.2em;
+      padding-right: 8px;
+      box-shadow: none;
     }
   }
-  div {
+  .mobile-links {
     display: flex;
     flex-direction: column;
     width: 100%;
-    justify-content: space-around;
+    hr {
+      margin: 0 3px;
+      color: $color-400;
+      border-radius: 1px;
+    }
   }
 }
 .menu-btn {
@@ -109,15 +127,19 @@ input[name='searchbar'] {
   &:hover {
     cursor: pointer;
     background: #00000050;
+    box-shadow: $box-shadow1;
   }
   &:active {
+    box-shadow: none;
     transition: none;
-    background: #ffffff50;
+    background: $color-on-click;
   }
 }
-.mobile-links {
-  height: 100vh;
-}
+// .mobile-links {
+//   position: relative;
+//   top: 56px;
+//   height: calc(100vh - 56px);
+// }
 
 /* Logo Element */
 .logo {

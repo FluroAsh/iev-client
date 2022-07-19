@@ -33,7 +33,7 @@ function App() {
           <Container sx={{ pt: 2 }}>
             <Routes>
               <Route path="/" element={<h1>Root Path!</h1>} />
-              <Route path="/search" element={<h1>Search Path!</h1>} />
+              <Route path="/search" element={<h1>Listing a charger...</h1>} />
               <Route path="/auth/signup" element={<SignupForm />} />
               <Route path="/auth/signin" element={<SigninForm />} />
 
