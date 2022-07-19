@@ -1,14 +1,18 @@
 import { React, useState } from 'react';
 
-import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import { AnimatePresence } from 'framer-motion';
 
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { MobileMenu } from '../layouts/MobileMenu';
+// import { DrawerComponent } from ''
 
 export const MobileNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <>
-      {menuOpen && <MobileMenu />}
+      <AnimatePresence>
+        {menuOpen && <MobileMenu setMenuOpen={setMenuOpen} />}
+      </AnimatePresence>
       <div
         className="menu-btn"
         onClick={() => setMenuOpen((prevMenuOpen) => !prevMenuOpen)}

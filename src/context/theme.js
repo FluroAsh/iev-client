@@ -1,16 +1,17 @@
 import { createTheme } from '@mui/material';
-import { green, yellow } from '@mui/material/colors';
-
+//
 export const theme = createTheme({
   palette: {
+    // https://mui.com/material-ui/customization/palette/
     primary: {
-      main: yellow[700],
+      main: '#ccd5ae',
     },
     secondary: {
-      main: green[500],
+      main: '#e9edc9',
     },
   },
   breakpoints: {
+    // https://mui.com/material-ui/customization/breakpoints/
     values: {
       xs: 375,
       md: 800,

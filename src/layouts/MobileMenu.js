@@ -1,23 +1,35 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
-
-// TODO: need to make sure the links have the below so when it's clicked the MobileMenu is collapsed
-// const [openDrawer, setOpenDrawer] = useState(false);
-{/* <ListItem onClick={() => setOpenDrawer(false)}> */}
-
-
-export const MobileMenu = () => {
+export const MobileMenu = ({ setMenuOpen }) => {
   return (
-    <div className="mobile-menu">
-      <ul>
-        {/* These change to link later */}
-        <li>Bookings</li>
-        <li>List a Charger</li>
-        <li>Edit Vehicle</li>
-      </ul>
-      <span>
-        <a href="/">Log Out</a>
-      </span>
-    </div>
+    <motion.div
+      className="mobile-menu"
+      initial={{ x: '-100%' }}
+      animate={{ x: '0px' }}
+      exit={{ x: '-100%' }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* These change to link later */}
+      <div className="mobile-links">
+        <div>
+          <Link to="/" onClick={() => setMenuOpen(false)}>
+            Bookings
+          </Link>
+          <Link to="/search" onClick={() => setMenuOpen(false)}>
+            List a Charger
+          </Link>
+          <Link to="/NotFound" onClick={() => setMenuOpen(false)}>
+            Edit Vehicle
+          </Link>
+        </div>
+        <div>
+          <Link to="/NotFound" onClick={() => setMenuOpen(false)}>
+            Log Out
+          </Link>
+        </div>
+      </div>
+    </motion.div>
   );
 };
