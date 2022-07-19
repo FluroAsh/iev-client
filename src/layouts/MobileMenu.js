@@ -12,6 +12,7 @@ import {
 // TODO: Get loggedInUser and consume context to render Log Out/Log In
 
 export const MobileMenu = ({ setMenuOpen }) => {
+  console.log(setMenuOpen);
   const setMenuFalse = () => setMenuOpen(false);
 
   return (

@@ -20,7 +20,7 @@ export const MobileNavbar = () => {
         {menuOpen && <MobileMenu setMenuOpen={setMenuOpen} />}
       </AnimatePresence>
       <div
-        tabIndex={0}
+        tabIndex={1}
         className="menu-btn"
         onClick={() => setMenuOpen((prevMenuOpen) => !prevMenuOpen)}
         onKeyDown={(e) => handleKeyPress(e)}

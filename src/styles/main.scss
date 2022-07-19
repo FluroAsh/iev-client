@@ -52,8 +52,6 @@ input[name='searchbar'] {
   /* Overrides */
   border: none;
   outline: none;
-  // caret: $color-500 block;
-  // caret-color: $color-500;
   /* Carry on... */
   width: 100%;
   max-width: 500px;
@@ -116,7 +114,6 @@ input[name='searchbar'] {
   hr {
     margin: 0 3px;
     border: 1px solid $color-400;
-    border-radius: 1px;
   }
 }
 .menu-btn {
@@ -148,15 +145,12 @@ a.logo {
   left: calc(50% - 20px);
   padding: 5px;
   color: #fff;
-  text-shadow: 2px 2px 1px #00000090;
+  text-shadow: 2px 2px 2px #00000090;
   text-decoration: none;
   transition: $transition-fast;
   &:active {
     transition: none;
-    color: #000;
-  }
-  &:hover {
-    color: $color-100;
+    color: #00000090;
   }
 }
 
