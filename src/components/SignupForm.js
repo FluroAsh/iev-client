@@ -65,10 +65,10 @@ const SignupForm = () => {
   console.log('FORM DATA ---', formData);
 
   return (
-    <div className="form">
-      <Typography variant="h4">Register user</Typography>
+    <>
       {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
+        <Typography variant="h4">Register user</Typography>
         <div>
           <InputLabel>First Name:</InputLabel>
           <TextField
@@ -135,7 +135,7 @@ const SignupForm = () => {
           Sign up
         </Button>
       </form>
-    </div>
+    </>
   );
 };
 

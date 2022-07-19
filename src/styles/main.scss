@@ -155,11 +155,17 @@ input[name='searchbar'] {
 /* Desktop Menu/Nav */
 .nav-link {
   text-decoration: none;
-  color: 'white';
+  color: #000;
   font-size: 1em;
   margin-right: 10px;
+  transition: $transition-fast;
   &:hover {
     cursor: pointer;
+    color: #fff;
+  }
+  &:active {
+    transition: none;
+    color: #000;
   }
 }
 .menu-links {
@@ -171,7 +177,7 @@ input[name='searchbar'] {
 }
 
 /* Signup/Signin Form */
-.form {
+form {
   margin-left: 100px;
 }
 /* Media Queries */

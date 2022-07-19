@@ -49,9 +49,9 @@ const SigninForm = () => {
   };
   return (
     <>
-      <Typography variant="h4">Sign in</Typography>
       {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
+        <Typography variant="h4">Sign in</Typography>
         <div>
           <InputLabel>Email:</InputLabel>
           <TextField
