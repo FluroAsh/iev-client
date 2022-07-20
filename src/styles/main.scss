@@ -51,6 +51,7 @@ h1 {
 #searchbar-form {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 input[name='searchbar'] {
   /* Overrides */
@@ -77,7 +78,7 @@ input[name='searchbar'] {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: rgba($color-300, 0.95);
+  background: $color-300;
   position: fixed;
   top: 56px;
   left: 0;
@@ -86,6 +87,7 @@ input[name='searchbar'] {
   max-width: 20vw;
   min-width: 150px;
   box-shadow: $box-shadow1;
+  padding: 1em 0;
   &__links {
     display: flex;
     flex-direction: column;
@@ -117,7 +119,7 @@ input[name='searchbar'] {
   }
   hr {
     margin: 0 3px;
-    border: 1px solid $color-400;
+    border: 1px solid #e0e0e0;
   }
 }
 .menu-btn {
