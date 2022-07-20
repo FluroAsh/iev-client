@@ -6,10 +6,9 @@ import {
   useTheme,
   Typography,
 } from '@mui/material';
-// import { makeStyles } from "@material-ui/core";
 import { Link, useNavigate } from 'react-router-dom';
-import { SearchBar } from '../components/SearchBar';
 
+import { SearchBar } from '../components/SearchBar';
 import { MobileNavbar } from '../components/MobileNavbar';
 import { useGlobalState } from '../context/stateContext';
 
@@ -20,6 +19,17 @@ export const Navbar = () => {
   const { store, dispatch } = useGlobalState();
   const { loggedInUser } = store;
   const navigate = useNavigate();
+
+  const toolbarStyles = {
+    mobile: {
+      justifyContent: 'space-between',
+      height: '56px',
+    },
+    large: {
+      justifyContent: 'space-around',
+      height: '56px',
+    },
+  };
 
   const logout = (e) => {
     e.preventDefault();
@@ -38,11 +48,22 @@ export const Navbar = () => {
   return (
     <>
       <AppBar position="sticky" className="mobile-nav">
-        <Toolbar sx={{ justifyContent: 'space-between', height: '56px' }}>
+        <Toolbar sx={isMobile ? toolbarStyles.mobile : toolbarStyles.large}>
           {isMobile ? (
             <MobileNavbar />
           ) : (
-            <div>
+            // temp placeholder for lg navbar
+            <div
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Typography className="logo" component={Link} to="/">
+                iEV
+              </Typography>
+              <SearchBar />
               <ul className="menu-links">
                 <li className="menu-link-item">
                   <Link to="/" className="nav-link">
@@ -81,11 +102,6 @@ export const Navbar = () => {
             </div>
           )}
           {/* TODO: Replace this with an SVG/Custom Logo */}
-
-          <Typography className="logo" component={Link} to="/">
-            iEV
-          </Typography>
-
         </Toolbar>
       </AppBar>
     </>
