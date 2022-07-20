@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const SearchBar = () => {
+export const SearchBar = ({ setMenuOpen }) => {
   const [input, setInput] = useState();
   const navigate = useNavigate();
 
@@ -10,6 +10,7 @@ export const SearchBar = () => {
     // need to fix this so it replaces spaces with '+' symbol...
     console.log('Submitted!', input);
     navigate(`/search?location=${input}`);
+    setMenuOpen(false);
     setInput('');
   };
 
@@ -25,7 +26,7 @@ export const SearchBar = () => {
         onChange={handleChange}
         name="searchbar"
         id="searchbar"
-        placeholder="Search..."
+        placeholder="Where to?"
       />
     </form>
   );

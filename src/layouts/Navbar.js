@@ -1,45 +1,44 @@
-import React from "react";
+import React from 'react';
 import {
   Toolbar,
   AppBar,
   useMediaQuery,
   useTheme,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 // import { makeStyles } from "@material-ui/core";
-import { Link, useNavigate } from "react-router-dom";
-import { SearchBar } from "../components/SearchBar";
+import { Link, useNavigate } from 'react-router-dom';
+import { SearchBar } from '../components/SearchBar';
 
-import { MobileNavbar } from "../components/MobileNavbar";
-import { useGlobalState } from "../utils/stateContext";
+import { MobileNavbar } from '../components/MobileNavbar';
+import { useGlobalState } from '../context/stateContext';
 
 export const Navbar = () => {
   /** For access to MUI Breakpoints */
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { store, dispatch } = useGlobalState();
   const { loggedInUser } = store;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const logout = (e) => {
-    e.preventDefault()
-    sessionStorage.clear()
+    e.preventDefault();
+    sessionStorage.clear();
     dispatch({
-        type: "setLoggedInUser",
-        data: null 
-    })
+      type: 'setLoggedInUser',
+      data: null,
+    });
     dispatch({
-        type: "setToken",
-        data: null 
-    })
-    navigate("/")
-  }
-
+      type: 'setToken',
+      data: null,
+    });
+    navigate('/');
+  };
 
   return (
     <>
       <AppBar position="sticky" className="mobile-nav">
-        <Toolbar sx={{ justifyContent: "space-between", height: "56px" }}>
+        <Toolbar sx={{ justifyContent: 'space-between', height: '56px' }}>
           {isMobile ? (
             <MobileNavbar />
           ) : (
@@ -83,10 +82,10 @@ export const Navbar = () => {
           )}
           {/* TODO: Replace this with an SVG/Custom Logo */}
 
-          <Typography className="logo" variant="h5" component={Link} to="/">
+          <Typography className="logo" component={Link} to="/">
             iEV
           </Typography>
-          <SearchBar />
+
         </Toolbar>
       </AppBar>
     </>

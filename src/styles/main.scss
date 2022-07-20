@@ -6,103 +6,185 @@ $tablet-width: 800px;
 $laptop-width: 1366px;
 $desktop-width: 1920px;
 
+/* Colors */
+$color-500: #d4a373;
+$color-400: #ccd5ae;
+$color-300: #fefae0;
+$color-200: #e9edc9;
+$color-100: #faedcd;
+$color-link-hover: #0366d640;
+$color-on-click: #ffffff95;
+
+/* Transition */
+$transition-fast: 0.2s ease-in-out;
+$transition-slow: 0.5s ease-in-out;
+/* Box Shadow */
+$box-shadow1: rgba(0, 0, 0, 0.2) 0px 2px 4px,
+  rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -2px 0px inset;
+$box-shadow1-variant: rgba(0, 0, 0, 0.2) 0px 0px 2px,
+  rgba(0, 0, 0, 0.3) 0px 2px 13px -3px, rgba(0, 0, 0, 0.2) 0px 0px 0px inset;
+$box-shadow2: $color-link-hover 0px 0px 12px 3px;
+
 *,
 *::before,
 *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: 'Roboto', sans-serif;
+  font-size: 16px;
 }
 
 h1 {
   color: red;
 }
 
+/* Desktop/Mobile Nav Elements */
 input[name='searchbar'] {
+  /* Overrides */
+  border: none;
+  outline: none;
+  /* Carry on... */
   width: 100%;
+  max-width: 500px;
+  float: right;
   border-radius: 15px;
-  padding: 5px;
+  padding: 8px 12px;
+  transition: $transition-fast;
+  &:focus {
+    transform: translateY(-2px);
+    box-shadow: $box-shadow1;
+  }
+  &:hover:not(:focus) {
+    box-shadow: $box-shadow2;
+  }
 }
 
+/* Mobile Menu/Nav */
 .mobile-menu {
-  background: #00ffff80;
   display: flex;
-  justify-content: space-around;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  background: rgba($color-300, 0.95);
   position: fixed;
-  top: 56px; /* */
+  top: 56px;
   left: 0;
   bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: &__back {
-    position: absolute;
-    top: 80px;
-    left: 30px;
+  height: calc(100vh - 56px);
+  max-width: 20vw;
+  min-width: 150px;
+  box-shadow: $box-shadow1;
+  &__links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    a {
+      color: #000;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      transition: $transition-fast;
+      padding: 1em 0.5em;
+      &:hover,
+      &:focus {
+        color: #00000090;
+        background: $color-400;
+        box-shadow: $box-shadow1-variant;
+      }
+      &:active {
+        transition: none;
+        color: #000;
+        background: $color-on-click;
+      }
+      .svg-inline--fa {
+        font-size: 1.2em;
+        padding-right: 8px;
+        box-shadow: none;
+      }
+    }
   }
-
-  ul {
-    position: relative;
-    top: 56px;
-  }
-
-  li {
-    text-align: center;
-    list-style: none;
-    padding: 0.5em;
+  hr {
+    margin: 0 3px;
+    border: 1px solid $color-400;
   }
 }
-
 .menu-btn {
   display: flex;
   align-items: center;
   background: #1f1f1f20;
   padding: 2px;
   border-radius: 5px;
+  transition: $transition-fast;
   &:hover {
     cursor: pointer;
+    background: #00000050;
+    box-shadow: $box-shadow1;
+  }
+  &:active {
+    box-shadow: none;
+    transition: none;
+    background: $color-on-click;
   }
 }
 
-.logo {
+/* Logo Element */
+a.logo {
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: 600;
+  font-size: 1.6em;
+  letter-spacing: 1px;
   position: absolute;
   left: calc(50% - 20px);
   padding: 5px;
-  color: #000;
+  color: #fff;
+  text-shadow: 2px 2px 2px #00000090;
   text-decoration: none;
-}
-
-
-.nav-link {
-  text-decoration: none;
-  
-  color: "white";
-  font-size: "20px";
-  margin-right: 10px;
-  &:hover {
-    cursor: pointer;
+  transition: $transition-fast;
+  &:active {
+    transition: none;
+    color: #00000090;
   }
 }
 
-
+/* Desktop Menu/Nav */
+.nav-link {
+  text-decoration: none;
+  color: #000;
+  font-size: 1em;
+  margin-right: 10px;
+  transition: $transition-fast;
+  &:hover {
+    cursor: pointer;
+    color: #fff;
+  }
+  &:active {
+    transition: none;
+    color: #000;
+  }
+}
 .menu-links {
   display: flex;
 }
-
 .menu-link-item {
   list-style: none;
-  margin-right: 20px; 
-
+  margin-right: 20px;
+}
+header {
+  z-index: 999;
 }
 
-
-.form {
-margin-left: 100px;}
+/* Signup/Signin Form */
+form {
+  margin-left: 100px;
+}
 /* Media Queries */
 // @media screen and (min-width: $tablet-width) {
 //   .mobile-nav {
