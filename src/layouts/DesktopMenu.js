@@ -72,6 +72,7 @@ export const DesktopMenu = () => {
                 boxShadow: 'box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;',
               }}
             >
+              {/* TODO; Update 'AT' with 'user.firstName.charAt[0] + user.lastName.charAt[0]' */}
               {loggedInUser ? 'AT' : <FontAwesomeIcon icon={faUser} />}
             </Avatar>
           </IconButton>

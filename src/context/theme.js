@@ -7,7 +7,7 @@ export const theme = createTheme({
       main: '#ccd5ae',
     },
     secondary: {
-      main: '#e9edc9',
+      main: '#d4a373',
     },
   },
   breakpoints: {

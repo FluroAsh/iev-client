@@ -1,10 +1,5 @@
 import React, { useReducer } from 'react';
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import './styles/main.scss';
 import { Navbar } from './layouts/Navbar.js';

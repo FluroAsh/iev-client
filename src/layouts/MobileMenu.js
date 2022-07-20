@@ -17,7 +17,6 @@ export const MobileMenu = ({ setMenuOpen }) => {
   const { loggedInUser } = store;
 
   const logout = () => {
-    console.log('logging out');
     sessionStorage.clear();
     dispatch({
       type: 'setLoggedInUser',
@@ -27,7 +26,6 @@ export const MobileMenu = ({ setMenuOpen }) => {
       type: 'setToken',
       data: null,
     });
-    console.log('logged out');
   };
 
   return (
