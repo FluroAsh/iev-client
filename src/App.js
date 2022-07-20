@@ -34,6 +34,10 @@ function App() {
             <Routes>
               <Route path="/" element={<h1>Root Path!</h1>} />
               <Route path="/search" element={<h1>Listing a charger...</h1>} />
+              {/* 
+                TODO: Change these to /auth/session later, will need to have everything
+                in one form and conditionally render the correct form based on state.
+              */}
               <Route path="/auth/signup" element={<SignupForm />} />
               <Route path="/auth/signin" element={<SigninForm />} />
 

@@ -4,9 +4,8 @@ import { Typography } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { AnimatePresence } from 'framer-motion';
 
-import { MobileMenu } from '../layouts/MobileMenu';
-import { SearchBar } from './SearchBar';
-
+import { MobileMenu } from './MobileMenu';
+import { SearchBar } from '../components/SearchBar';
 export const MobileNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 

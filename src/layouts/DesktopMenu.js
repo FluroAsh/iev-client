@@ -2,7 +2,6 @@ import { React, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Menu,
-  Typography,
   Box,
   Tooltip,
   IconButton,
@@ -16,21 +15,23 @@ import {
   faScrewdriverWrench,
   faRightFromBracket,
   faPlugCirclePlus,
+  faUserPlus,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { useGlobalState } from '../context/stateContext';
-import { SearchBar } from './SearchBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export const DesktopNavBar = () => {
+import { useGlobalState } from '../context/stateContext';
+export const DesktopMenu = () => {
   const { store, dispatch } = useGlobalState();
   const { loggedInUser } = store;
-  const navigate = useNavigate();
-
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -51,10 +52,6 @@ export const DesktopNavBar = () => {
 
   return (
     <>
-      <Typography className="logo" component={Link} to="/">
-        iEV
-      </Typography>
-      <SearchBar />
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Tooltip title="Account settings">
           <IconButton
@@ -66,8 +63,16 @@ export const DesktopNavBar = () => {
             aria-expanded={open ? 'true' : undefined}
           >
             {/* Retrieve first */}
-            <Avatar sx={{ width: 32, height: 32, background: '#d4a373' }}>
-              A
+            <Avatar
+              sx={{
+                width: 32,
+                height: 32,
+                background: '#faedcd',
+                color: '#d4a373',
+                boxShadow: 'box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;',
+              }}
+            >
+              {loggedInUser ? 'AT' : <FontAwesomeIcon icon={faUser} />}
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -107,32 +112,50 @@ export const DesktopNavBar = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem>
-          <ListItemIcon>
-            <FontAwesomeIcon icon={faBookOpenReader} />
-          </ListItemIcon>
-          Bookings
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <FontAwesomeIcon icon={faPlugCirclePlus} />
-          </ListItemIcon>
-          List A Charger
-        </MenuItem>
-
-        <MenuItem>
-          <ListItemIcon>
-            <FontAwesomeIcon icon={faScrewdriverWrench} />
-          </ListItemIcon>
-          Edit Vehicle
-        </MenuItem>
-        <Divider />
-        <MenuItem>
-          <ListItemIcon>
-            <FontAwesomeIcon icon={faRightFromBracket} />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
+        {loggedInUser ? (
+          <>
+            <MenuItem onClick={logout}>
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faRightFromBracket} />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+            <MenuItem>
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faBookOpenReader} />
+              </ListItemIcon>
+              Bookings
+            </MenuItem>
+            <MenuItem>
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faPlugCirclePlus} />
+              </ListItemIcon>
+              List A Charger
+            </MenuItem>
+            <MenuItem>
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faScrewdriverWrench} />
+              </ListItemIcon>
+              Edit Vehicle
+            </MenuItem>
+            <Divider />
+          </>
+        ) : (
+          <>
+            <MenuItem component={Link} to="/auth/signup">
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faUserPlus} />
+              </ListItemIcon>
+              Register
+            </MenuItem>
+            <MenuItem component={Link} to="/auth/signin">
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faRightFromBracket} />
+              </ListItemIcon>
+              Login
+            </MenuItem>
+          </>
+        )}
       </Menu>
     </>
   );
