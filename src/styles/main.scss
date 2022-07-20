@@ -87,7 +87,7 @@ input[name='searchbar'] {
   max-width: 20vw;
   min-width: 150px;
   box-shadow: $box-shadow1;
-  padding: 1em 0;
+  padding: 0.5em 0;
   &__links {
     display: flex;
     flex-direction: column;

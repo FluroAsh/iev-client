@@ -45,9 +45,7 @@ export const MobileMenu = ({ setMenuOpen }) => {
           Log Out
         </Link>
       </div>
-      <footer style={{ textAlign: 'center', marginBottom: '10px' }}>
-        Placeholder Footer
-      </footer>
+      <footer style={{ textAlign: 'center' }}>Placeholder Footer</footer>
     </motion.div>
   );
 };
