@@ -114,12 +114,6 @@ export const DesktopMenu = () => {
       >
         {loggedInUser ? (
           <>
-            <MenuItem onClick={logout}>
-              <ListItemIcon>
-                <FontAwesomeIcon icon={faRightFromBracket} />
-              </ListItemIcon>
-              Logout
-            </MenuItem>
             <MenuItem>
               <ListItemIcon>
                 <FontAwesomeIcon icon={faBookOpenReader} />
@@ -139,6 +133,12 @@ export const DesktopMenu = () => {
               Edit Vehicle
             </MenuItem>
             <Divider />
+            <MenuItem component={Link} to="/" onClick={logout}>
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faRightFromBracket} />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
           </>
         ) : (
           <>

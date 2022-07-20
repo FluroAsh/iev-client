@@ -57,6 +57,16 @@ export const MobileMenu = ({ setMenuOpen }) => {
               Edit Vehicle
             </Link>
             <hr></hr>
+            <Link
+              to="/"
+              onClick={() => {
+                setMenuOpen(false);
+                logout();
+              }}
+            >
+              <FontAwesomeIcon icon={faRightFromBracket} />
+              Log Out
+            </Link>
           </>
         ) : (
           <>
@@ -67,16 +77,6 @@ export const MobileMenu = ({ setMenuOpen }) => {
             <Link to="/auth/signin" onClick={() => setMenuOpen(false)}>
               <FontAwesomeIcon icon={faRightFromBracket} />
               Log In
-            </Link>
-            <Link
-              to="/"
-              onClick={() => {
-                setMenuOpen(false);
-                logout();
-              }}
-            >
-              <FontAwesomeIcon icon={faRightFromBracket} />
-              Log Out
             </Link>
           </>
         )}
