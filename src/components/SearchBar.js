@@ -7,9 +7,8 @@ export const SearchBar = ({ setMenuOpen }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // need to fix this so it replaces spaces with '+' symbol...
-    console.log('Submitted!', input); // temp
-    navigate(`/search?location=${input}`);
+    const formattedInput = input.trim().replace(/\s+/g, '+');
+    navigate(`/search?location=${formattedInput}`);
     setMenuOpen(false);
     setInput('');
   };

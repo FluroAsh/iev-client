@@ -81,7 +81,8 @@ export const MobileMenu = ({ setMenuOpen }) => {
           </>
         )}
       </div>
-      <footer style={{ textAlign: 'center' }}>Placeholder Footer</footer>
+      {/* TODO: Update Fotoer */}
+      <footer style={{ textAlign: 'center' }}>AT, KS ©️2022</footer>
     </motion.div>
   );
 };

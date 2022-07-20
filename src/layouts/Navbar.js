@@ -9,23 +9,18 @@ export const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const toolbarStyles = {
+  const styles = {
     mobile: {
       justifyContent: 'space-between',
       height: '56px',
     },
-    // large: {
-    //   justifyContent: 'space-around',
-    //   height: '56px',
-    // },
   };
 
   return (
     <>
       <AppBar position="sticky" className="mobile-nav">
-        <Toolbar sx={isMobile && toolbarStyles.mobile}>
+        <Toolbar sx={isMobile && styles.mobile}>
           {isMobile ? <MobileNavbar /> : <DesktopNavBar />}
-          {/* TODO: Replace this with an SVG/Custom Logo */}
         </Toolbar>
       </AppBar>
     </>

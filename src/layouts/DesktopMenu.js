@@ -114,6 +114,7 @@ export const DesktopMenu = () => {
       >
         {loggedInUser ? (
           <>
+            {/* TODO: Add links to Bookings, List Charger, & Edit Vehicle */}
             <MenuItem>
               <ListItemIcon>
                 <FontAwesomeIcon icon={faBookOpenReader} />
