@@ -1,16 +1,16 @@
-import { Button, InputLabel, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { signIn } from '../services/authServices';
-import { useGlobalState } from '../context/stateContext';
+import { Button, InputLabel, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { signIn } from "../services/authServices";
+import { useGlobalState } from "../context/stateContext";
 
 const SigninForm = () => {
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
 
   const initialFormData = {
-    email: '',
-    password: '',
+    username: "",
+    password: "",
   };
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState(null);
@@ -21,22 +21,24 @@ const SigninForm = () => {
     signIn(formData).then((user) => {
       // console.log(user)
       if (user.error) {
-        console.log('user.error', user.error);
+        // TODO: Handle error front end 
+        console.log("user.error", user.error);
         setError(user.error);
       } else {
         setError(null);
-        sessionStorage.setItem('username', user.username);
-        sessionStorage.setItem('token', user.jwt);
+        console.log("THIS IS USER", user)
+        sessionStorage.setItem("username", user.username);
+        sessionStorage.setItem("token", user.jwt);
         dispatch({
-          type: 'setLoggedInUser',
+          type: "setLoggedInUser",
           data: user.username,
         });
         dispatch({
-          type: 'setToken',
+          type: "setToken",
           data: user.jwt,
         });
         setFormData(initialFormData);
-        navigate('/');
+        navigate("/");
       }
     });
   };
@@ -53,12 +55,12 @@ const SigninForm = () => {
       <form onSubmit={handleSubmit}>
         <Typography variant="h4">Sign in</Typography>
         <div>
-          <InputLabel>Email:</InputLabel>
+          <InputLabel>Username:</InputLabel>
           <TextField
-            type="email"
-            name="email"
-            id="email"
-            value={formData.email}
+            type="text"
+            name="username"
+            id="username"
+            value={formData.username}
             onChange={handleFormData}
           />
         </div>
