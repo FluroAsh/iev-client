@@ -51,7 +51,7 @@ export const DesktopMenu = () => {
   };
 
   return (
-    <>
+    <div>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Tooltip title="Account settings">
           <IconButton
@@ -159,6 +159,6 @@ export const DesktopMenu = () => {
           </>
         )}
       </Menu>
-    </>
+    </div>
   );
 };

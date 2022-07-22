@@ -33,6 +33,7 @@ export const MobileNavbar = () => {
         component={Link}
         to="/"
         sx={{ position: 'absolute' }}
+        onClick={() => setMenuOpen(false)}
       >
         iEV
       </Typography>

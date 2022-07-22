@@ -7,7 +7,7 @@ export const SearchBar = ({ setMenuOpen }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formattedInput = input.trim().replace(/\s+/g, '+');
+    const formattedInput = input.trim().replace(/\s+/, '+');
     navigate(`/search?location=${formattedInput}`);
     setMenuOpen(false);
     setInput('');

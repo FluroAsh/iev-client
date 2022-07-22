@@ -4,10 +4,17 @@ export const theme = createTheme({
   palette: {
     // https://mui.com/material-ui/customization/palette/
     primary: {
-      main: '#ccd5ae',
+      main: '#008140',
     },
     secondary: {
-      main: '#d4a373',
+      main: '#aa55ee',
+    },
+    Card: {
+      maxWidth: 350,
+      margin: 'auto',
+    },
+    background: {
+      card: '#e0e0e080',
     },
   },
   breakpoints: {

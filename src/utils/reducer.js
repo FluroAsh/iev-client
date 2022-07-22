@@ -24,6 +24,16 @@ export const reducer = (state, action) => {
         //         messageList: [action.data, ...state.messageList]
         //     }
         // }
+        /**
+         * - Set current user info
+         * 1. Set user information (name)
+         */
+
+        /**
+         * - Set charging station(s)
+         * 1. Set 10 random stations
+         * 2. OR -> Set the charging station that is being viewed
+         */
         case "setLoggedInUser": {
             //updates the loggedInUser value
             return {
