@@ -12,7 +12,6 @@ import { displayAUD } from '../utils/helpers';
 
 export const ChargerCard = ({ charger }) => {
   const navigate = useNavigate();
-  console.log(charger);
 
   const handleClick = () => {
     console.log('Clicked!');
@@ -20,6 +19,15 @@ export const ChargerCard = ({ charger }) => {
   };
 
   return (
+    /**
+     * Card needs:
+     * 1. Plug Name
+     * 2. Charger Station Image
+     * 3. Owner First Name (in bottom left of image)
+     * 4. Charging Station Name
+     * 5. Available Date
+     * 6. Price (per date)
+     */
     <Card className="card" style={{ color: 'white', background: '#00814095' }}>
       <CardActionArea onClick={handleClick}>
         <div className="card__image">
@@ -29,7 +37,7 @@ export const ChargerCard = ({ charger }) => {
             image={charger.imageUrl}
             alt="charger" // temp change later (based on file name or something)
           />
-          <div className="card__caption">Test</div>
+          {/* <div className="card__caption">Test</div> */}
         </div>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

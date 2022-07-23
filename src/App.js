@@ -36,7 +36,10 @@ function App() {
             <Routes>
               <Route path="/" element={<h1>Root Path!</h1>} />
               <Route path="/search" element={<SearchLocation />} />
-              <Route path="/chargers/:id" element={<h1>View Charger Page!</h1>}/>
+              <Route
+                path="/chargers/:id"
+                element={<h1>View Charger Page!</h1>}
+              />
               {/* 
                 TODO: Change these to /auth/session later, will need to have everything
                 in one form and conditionally render the correct form based on state.

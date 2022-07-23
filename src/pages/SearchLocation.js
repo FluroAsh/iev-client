@@ -1,5 +1,5 @@
+import { React, useEffect, useState, useRef } from 'react';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { React, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { searchLocation } from '../services/searchServices';
 import { ChargerCard } from '../components/ChargerCard';
@@ -10,6 +10,11 @@ export const SearchLocation = () => {
   const [loading, setLoading] = useState(true);
   const [chargers, setChargers] = useState([]);
   const [error, setError] = useState({});
+
+  const [width, setWidth] = useState(640); // Change this later
+  const [height, setHeight] = useState(640); // Change this later, try to fix resize function
+  const mapRef = useRef();
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -34,7 +39,25 @@ export const SearchLocation = () => {
     fetchChargers();
   }, [search]);
 
-  console.log(chargers);
+  // const getMapSize = () => {
+  //   if (!isMobile) {
+  //     setWidth(mapRef.current.clientWidth);
+  //     setHeight(mapRef.current.clientHeight);
+  //     console.log('resized');
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   let lastMove = 0;
+  //   window.addEventListener('resize', function() {
+  //     if (Date.now() - lastMove > 2) {
+  //       lastMove = Date.now();
+  //       getMapSize();
+  //     }
+  //   }); // adds event listener and causes remounts
+  //   // getMapSize(); // runs once
+  // }, []);
+
   return (
     <>
       {error && (
@@ -45,17 +68,6 @@ export const SearchLocation = () => {
       {loading ? (
         <CssLoader />
       ) : (
-        /**
-         * Card needs:
-         * 1. Plug Name
-         * 2. Charger Station Image
-         * 3. Owner First Name (in bottom left of image)
-         * 4. Charging Station Name
-         * 5. Available Date
-         * 6. Price (per date)
-         */
-        // -> Refactor to a reusable component later (the same in both home/search)
-        // Just that the the home one will use a different set of charging stations (random set & limited to 10)
         <>
           {chargers.length > 0 && (
             <>
@@ -74,15 +86,19 @@ export const SearchLocation = () => {
                     ))}
                   </section>
                 </div>
-                {/* TODO: Add the Google Map component, which should be passed the location & render a relevant image (or nothing) */}
                 {!isMobile && (
                   <div
+                    // ref={mapRef}
                     className="google-map"
                     style={{
                       background: '#e0e0e0',
                     }}
                   >
-                    Map Image placeholder
+                    <img
+                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${chargers[0].Address.city}
+          &zoom=13&size=${height}x${width}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`}
+                      alt="google maps location"
+                    />
                   </div>
                 )}
               </section>

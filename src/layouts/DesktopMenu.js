@@ -17,6 +17,7 @@ import {
   faPlugCirclePlus,
   faUserPlus,
   faUser,
+  faHouse,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -116,6 +117,12 @@ export const DesktopMenu = () => {
         {loggedInUser ? (
           <div>
             {/* TODO: Add links to Bookings, List Charger, & Edit Vehicle */}
+            <MenuItem component={Link} to="/">
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faHouse} />
+              </ListItemIcon>
+              Home
+            </MenuItem>
             <MenuItem>
               <ListItemIcon>
                 <FontAwesomeIcon icon={faBookOpenReader} />
@@ -144,6 +151,12 @@ export const DesktopMenu = () => {
           </div>
         ) : (
           <div>
+            <MenuItem component={Link} to="/">
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faHouse} />
+              </ListItemIcon>
+              Home
+            </MenuItem>
             <MenuItem component={Link} to="/auth/signup">
               <ListItemIcon>
                 <FontAwesomeIcon icon={faUserPlus} />
