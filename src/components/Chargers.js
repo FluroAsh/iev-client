@@ -7,7 +7,7 @@ export const Chargers = () => {
 
   return (
     <>
-      {chargerList.length ? (
+      {chargerList ? (
         <>
           {chargerList.map((charger) => (
             <Charger key={charger.id} charger={charger} />

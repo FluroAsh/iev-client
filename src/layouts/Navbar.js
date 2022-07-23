@@ -132,10 +132,15 @@ async function fetchData(location, dispatch) {
   if (location.pathname === "/chargers/mychargers") {
     try {
       const myChargers = await getMyChargers();
-      dispatch({
-        type: "setChargerList",
-        data: myChargers,
-      });
+      if (myChargers) {
+        dispatch({
+          type: "setChargerList",
+          data: myChargers,
+        });
+      } else {
+        console.log("There's an error in fetching myChargers")
+      }
+
     } catch (err) {
       console.log(err.message);
     }

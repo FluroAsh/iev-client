@@ -15,9 +15,12 @@ export const Charger = ({ charger }) => {
           <Typography variant="h5">{Charger.name}</Typography>
         </Link>
         {/* <Link to={`/user/${message.username}`}> TODO: use username instead of id */}
-        <Link to={`/user/${charger.User.id}`}>
-          <Typography variant="p">Host: {charger.User.username}</Typography>
-        </Link>
+
+        <Typography variant="p">
+          Host:{" "}
+          <Link to={`/user/${charger.User.id}`}>{charger.User.username}</Link>{" "}
+        </Typography>
+
         <Typography variant="p">{charger.price}</Typography>
 
         {/* <Typography variant='p'>{charger.instructions}</Typography> */}
