@@ -14,7 +14,17 @@ export const ChargerCard = ({ charger }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }} backgroundColor="secondary">
+    <Card
+      sx={{
+        minWidth: 150,
+        maxWidth: 350,
+        maxHeight: '100%',
+        m: 2,
+        flexGrow: 1,
+        flexShrink: 1,
+      }}
+      backgroundColor="secondary"
+    >
       <CardActionArea onClick={handleClick}>
         <CardMedia
           component="img"
@@ -22,19 +32,17 @@ export const ChargerCard = ({ charger }) => {
           image={charger.imageUrl}
           alt="charger" // temp change later (based on file name or something)
           // style={{ backgroundSize: '100% 100%' }}
-          objectFit={false}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Lizard
+            {charger.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {charger.instructions}
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions sx={{ display: 'flex' }}>
+      <CardActions>
         <Button
           variant="contained"
           size="large"
