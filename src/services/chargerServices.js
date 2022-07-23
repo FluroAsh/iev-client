@@ -1,5 +1,6 @@
 import ievAPI from "../config/api";
 
+// TODO: handle all error response
 export async function addCharger(data) {
   try {
     const response = await ievAPI.post("/charger/new", data);
