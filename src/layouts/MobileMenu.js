@@ -8,9 +8,9 @@ import {
   faRightFromBracket,
   faPlugCirclePlus,
   faUserPlus,
+  faHouse,
 } from '@fortawesome/free-solid-svg-icons';
 import { useGlobalState } from '../context/stateContext';
-// TODO: Get loggedInUser and consume context to render Log Out/Log In
 
 export const MobileMenu = ({ setMenuOpen }) => {
   const { store, dispatch } = useGlobalState();
@@ -41,6 +41,11 @@ export const MobileMenu = ({ setMenuOpen }) => {
         {loggedInUser ? (
           <>
             <Link tabIndex={0} to="/" onClick={() => setMenuOpen(false)}>
+              <FontAwesomeIcon icon={faHouse} />
+              Home
+            </Link>
+
+            <Link tabIndex={0} to="/" onClick={() => setMenuOpen(false)}>
               <FontAwesomeIcon icon={faBookOpenReader} />
               Bookings
             </Link>
@@ -68,6 +73,10 @@ export const MobileMenu = ({ setMenuOpen }) => {
           </>
         ) : (
           <>
+            <Link tabIndex={0} to="/" onClick={() => setMenuOpen(false)}>
+              <FontAwesomeIcon icon={faHouse} />
+              Home
+            </Link>
             <Link to="/auth/signup" onClick={() => setMenuOpen(false)}>
               <FontAwesomeIcon icon={faUserPlus} />
               Register

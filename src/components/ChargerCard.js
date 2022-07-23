@@ -12,6 +12,7 @@ import { displayAUD } from '../utils/helpers';
 
 export const ChargerCard = ({ charger }) => {
   const navigate = useNavigate();
+  console.log(charger);
 
   const handleClick = () => {
     console.log('Clicked!');
@@ -19,18 +20,17 @@ export const ChargerCard = ({ charger }) => {
   };
 
   return (
-    <Card
-      key={charger.id}
-      className="card"
-      style={{ color: 'white', background: '#00814095' }}
-    >
+    <Card className="card" style={{ color: 'white', background: '#00814095' }}>
       <CardActionArea onClick={handleClick}>
-        <CardMedia
-          component="img"
-          height="300"
-          image={charger.imageUrl}
-          alt="charger" // temp change later (based on file name or something)
-        />
+        <div className="card__image">
+          <CardMedia
+            component="img"
+            height="300"
+            image={charger.imageUrl}
+            alt="charger" // temp change later (based on file name or something)
+          />
+          <div className="card__caption">Test</div>
+        </div>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {charger.name}

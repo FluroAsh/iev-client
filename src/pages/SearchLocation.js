@@ -15,11 +15,12 @@ export const SearchLocation = () => {
 
   /** Load initial data for charger locations */
   useEffect(() => {
-    setChargers([]);
     const searchParams = new URLSearchParams(search);
     const location = searchParams.get('location');
 
     async function fetchChargers() {
+      setChargers([]);
+      setError();
       setLoading(true);
       try {
         const data = await searchLocation(location);
@@ -33,8 +34,14 @@ export const SearchLocation = () => {
     fetchChargers();
   }, [search]);
 
+  console.log(chargers);
   return (
     <>
+      {error && (
+        <div className="error-container">
+          <Typography variant="h5">{error.message}</Typography>
+        </div>
+      )}
       {loading ? (
         <CssLoader />
       ) : (
@@ -50,26 +57,20 @@ export const SearchLocation = () => {
         // -> Refactor to a reusable component later (the same in both home/search)
         // Just that the the home one will use a different set of charging stations (random set & limited to 10)
         <>
-          {chargers.length > 0 ? (
+          {chargers.length > 0 && (
             <>
-              <section
-                id="search-location"
-              >
-                <div
-                  className="cards-container"
-                >
+              <section id="search-location">
+                <div className="cards-container">
                   <Typography
                     variant="h3"
                     sx={{ px: 1, py: 2, width: '100%', textAlign: 'center' }}
                   >
                     {/* TODO: Pluralize the string with an NPM package */}
-                    {`${chargers.length} charger(s) found`} 
+                    {`${chargers.length} charger(s) found`}
                   </Typography>
-                  <section
-                    className="chargers"
-                  >
+                  <section className="chargers">
                     {chargers.map((charger) => (
-                        <ChargerCard charger={charger} />
+                      <ChargerCard key={charger.id} charger={charger} />
                     ))}
                   </section>
                 </div>
@@ -86,10 +87,6 @@ export const SearchLocation = () => {
                 )}
               </section>
             </>
-          ) : (
-            <div className="error-container">
-              <Typography variant="h5">{error.message}</Typography>
-            </div>
           )}
         </>
       )}
