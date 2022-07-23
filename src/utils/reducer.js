@@ -3,18 +3,14 @@ export const reducer = (state, action) => {
     //console.log(action)
 
     switch(action.type){
-        // case "cleanState": {
-        //     //State goes back to default values
-        //     return {
-        //         messageList: [],
-        //         loggedInUser: ""
-        //     }
-        // }
-        // case "setMessageList": {
-        //     //populate the messageList Array with the inital values
-        //     return {
-        //         ...state,
-        //         messageList: action.data
+        case "cleanState": {
+            //State goes back to default values
+            return {
+                chargerList: [],
+                loggedInUser: ""
+            }
+        }
+
         //     }
         // }
         // case "addMessage": {
@@ -24,6 +20,14 @@ export const reducer = (state, action) => {
         //         messageList: [action.data, ...state.messageList]
         //     }
         // }
+
+        case "setChargerList": {
+            return {
+                ...state,
+                chargerList: action.data
+            }
+        }
+
         case "setLoggedInUser": {
             //updates the loggedInUser value
             return {
