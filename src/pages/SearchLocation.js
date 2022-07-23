@@ -1,14 +1,9 @@
-import { Typography, useTheme } from '@mui/material';
 import { Container } from '@mui/system';
+import { Typography } from '@mui/material';
 import { React, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { searchLocation } from '../services/searchServices';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import { Button, CardActionArea, CardActions } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarPlus } from '@fortawesome/free-solid-svg-icons';
+import { ChargerCard } from '../components/ChargerCard';
 
 export const SearchLocation = () => {
   const { search } = useLocation();
@@ -29,10 +24,6 @@ export const SearchLocation = () => {
     }
     fetchChargers();
   }, [search]);
-
-  const handleClick = (e) => {
-    console.log('Clicked!');
-  };
 
   return (
     <>
@@ -57,55 +48,7 @@ export const SearchLocation = () => {
                 'No chargers found, try again'}
             </Typography>
             {chargers.map((charger) => (
-              // <div
-              //   style={{
-              //     background: 'aqua',
-              //     borderRadius: '15px',
-              //     minWidth: '250px',
-              //     maxWidth: '300px',
-              //     padding: '15px',
-              //   }}
-              // >
-              //   <h1>{charger.name}</h1>
-              //   <img src={charger.imageUrl} alt="" />
-              //   <br />
-              //   <span>{charger.Host.firstName}</span>
-              // </div>
-              <Card sx={{ maxWidth: 345 }} backgroundColor="secondary">
-                <CardActionArea onClick={handleClick}>
-                  <CardMedia
-                    component="img"
-                    height="300"
-                    image={charger.imageUrl}
-                    alt="charger" // temp change later (based on file name or something)
-                    // style={{ backgroundSize: '100% 100%' }}
-                    objectFit={false}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Lizard
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Lizards are a widespread group of squamate reptiles, with
-                      over 6,000 species, ranging across all continents except
-                      Antarctica
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions sx={{ display: 'flex' }}>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    color="primary"
-                    startIcon={
-                      <FontAwesomeIcon icon={faCalendarPlus} size="xs" />
-                    }
-                    onClick={handleClick}
-                  >
-                    Book
-                  </Button>
-                </CardActions>
-              </Card>
+              <ChargerCard charger={charger} />
             ))}
           </>
         )}
