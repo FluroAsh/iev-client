@@ -1,5 +1,6 @@
 @import 'mixins';
-@import 'css-loader';
+@import 'cssLoader';
+@import 'chargerCard';
 
 /* Break Points (Width) */
 $mobile-width: 375px;
@@ -201,31 +202,6 @@ footer {
   color: #000;
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  min-width: 150px;
-  max-width: 350px;
-  margin: 10px;
-  max-height: 450px;
-}
-.cards-container {
-  min-width: 50%;
-}
-.chargers {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-basis: 250px;
-  flex-shrink: 1;
-}
-.google-map {
-  min-width: 50%;
-  height: calc(100vh - 56px);
-  position: sticky;
-  top: 56px;
-}
-
 .error-container {
   display: flex;
   justify-content: center;
@@ -234,6 +210,11 @@ footer {
   width: 100vw;
 }
 
+// #appbar {
+//   display: flex !important;
+//   justify-content: center;
+//   width: 100vw;
+// }
 /* Signup/Signin Form */
 // form {
 //   margin-left: 100px;

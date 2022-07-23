@@ -80,7 +80,7 @@ export const MobileMenu = ({ setMenuOpen }) => {
         )}
       </div>
       {/* TODO: Update Fotoer */}
-      <footer style={{ textAlign: 'center' }}>AT, KS ©️2022</footer>
+      <footer style={{ textAlign: 'center' }}>AT, KS © 2022</footer>
     </motion.div>
   );
 };

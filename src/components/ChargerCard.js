@@ -6,23 +6,23 @@ import { Typography } from '@mui/material';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarPlus } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+
+import { displayAUD } from '../utils/helpers';
 
 export const ChargerCard = ({ charger }) => {
-  const handleClick = (e) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
     console.log('Clicked!');
-    // navigate to /chargers/:id ...
+    navigate(`/chargers/${charger.id}`);
   };
 
   return (
     <Card
+      key={charger.id}
       className="card"
-      sx={{
-        // m: 2,
-
-        flexGrow: 1,
-        flexShrink: 1,
-      }}
-      backgroundColor="secondary"
+      style={{ color: 'white', background: '#00814095' }}
     >
       <CardActionArea onClick={handleClick}>
         <CardMedia
@@ -36,6 +36,9 @@ export const ChargerCard = ({ charger }) => {
             {charger.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
+            {displayAUD(charger.price)}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
             {charger.instructions}
           </Typography>
         </CardContent>
@@ -45,7 +48,12 @@ export const ChargerCard = ({ charger }) => {
           variant="contained"
           size="large"
           color="primary"
-          startIcon={<FontAwesomeIcon icon={faCalendarPlus} size="xs" />}
+          startIcon={
+            <FontAwesomeIcon
+              icon={faCalendarPlus}
+              style={{ fontSize: '16px' }}
+            />
+          }
           onClick={handleClick}
         >
           Book

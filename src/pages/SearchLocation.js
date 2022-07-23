@@ -7,7 +7,7 @@ import { CssLoader } from '../components/CssLoader';
 
 export const SearchLocation = () => {
   const { search } = useLocation();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [chargers, setChargers] = useState([]);
   const [error, setError] = useState({});
   const theme = useTheme();
@@ -54,35 +54,22 @@ export const SearchLocation = () => {
             <>
               <section
                 id="search-location"
-                style={{ display: 'flex', background: '#aa55ee50' }}
               >
                 <div
                   className="cards-container"
-                  style={{ display: 'flex', flexDirection: 'column' }}
                 >
                   <Typography
                     variant="h3"
                     sx={{ px: 1, py: 2, width: '100%', textAlign: 'center' }}
                   >
-                    {`${chargers.length} charger(s) found`}
+                    {/* TODO: Pluralize the string with an NPM package */}
+                    {`${chargers.length} charger(s) found`} 
                   </Typography>
                   <section
                     className="chargers"
-                    style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                    }}
                   >
                     {chargers.map((charger) => (
-                      <>
                         <ChargerCard charger={charger} />
-                        {/* BTW: Multiple cards just for testing purposes, will be changed to one card */}
-                        <ChargerCard charger={charger} />
-                        <ChargerCard charger={charger} />
-                        <ChargerCard charger={charger} />
-                        <ChargerCard charger={charger} />
-                        <ChargerCard charger={charger} />
-                      </>
                     ))}
                   </section>
                 </div>

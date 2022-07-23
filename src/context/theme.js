@@ -8,10 +8,7 @@ export const theme = createTheme({
       main: '#008140',
     },
     secondary: {
-      main: '#aa55ee',
-    },
-    Card: {
-      background: green[200],
+      main: green[400],
     },
   },
   breakpoints: {

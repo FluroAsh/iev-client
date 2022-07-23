@@ -114,7 +114,7 @@ export const DesktopMenu = () => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         {loggedInUser ? (
-          <>
+          <div>
             {/* TODO: Add links to Bookings, List Charger, & Edit Vehicle */}
             <MenuItem>
               <ListItemIcon>
@@ -141,9 +141,9 @@ export const DesktopMenu = () => {
               </ListItemIcon>
               Logout
             </MenuItem>
-          </>
+          </div>
         ) : (
-          <>
+          <div>
             <MenuItem component={Link} to="/auth/signup">
               <ListItemIcon>
                 <FontAwesomeIcon icon={faUserPlus} />
@@ -156,7 +156,7 @@ export const DesktopMenu = () => {
               </ListItemIcon>
               Login
             </MenuItem>
-          </>
+          </div>
         )}
       </Menu>
     </div>

@@ -12,7 +12,7 @@ export const Navbar = () => {
   return (
     <>
       <AppBar position="sticky">
-        <Toolbar sx={{ height: 56, justifyContent: 'space-between' }}>
+        <Toolbar sx={{ height: 56,justifyContent: 'space-between' }}>
           {isMobile ? <MobileNavbar /> : <DesktopNavBar />}
         </Toolbar>
       </AppBar>
