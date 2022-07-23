@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme, useMediaQuery } from '@mui/material';
 
 export const SearchBar = ({ setMenuOpen }) => {
-  const [input, setInput] = useState();
+  const [input, setInput] = useState('');
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -17,7 +17,7 @@ export const SearchBar = ({ setMenuOpen }) => {
   };
 
   const handleChange = (e) => {
-    setInput(e.target.value);
+    setInput(e.target.value) 
   };
 
   return (

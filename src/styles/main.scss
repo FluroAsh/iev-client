@@ -1,4 +1,5 @@
 @import 'mixins';
+@import 'css-loader';
 
 /* Break Points (Width) */
 $mobile-width: 375px;
@@ -191,6 +192,7 @@ a.logo {
   list-style: none;
   margin-right: 20px;
 }
+
 header {
   z-index: 999;
 }
@@ -205,17 +207,16 @@ footer {
   min-width: 150px;
   max-width: 350px;
   margin: 10px;
-  // max-height: 450px;
+  max-height: 450px;
 }
 .cards-container {
   min-width: 50%;
 }
 .chargers {
   display: flex;
-  align-items: space-around;
+  align-items: flex-start;
   justify-content: center;
-  flex-basis: 15em;
-  flex-grow: 1;
+  flex-basis: 250px;
   flex-shrink: 1;
 }
 .google-map {

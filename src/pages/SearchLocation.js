@@ -3,6 +3,7 @@ import { React, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { searchLocation } from '../services/searchServices';
 import { ChargerCard } from '../components/ChargerCard';
+import { CssLoader } from '../components/CssLoader';
 
 export const SearchLocation = () => {
   const { search } = useLocation();
@@ -35,7 +36,7 @@ export const SearchLocation = () => {
   return (
     <>
       {loading ? (
-        <p>Loading...</p>
+        <CssLoader />
       ) : (
         /**
          * Card needs:
@@ -60,7 +61,7 @@ export const SearchLocation = () => {
                   style={{ display: 'flex', flexDirection: 'column' }}
                 >
                   <Typography
-                    variant="h5"
+                    variant="h3"
                     sx={{ px: 1, py: 2, width: '100%', textAlign: 'center' }}
                   >
                     {`${chargers.length} charger(s) found`}
@@ -100,7 +101,7 @@ export const SearchLocation = () => {
             </>
           ) : (
             <div className="error-container">
-              <h1>{error.message}</h1>
+              <Typography variant="h5">{error.message}</Typography>
             </div>
           )}
         </>
