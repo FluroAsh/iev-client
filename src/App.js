@@ -19,7 +19,6 @@ function App() {
       username: '',
       firstName: '',
       lastName: '',
-
     },
     token: sessionStorage.getItem('token') || null,
     // chargingStation
@@ -33,7 +32,7 @@ function App() {
       <StateContext.Provider value={{ store, dispatch }}>
         <Router>
           <Navbar />
-          <Container sx={{ pt: 2 }}>
+          <Container disableGutters>
             <Routes>
               <Route path="/" element={<h1>Root Path!</h1>} />
               <Route path="/search" element={<SearchLocation />} />

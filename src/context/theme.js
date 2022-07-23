@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+import { green } from '@mui/material/colors';
 //
 export const theme = createTheme({
   palette: {
@@ -9,14 +10,9 @@ export const theme = createTheme({
     secondary: {
       main: '#aa55ee',
     },
-    // Card: {
-    //   maxWidth: 350,
-    //   margin: 'auto',
-    //   background: '#e0e0a3',
-    // },
-    // background: {
-    //   card: '#e0e0e080',
-    // },
+    Card: {
+      background: green[200],
+    },
   },
   breakpoints: {
     // https://mui.com/material-ui/customization/breakpoints/

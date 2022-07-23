@@ -15,11 +15,10 @@ export const ChargerCard = ({ charger }) => {
 
   return (
     <Card
+      className="card"
       sx={{
-        minWidth: 150,
-        maxWidth: 350,
-        maxHeight: '100%',
-        m: 2,
+        // m: 2,
+
         flexGrow: 1,
         flexShrink: 1,
       }}
@@ -31,7 +30,6 @@ export const ChargerCard = ({ charger }) => {
           height="300"
           image={charger.imageUrl}
           alt="charger" // temp change later (based on file name or something)
-          // style={{ backgroundSize: '100% 100%' }}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

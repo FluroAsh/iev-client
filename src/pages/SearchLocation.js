@@ -1,4 +1,3 @@
-import { Container } from '@mui/system';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { React, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -9,19 +8,25 @@ export const SearchLocation = () => {
   const { search } = useLocation();
   const [loading, setLoading] = useState(false);
   const [chargers, setChargers] = useState([]);
+  const [error, setError] = useState({});
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   /** Load initial data for charger locations */
   useEffect(() => {
+    setChargers([]);
     const searchParams = new URLSearchParams(search);
     const location = searchParams.get('location');
 
     async function fetchChargers() {
       setLoading(true);
-      const data = await searchLocation(location);
-      setChargers(data);
-      console.log(data);
+      try {
+        const data = await searchLocation(location);
+        setChargers(data);
+      } catch (err) {
+        setError(err);
+      }
+
       setLoading(false);
     }
     fetchChargers();
@@ -44,39 +49,48 @@ export const SearchLocation = () => {
         // -> Refactor to a reusable component later (the same in both home/search)
         // Just that the the home one will use a different set of charging stations (random set & limited to 10)
         <>
-          {chargers ? (
+          {chargers.length > 0 ? (
             <>
-              <section style={{ display: 'flex' }}>
-                <Container
-                  sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                  }}
+              <section
+                id="search-location"
+                style={{ display: 'flex', background: '#aa55ee50' }}
+              >
+                <div
+                  className="cards-container"
+                  style={{ display: 'flex', flexDirection: 'column' }}
                 >
-                  <Typography variant="h5" sx={{ p: 5, width: '100%' }}>
-                    {chargers
-                      ? `${chargers.length} chargers found`
-                      : 'Nothing to see here'}
+                  <Typography
+                    variant="h5"
+                    sx={{ px: 1, py: 2, width: '100%', textAlign: 'center' }}
+                  >
+                    {`${chargers.length} charger(s) found`}
                   </Typography>
-                  {chargers.map((charger) => (
-                    <>
-                      <ChargerCard charger={charger} />
-                      <ChargerCard charger={charger} />
-                      <ChargerCard charger={charger} />
-                      <ChargerCard charger={charger} />
-                      <ChargerCard charger={charger} />
-                      <ChargerCard charger={charger} />
-                    </>
-                  ))}
-                </Container>
+                  <section
+                    className="chargers"
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    {chargers.map((charger) => (
+                      <>
+                        <ChargerCard charger={charger} />
+                        {/* BTW: Multiple cards just for testing purposes, will be changed to one card */}
+                        <ChargerCard charger={charger} />
+                        <ChargerCard charger={charger} />
+                        <ChargerCard charger={charger} />
+                        <ChargerCard charger={charger} />
+                        <ChargerCard charger={charger} />
+                      </>
+                    ))}
+                  </section>
+                </div>
+                {/* TODO: Add the Google Map component, which should be passed the location & render a relevant image (or nothing) */}
                 {!isMobile && (
                   <div
                     className="google-map"
                     style={{
-                      backgroundColor: '#e0e0e0',
-                      width: '50vw',
-                      height: '100vh',
-                      positon: 'sticky',
+                      background: '#e0e0e0',
                     }}
                   >
                     Map Image placeholder
@@ -85,7 +99,9 @@ export const SearchLocation = () => {
               </section>
             </>
           ) : (
-            <h1>Nothing to see here</h1>
+            <div className="error-container">
+              <h1>{error.message}</h1>
+            </div>
           )}
         </>
       )}

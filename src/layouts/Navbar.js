@@ -9,17 +9,10 @@ export const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const styles = {
-    mobile: {
-      justifyContent: 'space-between',
-      height: '56px',
-    },
-  };
-
   return (
     <>
-      <AppBar position="sticky" className="mobile-nav">
-        <Toolbar sx={isMobile && styles.mobile}>
+      <AppBar position="sticky">
+        <Toolbar sx={{ height: 56, justifyContent: 'space-between' }}>
           {isMobile ? <MobileNavbar /> : <DesktopNavBar />}
         </Toolbar>
       </AppBar>

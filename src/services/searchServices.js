@@ -5,6 +5,6 @@ export async function searchLocation(location) {
     const response = await ievAPI.get(`/search?location=${location}`);
     return response.data;
   } catch (err) {
-    console.log(err.response.data);
+    throw Error(err.response.data.error);
   }
 }
