@@ -18,7 +18,7 @@ export const SearchBar = ({ setMenuOpen }) => {
   };
 
   return (
-    <form id="searchbar-form" onSubmit={handleSubmit} style={{ width: '35%' }}>
+    <form id="searchbar-form" onSubmit={handleSubmit}>
       <input
         type="text"
         value={input}

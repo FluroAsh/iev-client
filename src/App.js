@@ -15,8 +15,13 @@ import { SearchLocation } from './pages/SearchLocation';
 function App() {
   const initialState = {
     loggedInUser: sessionStorage.getItem('username') || null,
+    currentUser: {
+      username: '',
+      firstName: '',
+      lastName: '',
+
+    },
     token: sessionStorage.getItem('token') || null,
-    // userInfo
     // chargingStation
   };
 
