@@ -12,7 +12,7 @@ $color-400: #ccd5ae;
 $color-300: #fefae0;
 $color-200: #e9edc9;
 $color-100: #faedcd;
-$color-link-hover: #0366d640;
+$color-link-hover: #00000015;
 $color-on-click: #ffffff95;
 
 /* Transition */
@@ -48,6 +48,11 @@ h1 {
 }
 
 /* Desktop/Mobile Nav Elements */
+#searchbar-form {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
 input[name='searchbar'] {
   /* Overrides */
   border: none;
@@ -73,7 +78,7 @@ input[name='searchbar'] {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: rgba($color-300, 0.95);
+  background: $color-300;
   position: fixed;
   top: 56px;
   left: 0;
@@ -82,6 +87,7 @@ input[name='searchbar'] {
   max-width: 20vw;
   min-width: 150px;
   box-shadow: $box-shadow1;
+  padding: 0.5em 0;
   &__links {
     display: flex;
     flex-direction: column;
@@ -105,15 +111,16 @@ input[name='searchbar'] {
         background: $color-on-click;
       }
       .svg-inline--fa {
+        width: 32px;
         font-size: 1.2em;
-        padding-right: 8px;
+        padding-right: 12px;
         box-shadow: none;
       }
     }
   }
   hr {
     margin: 0 3px;
-    border: 1px solid $color-400;
+    border: 1px solid #e0e0e0;
   }
 }
 .menu-btn {
@@ -141,8 +148,8 @@ a.logo {
   font-weight: 600;
   font-size: 1.6em;
   letter-spacing: 1px;
-  position: absolute;
-  left: calc(50% - 20px);
+  left: calc(50% - 20px); // used for mobile nav
+  margin-right: auto; // testing
   padding: 5px;
   color: #fff;
   text-shadow: 2px 2px 2px #00000090;
@@ -161,6 +168,8 @@ a.logo {
   font-size: 1em;
   margin-right: 10px;
   transition: $transition-fast;
+  white-space: nowrap;
+  max-height: 100%;
   &:hover {
     cursor: pointer;
     color: #fff;
@@ -172,6 +181,8 @@ a.logo {
 }
 .menu-links {
   display: flex;
+  align-items: center;
+  // margin-left: auto;
 }
 .menu-link-item {
   list-style: none;
@@ -182,9 +193,10 @@ header {
 }
 
 /* Signup/Signin Form */
-form {
-  margin-left: 100px;
-}
+// form {
+//   margin-left: 100px;
+// }
+
 /* Media Queries */
 // @media screen and (min-width: $tablet-width) {
 //   .mobile-nav {

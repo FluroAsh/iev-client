@@ -7,9 +7,8 @@ export const SearchBar = ({ setMenuOpen }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // need to fix this so it replaces spaces with '+' symbol...
-    console.log('Submitted!', input);
-    navigate(`/search?location=${input}`);
+    const formattedInput = input.trim().replace(/\s+/g, '+');
+    navigate(`/search?location=${formattedInput}`);
     setMenuOpen(false);
     setInput('');
   };
@@ -19,7 +18,7 @@ export const SearchBar = ({ setMenuOpen }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ width: '35%' }}>
+    <form id="searchbar-form" onSubmit={handleSubmit} style={{ width: '35%' }}>
       <input
         type="text"
         value={input}

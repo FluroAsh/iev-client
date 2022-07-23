@@ -7,13 +7,26 @@ import {
   faScrewdriverWrench,
   faRightFromBracket,
   faPlugCirclePlus,
+  faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
-
+import { useGlobalState } from '../context/stateContext';
 // TODO: Get loggedInUser and consume context to render Log Out/Log In
 
 export const MobileMenu = ({ setMenuOpen }) => {
-  console.log(setMenuOpen);
-  const setMenuFalse = () => setMenuOpen(false);
+  const { store, dispatch } = useGlobalState();
+  const { loggedInUser } = store;
+
+  const logout = () => {
+    sessionStorage.clear();
+    dispatch({
+      type: 'setLoggedInUser',
+      data: null,
+    });
+    dispatch({
+      type: 'setToken',
+      data: null,
+    });
+  };
 
   return (
     <motion.div
@@ -25,29 +38,49 @@ export const MobileMenu = ({ setMenuOpen }) => {
     >
       {/* These change to link later */}
       <div className="mobile-menu__links">
-        <Link tabIndex={0} to="/" onClick={setMenuFalse}>
-          <FontAwesomeIcon icon={faBookOpenReader} />
-          Bookings
-        </Link>
+        {loggedInUser ? (
+          <>
+            <Link tabIndex={0} to="/" onClick={() => setMenuOpen(false)}>
+              <FontAwesomeIcon icon={faBookOpenReader} />
+              Bookings
+            </Link>
 
-        <Link to="/search" onClick={setMenuFalse}>
-          <FontAwesomeIcon icon={faPlugCirclePlus} />
-          List a Charger
-        </Link>
+            <Link to="/search" onClick={() => setMenuOpen(false)}>
+              <FontAwesomeIcon icon={faPlugCirclePlus} />
+              List a Charger
+            </Link>
 
-        <Link to="/NotFound" onClick={setMenuFalse}>
-          <FontAwesomeIcon icon={faScrewdriverWrench} />
-          Edit Vehicle
-        </Link>
-        <hr></hr>
-        <Link to="/NotFound" onClick={setMenuFalse}>
-          <FontAwesomeIcon icon={faRightFromBracket} />
-          Log Out
-        </Link>
+            <Link to="/NotFound" onClick={() => setMenuOpen(false)}>
+              <FontAwesomeIcon icon={faScrewdriverWrench} />
+              Edit Vehicle
+            </Link>
+            <hr></hr>
+            <Link
+              to="/"
+              onClick={() => {
+                setMenuOpen(false);
+                logout();
+              }}
+            >
+              <FontAwesomeIcon icon={faRightFromBracket} />
+              Log Out
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/auth/signup" onClick={() => setMenuOpen(false)}>
+              <FontAwesomeIcon icon={faUserPlus} />
+              Register
+            </Link>
+            <Link to="/auth/signin" onClick={() => setMenuOpen(false)}>
+              <FontAwesomeIcon icon={faRightFromBracket} />
+              Log In
+            </Link>
+          </>
+        )}
       </div>
-      <footer style={{ textAlign: 'center', marginBottom: '10px' }}>
-        Placeholder Footer
-      </footer>
+      {/* TODO: Update Fotoer */}
+      <footer style={{ textAlign: 'center' }}>AT, KS ©️2022</footer>
     </motion.div>
   );
 };
