@@ -52,11 +52,12 @@ export const ChargerForm = () => {
       }
 
       const result = await addCharger(data);
-      console.log("FORM DATA AFTER SUBMIT", data);
+      console.log("FORM DATA AFTER SUBMIT", result);
 
       setFormData(initialFormData);
-
-      navigate("/");
+      
+      navigate(`/`);
+      // navigate(`/charger/${result.}`);
 
       // if (!result.error) {
       // } else {

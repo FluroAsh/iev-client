@@ -17,7 +17,7 @@ export const Charger = ({ charger }) => {
         {/* <Link to={`/user/${message.username}`}> TODO: use username instead of id */}
 
         <Typography variant="p">
-          Host:{" "}
+          Owner:{" "}
           <Link to={`/user/${charger.User.id}`}>{charger.User.username}</Link>{" "}
         </Typography>
 

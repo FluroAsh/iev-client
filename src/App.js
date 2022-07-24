@@ -4,7 +4,7 @@ import {
   Navigate,
   Route,
   Routes,
-  useLocation,
+  // useParams,
 } from "react-router-dom";
 
 import "./styles/main.scss";
@@ -29,6 +29,8 @@ function App() {
     loggedInUser: sessionStorage.getItem("username") || null,
     token: sessionStorage.getItem("token") || null,
   };
+
+  // let { id } = useParams();
 
   const [store, dispatch] = useReducer(reducer, initialState);
 
@@ -64,9 +66,12 @@ function App() {
                     )
                   }
                 />
-                {/* <Route path=":id" element={<ChargerDetail />} /> */}
                 <Route path="mychargers" element={<Chargers />} />
+
                 {/* <Route path="user/:username" element={<Chargers />} /> */}
+              </Route>
+              <Route path="charger">
+                <Route path=":chargerId" element={<ChargerDetail />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />
