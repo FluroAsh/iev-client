@@ -1,10 +1,9 @@
-import { React, useReducer, useEffect, useInsertionEffect } from "react";
+import { React, useReducer } from "react";
 import {
   BrowserRouter as Router,
   Navigate,
   Route,
   Routes,
-  // useParams,
 } from "react-router-dom";
 
 import "./styles/main.scss";
@@ -19,9 +18,7 @@ import { Container } from "@mui/material";
 import { ChargerForm } from "./components/ChargerForm";
 import { ChargerDetail } from "./components/ChargerDetail";
 import { Chargers } from "./components/Chargers";
-import { getMyChargers, getChargers } from "./services/chargerServices";
 
-import { displayChargers } from "./layouts/Navbar";
 
 function App() {
   const initialState = {
@@ -30,16 +27,12 @@ function App() {
     token: sessionStorage.getItem("token") || null,
   };
 
-  // let { id } = useParams();
 
   const [store, dispatch] = useReducer(reducer, initialState);
 
   const { loggedInUser } = store;
 
-  // const location = useLocation();
 
-  // useEffect(displayChargers({hash: "", key: "qz8l546r", pathname: "/chargers", search: "", state: null}, dispatch), []);
-  // useEffect(displayChargers(location, dispatch), [location]);
   console.log("THIS IS STORE ", store);
 
   return (
@@ -51,6 +44,10 @@ function App() {
             <Routes>
               <Route path="/" element={<h1>Root Path!</h1>} />
               <Route path="/search" element={<h1>Listing a charger...</h1>} />
+              {/* 
+                TODO: Change these to /auth/session later, will need to have everything
+                in one form and conditionally render the correct form based on state.
+              */}
               <Route path="/auth/signup" element={<SignupForm />} />
               <Route path="/auth/signin" element={<SigninForm />} />
 
@@ -82,21 +79,5 @@ function App() {
     </div>
   );
 }
-// export const displayChargers = (loggedInUser) => {
-//   try {
-//     let chargers = [];
 
-//     if (loggedInUser) {
-//       chargers = getMyChargers();
-//     } else {
-//       chargers = getChargers();
-//     }
-//     dispatch({
-//       type: "setChargerList",
-//       data: chargers,
-//     });
-//   } catch (err) {
-//     console.log(err.message);
-//   }
-// };
 export default App;

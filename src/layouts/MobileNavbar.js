@@ -1,11 +1,11 @@
 import { React, useState } from 'react';
-
+import { Link } from 'react-router-dom';
+import { Typography } from '@mui/material';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { AnimatePresence } from 'framer-motion';
 
-import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import { MobileMenu } from '../layouts/MobileMenu';
-import { SearchBar } from './SearchBar';
-
+import { MobileMenu } from './MobileMenu';
+import { SearchBar } from '../components/SearchBar';
 export const MobileNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -28,6 +28,14 @@ export const MobileNavbar = () => {
       >
         <MenuRoundedIcon fontSize={'large'} aria-label="mobile- menu-button" />
       </div>
+      <Typography
+        className="logo"
+        component={Link}
+        to="/"
+        sx={{ position: 'absolute' }}
+      >
+        iEV
+      </Typography>
       <SearchBar setMenuOpen={setMenuOpen} />
       {/* TODO: Add footer */}
     </>

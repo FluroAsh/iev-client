@@ -1,4 +1,4 @@
-import ievAPI from "../config/api";
+import ievAPI from '../config/api';
 
 export async function signUp(data){
 
@@ -12,8 +12,8 @@ export async function signUp(data){
     }
 }
 
-export async function signIn(data){
-    const response = await ievAPI.post('/auth/signin', data)
-    //console.log(response.data)
-    return response.data
+export async function signIn(data) {
+  console.log(data);
+  const response = await ievAPI.post('/auth/signin', data);
+  return response.data;
 }

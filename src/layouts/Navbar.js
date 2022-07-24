@@ -9,49 +9,20 @@ import {
 // import { makeStyles } from "@material-ui/core";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { SearchBar } from "../components/SearchBar";
-import { MobileNavbar } from "../components/MobileNavbar";
+// import { MobileNavbar } from "../components/MobileNavbar";
 import { useGlobalState } from "../context/stateContext";
 import { getMyChargers, getChargers } from "../services/chargerServices";
 
 
+import { MobileNavbar } from './MobileNavbar';
+import { DesktopNavBar } from './DesktopNavBar';
 
 export const Navbar = () => {
   /** For access to MUI Breakpoints */
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const { store, dispatch } = useGlobalState();
-  const { loggedInUser } = store;
-  const navigate = useNavigate();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const location = useLocation();
-
-  // useEffect((location, loggedInUser, dispatch, setError) => {
-  //   return () => {
-  //     console.log("THIS IS LOCATION", location);
-  //     if (location.pathname === "/mychargers") {
-  //       try {
-  //         const myChargers = getMyChargers();
-  //         dispatch({
-  //           type: "setChargerList",
-  //           data: myChargers,
-  //         });
-  //       } catch (err) {
-  //         console.log(err.message);
-  //       }
-  //     } else {
-  //       try {
-  //         const chargers = getChargers();
-  //         dispatch({
-  //           type: "setChargerList",
-  //           data: chargers,
-  //         });
-  //       } catch (err) {
-  //         console.log(err.message);
-  //       }
-  //     }
-  //   };
-  // }, []);
-
 
   useEffect(() => {
     console.log("THIS IS LOCATION", location);
@@ -158,36 +129,3 @@ async function fetchData(location, dispatch) {
 }
 
 
-
-// export function displayChargers(location, loggedInUser, dispatch, setError) {
-
-//   return () => {
-
-//     console.log("THIS IS LOCATION", location)
-//     if (location.pathname === "/chargers/mychargers") {
-
-//       try {
-//         const myChargers = getMyChargers(loggedInUser)
-//         dispatch({
-//           type: "setChargerList",
-//           data: myChargers,
-//         });
-//       } catch (err) {
-//         console.log(err.message)
-//       }
-//     }
-//     else {
-
-//       try {
-//         const chargers = getChargers()
-//         dispatch({
-//           type: "setChargerList",
-//           data: chargers,
-//         });
-//       } catch (err) {
-//         console.log(err.message)
-//       }
-
-//     }
-//   }
-// }
