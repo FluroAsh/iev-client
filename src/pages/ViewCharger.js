@@ -43,3 +43,7 @@ async function getChargerById(chargerId) {
     console.log(err.message);
   }
 }
+
+export async function handleBooking(e) {
+
+}
