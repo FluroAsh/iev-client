@@ -56,7 +56,7 @@ export const MobileMenu = ({ setMenuOpen }) => {
               My Chargers
             </Link>
 
-            <Link to="/" onClick={() => setMenuOpen(false)}>
+            <Link to="/chargers/new" onClick={() => setMenuOpen(false)}>
               <FontAwesomeIcon icon={faPlugCirclePlus} />
               List a Charger
             </Link>
