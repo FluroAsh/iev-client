@@ -16,9 +16,8 @@ import { StateContext } from "./context/stateContext";
 import { NotFound } from "./pages/NotFound";
 import { Container } from "@mui/material";
 import { ChargerForm } from "./components/ChargerForm";
-import { ChargerDetail } from "./components/ChargerDetail";
-import { Chargers } from "./components/Chargers";
-
+import { ViewCharger } from "./pages/ViewCharger";
+import { ViewChargers } from "./pages/ViewChargers";
 
 function App() {
   const initialState = {
@@ -27,11 +26,9 @@ function App() {
     token: sessionStorage.getItem("token") || null,
   };
 
-
   const [store, dispatch] = useReducer(reducer, initialState);
 
   const { loggedInUser } = store;
-
 
   console.log("THIS IS STORE ", store);
 
@@ -52,7 +49,7 @@ function App() {
               <Route path="/auth/signin" element={<SigninForm />} />
 
               <Route path="chargers">
-                <Route index element={<Chargers />} />
+                <Route index element={<ViewChargers />} />
                 <Route
                   path="new"
                   element={
@@ -63,12 +60,12 @@ function App() {
                     )
                   }
                 />
-                <Route path="mychargers" element={<Chargers />} />
+                <Route path="mychargers" element={<ViewChargers />} />
 
                 {/* <Route path="user/:username" element={<Chargers />} /> */}
               </Route>
               <Route path="charger">
-                <Route path=":chargerId" element={<ChargerDetail />} />
+                <Route path=":chargerId" element={<ViewCharger />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />

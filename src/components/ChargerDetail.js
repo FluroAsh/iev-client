@@ -5,54 +5,26 @@ import { useGlobalState } from "../context/stateContext";
 import { getCharger } from "../services/chargerServices";
 import { Charger } from "./Charger";
 
-export const ChargerDetail = () => {
+export const ChargerDetail = ({ charger }) => {
   const { store } = useGlobalState();
   const { loggedInUser, chargerList } = store;
-  const { chargerId } = useParams();
 
-  console.log("CHARGERID", chargerId)
-  const [charger, setChargerDetail] = useState();
-
-  useEffect(() => {
-    getChargerById(chargerId)
-      .then((data) => {console.log("THIS IS DATA", data); setChargerDetail(data)})
-  }, [chargerId]);
-
-
-  console.log("THIS IS CHARGER", charger);
   return (
     <>
-      { (charger !== undefined) ? (
-        <>
-          <div>
-            <Charger key={charger.id} charger={charger} />
-          </div>
-          <div>{Object.values(charger.Address).join(" ")}</div>
-          <div>Owner reviews</div>
-          <div>Calendar</div>
-          {charger.User.username === loggedInUser ? (
-          <div>
-            <button>Edit</button>
-            <button>Delete</button>
-          </div>
-          ) : (<button>Add Booking</button>
-          )}
-        </>
+      <div>
+        <Charger key={charger.id} charger={charger} />
+      </div>
+      <div>{Object.values(charger.Address).join(" ")}</div>
+      <div>Owner reviews</div>
+      <div>Calendar</div>
+      {charger.Host.username === loggedInUser ? (
+        <div>
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
       ) : (
-        <>
-          <p>charger not found</p>
-          <Link to="/chargers">Go back to the main page</Link>
-        </>
+        <button>Add Booking</button>
       )}
     </>
   );
 };
-
-async function getChargerById(chargerId) {
-  try {
-    const chargerDetails = await getCharger(chargerId);
-    return chargerDetails;
-  } catch (err) {
-    console.log(err.message);
-  }
-}
