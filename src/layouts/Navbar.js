@@ -1,14 +1,7 @@
 import { React, useEffect } from "react";
-import {
-  Toolbar,
-  AppBar,
-  useMediaQuery,
-  useTheme,
-  Typography,
-} from "@mui/material";
+import { Toolbar, AppBar, useMediaQuery, useTheme } from "@mui/material";
 // import { makeStyles } from "@material-ui/core";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { SearchBar } from "../components/SearchBar";
+import { useLocation } from "react-router-dom";
 // import { MobileNavbar } from "../components/MobileNavbar";
 import { useGlobalState } from "../context/stateContext";
 import { getMyChargers, getChargers } from "../services/chargerServices";
@@ -21,7 +14,7 @@ export const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const location = useLocation();
-  const { store, dispatch } = useGlobalState();
+  const { dispatch } = useGlobalState();
 
   useEffect(() => {
     console.log("THIS IS LOCATION", location);
