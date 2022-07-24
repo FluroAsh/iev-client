@@ -8,6 +8,7 @@ import { MobileMenu } from './MobileMenu';
 import { SearchBar } from '../components/SearchBar';
 export const MobileNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  // TODO: Add useRef for click out of bounds (should setMenuOpen(false)
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -33,6 +34,7 @@ export const MobileNavbar = () => {
         component={Link}
         to="/"
         sx={{ position: 'absolute' }}
+        onClick={() => setMenuOpen(false)}
       >
         iEV
       </Typography>

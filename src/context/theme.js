@@ -1,13 +1,14 @@
 import { createTheme } from '@mui/material';
+import { green } from '@mui/material/colors';
 //
 export const theme = createTheme({
   palette: {
     // https://mui.com/material-ui/customization/palette/
     primary: {
-      main: '#ccd5ae',
+      main: '#008140',
     },
     secondary: {
-      main: '#e9edc9',
+      main: green[400],
     },
   },
   breakpoints: {

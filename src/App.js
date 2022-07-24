@@ -18,6 +18,7 @@ import { Container } from "@mui/material";
 import { ChargerForm } from "./components/ChargerForm";
 import { ViewCharger } from "./pages/ViewCharger";
 import { ViewChargers } from "./pages/ViewChargers";
+import { SearchLocation } from "./pages/SearchLocation";
 
 function App() {
   const initialState = {
@@ -25,6 +26,7 @@ function App() {
     bookingDates: [],
     loggedInUser: sessionStorage.getItem("username") || null,
     token: sessionStorage.getItem("token") || null,
+    location: {},
   };
 
   const [store, dispatch] = useReducer(reducer, initialState);
@@ -38,10 +40,14 @@ function App() {
       <StateContext.Provider value={{ store, dispatch }}>
         <Router>
           <Navbar />
-          <Container sx={{ pt: 2 }}>
+          <Container disableGutters>
             <Routes>
               <Route path="/" element={<h1>Root Path!</h1>} />
-              <Route path="/search" element={<h1>Listing a charger...</h1>} />
+              <Route path="/search" element={<SearchLocation />} />
+              <Route
+                path="/chargers/:id"
+                element={<h1>View Charger Page!</h1>}
+              />
               {/* 
                 TODO: Change these to /auth/session later, will need to have everything
                 in one form and conditionally render the correct form based on state.
