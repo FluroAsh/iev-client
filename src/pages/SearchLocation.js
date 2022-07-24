@@ -35,7 +35,7 @@ export const SearchLocation = () => {
       setError();
       setLoading(true);
       try {
-        const data = await searchLocation(queryLocation);
+        const data = await searchLocation(queryLocation || "");
         setChargers(data);
       } catch (err) {
         setError(err);
