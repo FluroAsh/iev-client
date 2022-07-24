@@ -22,6 +22,7 @@ import { ViewChargers } from "./pages/ViewChargers";
 function App() {
   const initialState = {
     chargerList: [],
+    bookingDates: [],
     loggedInUser: sessionStorage.getItem("username") || null,
     token: sessionStorage.getItem("token") || null,
   };

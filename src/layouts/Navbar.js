@@ -24,7 +24,7 @@ export const Navbar = () => {
 
   const location = useLocation();
   const {store, dispatch } = useGlobalState();
-  const { loggedInUser } = store
+  const { loggedInUser, bookingDates } = store
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -44,6 +44,9 @@ export const Navbar = () => {
     });
     navigate("/");
   };
+
+  console.log("THIS IS dates array", bookingDates)
+
 
   return (
     <>
