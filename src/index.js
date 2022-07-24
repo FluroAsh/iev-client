@@ -4,6 +4,7 @@ import App from './App';
 
 import { ThemeProvider } from '@mui/material';
 import { theme } from './context/theme';
+import { Navbar } from './layouts/Navbar';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

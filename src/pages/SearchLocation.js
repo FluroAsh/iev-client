@@ -1,12 +1,13 @@
-import { React, useEffect, useState, useRef } from 'react';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useLocation } from 'react-router-dom';
-import { searchLocation } from '../services/searchServices';
-import { ChargerCard } from '../components/ChargerCard';
-import { CssLoader } from '../components/CssLoader';
+import { React, useEffect, useState, useRef } from "react";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
+// import { useLocation } from "react-router-dom";
+import { searchLocation } from "../services/searchServices";
+import { ChargerCard } from "../components/ChargerCard";
+import { CssLoader } from "../components/CssLoader";
+import { useGlobalState } from "../context/stateContext";
 
 export const SearchLocation = () => {
-  const { search } = useLocation();
+  // const { search } = useLocation();
   const [loading, setLoading] = useState(true);
   const [chargers, setChargers] = useState([]);
   const [error, setError] = useState({});
@@ -15,20 +16,25 @@ export const SearchLocation = () => {
   const [height, setHeight] = useState(640); // Change this later, try to fix resize function
   const mapRef = useRef();
 
+  const { store } = useGlobalState();
+  const { location } = store;
+
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   /** Load initial data for charger locations */
   useEffect(() => {
-    const searchParams = new URLSearchParams(search);
-    const location = searchParams.get('location');
+    console.log("Location", location);
+    const searchParams = new URLSearchParams(location.search);
+    console.log("Search Params", searchParams);
+    const queryLocation = searchParams.get("location");
 
     async function fetchChargers() {
       setChargers([]);
       setError();
       setLoading(true);
       try {
-        const data = await searchLocation(location);
+        const data = await searchLocation(queryLocation);
         setChargers(data);
       } catch (err) {
         setError(err);
@@ -37,7 +43,7 @@ export const SearchLocation = () => {
       setLoading(false);
     }
     fetchChargers();
-  }, [search]);
+  }, [location]);
 
   // const getMapSize = () => {
   //   if (!isMobile) {
@@ -75,7 +81,7 @@ export const SearchLocation = () => {
                 <div className="cards-container">
                   <Typography
                     variant="h3"
-                    sx={{ px: 1, py: 2, width: '100%', textAlign: 'center' }}
+                    sx={{ px: 1, py: 2, width: "100%", textAlign: "center" }}
                   >
                     {/* TODO: Pluralize the string with an NPM package */}
                     {`${chargers.length} charger(s) found`}
@@ -91,7 +97,7 @@ export const SearchLocation = () => {
                     // ref={mapRef}
                     className="google-map"
                     style={{
-                      background: '#e0e0e0',
+                      background: "#e0e0e0",
                     }}
                   >
                     <img
