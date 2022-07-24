@@ -1,4 +1,6 @@
 @import 'mixins';
+@import 'cssLoader';
+@import 'chargerCard';
 
 /* Break Points (Width) */
 $mobile-width: 375px;
@@ -12,6 +14,7 @@ $color-400: #ccd5ae;
 $color-300: #fefae0;
 $color-200: #e9edc9;
 $color-100: #faedcd;
+$mui-primary: #008140;
 $color-link-hover: #00000015;
 $color-on-click: #ffffff95;
 
@@ -52,7 +55,9 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  width: 35%;
 }
+
 input[name='searchbar'] {
   /* Overrides */
   border: none;
@@ -78,7 +83,7 @@ input[name='searchbar'] {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: $color-300;
+  background: #e9e9e9;
   position: fixed;
   top: 56px;
   left: 0;
@@ -101,8 +106,8 @@ input[name='searchbar'] {
       padding: 1em 0.5em;
       &:hover,
       &:focus {
-        color: #00000090;
-        background: $color-400;
+        color: #fff;
+        background: $mui-primary;
         box-shadow: $box-shadow1-variant;
       }
       &:active {
@@ -188,10 +193,28 @@ a.logo {
   list-style: none;
   margin-right: 20px;
 }
+
 header {
   z-index: 999;
 }
 
+footer {
+  color: #000;
+}
+
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 56px);
+  width: 100vw;
+}
+
+// #appbar {
+//   display: flex !important;
+//   justify-content: center;
+//   width: 100vw;
+// }
 /* Signup/Signin Form */
 // form {
 //   margin-left: 100px;

@@ -1,24 +1,27 @@
 import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme, useMediaQuery } from '@mui/material';
 
 export const SearchBar = ({ setMenuOpen }) => {
-  const [input, setInput] = useState();
+  const [input, setInput] = useState('');
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formattedInput = input.trim().replace(/\s+/g, '+');
+    const formattedInput = input.trim().replace(/\s+/, '+');
     navigate(`/search?location=${formattedInput}`);
-    setMenuOpen(false);
     setInput('');
+    isMobile && setMenuOpen(false);
   };
 
   const handleChange = (e) => {
-    setInput(e.target.value);
+    setInput(e.target.value) 
   };
 
   return (
-    <form id="searchbar-form" onSubmit={handleSubmit} style={{ width: '35%' }}>
+    <form id="searchbar-form" onSubmit={handleSubmit}>
       <input
         type="text"
         value={input}
