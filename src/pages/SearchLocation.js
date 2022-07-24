@@ -1,9 +1,9 @@
-import { React, useEffect, useState, useRef } from 'react';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useLocation } from 'react-router-dom';
-import { searchLocation } from '../services/searchServices';
-import { ChargerCard } from '../components/ChargerCard';
-import { CssLoader } from '../components/CssLoader';
+import { React, useEffect, useState, useRef } from "react";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import { searchLocation } from "../services/searchServices";
+import { ChargerCard } from "../components/ChargerCard";
+import { CssLoader } from "../components/CssLoader";
 
 export const SearchLocation = () => {
   const { search } = useLocation();
@@ -11,17 +11,17 @@ export const SearchLocation = () => {
   const [chargers, setChargers] = useState([]);
   const [error, setError] = useState({});
 
-  const [width, setWidth] = useState(640); // Change this later
-  const [height, setHeight] = useState(640); // Change this later, try to fix resize function
-  const mapRef = useRef();
+  // const [width, setWidth] = useState(683); // Change this later (683 is max width)
+  // const [height, setHeight] = useState(640); // Change this later, try to fix resize function
+  // const mapRef = useRef();
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   /** Load initial data for charger locations */
   useEffect(() => {
     const searchParams = new URLSearchParams(search);
-    const location = searchParams.get('location');
+    const location = searchParams.get("location");
 
     async function fetchChargers() {
       setChargers([]);
@@ -71,11 +71,11 @@ export const SearchLocation = () => {
         <>
           {chargers.length > 0 && (
             <>
-              <section id="search-location">
+              <div id="search-location">
                 <div className="cards-container">
                   <Typography
                     variant="h3"
-                    sx={{ px: 1, py: 2, width: '100%', textAlign: 'center' }}
+                    sx={{ px: 1, py: 2, width: "100%", textAlign: "center" }}
                   >
                     {/* TODO: Pluralize the string with an NPM package */}
                     {`${chargers.length} charger(s) found`}
@@ -91,17 +91,21 @@ export const SearchLocation = () => {
                     // ref={mapRef}
                     className="google-map"
                     style={{
-                      background: '#e0e0e0',
+                      background: "#e0e0e0",
                     }}
                   >
                     <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${chargers[0].Address.city}
-          &zoom=13&size=${height}x${width}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`}
+                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${
+                        chargers[0].Address.city
+                      }
+          &zoom=13&size=${640}x${683}&key=${
+                        process.env.REACT_APP_GOOGLE_API_KEY
+                      }`}
                       alt="google maps location"
                     />
                   </div>
                 )}
-              </section>
+              </div>
             </>
           )}
         </>

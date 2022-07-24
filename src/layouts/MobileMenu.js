@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookOpenReader,
   faScrewdriverWrench,
@@ -9,8 +9,9 @@ import {
   faPlugCirclePlus,
   faUserPlus,
   faHouse,
-} from '@fortawesome/free-solid-svg-icons';
-import { useGlobalState } from '../context/stateContext';
+  faPlugCircleCheck,
+} from "@fortawesome/free-solid-svg-icons";
+import { useGlobalState } from "../context/stateContext";
 
 export const MobileMenu = ({ setMenuOpen }) => {
   const { store, dispatch } = useGlobalState();
@@ -19,11 +20,11 @@ export const MobileMenu = ({ setMenuOpen }) => {
   const logout = () => {
     sessionStorage.clear();
     dispatch({
-      type: 'setLoggedInUser',
+      type: "setLoggedInUser",
       data: null,
     });
     dispatch({
-      type: 'setToken',
+      type: "setToken",
       data: null,
     });
   };
@@ -31,9 +32,9 @@ export const MobileMenu = ({ setMenuOpen }) => {
   return (
     <motion.div
       className="mobile-menu"
-      initial={{ x: '-100%' }}
-      animate={{ x: '0px' }}
-      exit={{ x: '-100%' }}
+      initial={{ x: "-100%" }}
+      animate={{ x: "0px" }}
+      exit={{ x: "-100%" }}
       transition={{ duration: 0.5 }}
     >
       {/* These change to link later */}
@@ -45,17 +46,22 @@ export const MobileMenu = ({ setMenuOpen }) => {
               Home
             </Link>
 
-            <Link tabIndex={0} to="/" onClick={() => setMenuOpen(false)}>
+            <Link to="/" onClick={() => setMenuOpen(false)}>
               <FontAwesomeIcon icon={faBookOpenReader} />
               Bookings
             </Link>
 
-            <Link to="/search" onClick={() => setMenuOpen(false)}>
+            <Link to="/chargers/mychargers" onClick={() => setMenuOpen(false)}>
+              <FontAwesomeIcon icon={faPlugCircleCheck} />
+              My Chargers
+            </Link>
+
+            <Link to="/" onClick={() => setMenuOpen(false)}>
               <FontAwesomeIcon icon={faPlugCirclePlus} />
               List a Charger
             </Link>
 
-            <Link to="/NotFound" onClick={() => setMenuOpen(false)}>
+            <Link to="/" onClick={() => setMenuOpen(false)}>
               <FontAwesomeIcon icon={faScrewdriverWrench} />
               Edit Vehicle
             </Link>
@@ -89,7 +95,7 @@ export const MobileMenu = ({ setMenuOpen }) => {
         )}
       </div>
       {/* TODO: Update Fotoer */}
-      <footer style={{ textAlign: 'center' }}>AT, KS © 2022</footer>
+      <footer style={{ textAlign: "center" }}>AT, KS © 2022</footer>
     </motion.div>
   );
 };
