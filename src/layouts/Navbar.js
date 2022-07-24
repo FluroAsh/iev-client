@@ -3,6 +3,7 @@ import { Toolbar, AppBar, useMediaQuery, useTheme } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useGlobalState } from "../context/stateContext";
 import { getMyChargers, getChargers } from "../services/chargerServices";
+import { useNavigate } from 'react-router-dom';
 
 import { MobileNavbar } from "./MobileNavbar";
 import { DesktopNavBar } from "./DesktopNavBar";

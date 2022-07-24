@@ -210,6 +210,13 @@ footer {
   width: 100vw;
 }
 
+
+.flex-box {
+  display: flex;
+  justify-content: space-between;
+  // align-items: center;
+  // flex-direction: row;
+}
 // #appbar {
 //   display: flex !important;
 //   justify-content: center;
