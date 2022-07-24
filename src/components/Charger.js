@@ -18,7 +18,7 @@ export const Charger = ({ charger }) => {
 
         <Typography variant="p">
           Owner:{" "}
-          <Link to={`/user/${charger.User.id}`}>{charger.User.username}</Link>{" "}
+          <Link to={`/user/${charger.Host.id}`}>{charger.Host.username}</Link>{" "}
         </Typography>
 
         <Typography variant="p">{charger.price}</Typography>

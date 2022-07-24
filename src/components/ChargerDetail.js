@@ -30,7 +30,7 @@ export const ChargerDetail = () => {
           <div>{Object.values(charger.Address).join(" ")}</div>
           <div>Owner reviews</div>
           <div>Calendar</div>
-          {charger.User.username === loggedInUser ? (
+          {charger.Host.username === loggedInUser ? (
           <div>
             <button>Edit</button>
             <button>Delete</button>
