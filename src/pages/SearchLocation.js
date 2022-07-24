@@ -10,7 +10,7 @@ export const SearchLocation = () => {
   // const { search } = useLocation();
   const [loading, setLoading] = useState(true);
   const [chargers, setChargers] = useState([]);
-  const [error, setError] = useState({});
+  const [error, setError] = useState();
 
   const [width, setWidth] = useState(640); // Change this later
   const [height, setHeight] = useState(640); // Change this later, try to fix resize function
@@ -25,23 +25,21 @@ export const SearchLocation = () => {
   // TODO: Handle no chargers found for particular location
   /** Load initial data for charger locations */
   useEffect(() => {
-    console.log("Location", location);
     const searchParams = new URLSearchParams(location.search);
-    console.log("Search Params", searchParams);
     const queryLocation = searchParams.get("location");
 
     async function fetchChargers() {
       setChargers([]);
       setError();
-      setLoading(true);
       try {
+        setLoading(true);
         const data = await searchLocation(queryLocation || "");
         setChargers(data);
       } catch (err) {
         setError(err);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     }
     fetchChargers();
   }, [location]);
@@ -76,7 +74,7 @@ export const SearchLocation = () => {
         <CssLoader />
       ) : (
         <>
-          {chargers.length > 0 && (
+          {chargers.length && (
             <>
               <section id="search-location">
                 <div className="cards-container">
