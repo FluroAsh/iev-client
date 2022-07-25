@@ -3,9 +3,10 @@ import {
   InputLabel,
   TextField,
   Typography,
-  Select,
-  MenuItem,
-  FormControl,
+  // Select,
+  // MenuItem,
+  // FormControl,
+  Container,
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -55,7 +56,7 @@ export const ChargerForm = () => {
       console.log("FORM DATA AFTER SUBMIT", result);
 
       setFormData(initialFormData);
-      
+
       navigate(`/`);
       // navigate(`/charger/${result.}`);
 
@@ -87,11 +88,19 @@ export const ChargerForm = () => {
   console.log("FORM DATA ---", formData);
 
   return (
-    <>
+    <Container
+      sx={{
+        display: "inline-flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        flexWrap: "wrap",
+      }}
+    >
       {error && <p>{error}</p>}
-      <Typography variant="h4">List Charger</Typography>
 
       <form onSubmit={handleSubmit}>
+        <Typography variant="h4">List Charger</Typography>
+
         <InputLabel>Charger Name:</InputLabel>
         <TextField
           type="text"
@@ -147,7 +156,6 @@ export const ChargerForm = () => {
           />
         </Button>
         <div>
-          
           <Button type="submit" variant="contained">
             Save as draft
           </Button>
@@ -156,8 +164,8 @@ export const ChargerForm = () => {
           </Button>
         </div>
       </form>
+
       {/* TODO: for updating, handle 'disabled' status */}
-    </>
+    </Container>
   );
 };
-
