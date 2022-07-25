@@ -14,20 +14,10 @@ export const ViewCharger = () => {
   // TODO: Add error state
 
   useEffect(() => {
-    async function getChargerById(chargerId) {
-      try {
-        setLoading(true);
-        const chargerDetails = await getCharger(chargerId);
-        setChargerDetail(chargerDetails);
-        console.log("THIS IS CHARGER DETAILS", chargerDetails);
-      } catch (err) {
-        console.log(err.message);
-        // TODO: Add the error to state
-      } finally {
-        setLoading(false);
-      }
-    }
-    getChargerById(chargerId);
+    getChargerById(chargerId, setLoading).then((data) => {
+      console.log("THIS IS DATA", data);
+      setChargerDetail(data);
+    });
   }, [chargerId]);
 
   console.log("THIS IS CHARGER", charger);
@@ -48,5 +38,17 @@ export const ViewCharger = () => {
     </>
   );
 };
+
+async function getChargerById(chargerId, setLoading) {
+  try {
+    setLoading(true);
+    const chargerDetails = await getCharger(chargerId);
+    return chargerDetails;
+  } catch (err) {
+    console.log(err.message);
+  } finally {
+    setLoading(false);
+  }
+}
 
 export async function handleBooking(e) {}

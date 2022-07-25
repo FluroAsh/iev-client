@@ -5,6 +5,7 @@ import { Charger } from "../components/Charger";
 import { CssLoader } from "../components/CssLoader";
 import { useGlobalState } from "../context/stateContext";
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { ErrorScreen } from "../components/ErrorScreen";
 
 export const SearchLocation = () => {
   const [loading, setLoading] = useState(false);
@@ -59,11 +60,7 @@ export const SearchLocation = () => {
 
   return (
     <>
-      {error && (
-        <div className="error-container">
-          <Typography variant="h5">{error.message}</Typography>
-        </div>
-      )}
+      {error && <ErrorScreen error={error} />}
       {loading ? (
         <CssLoader />
       ) : (
