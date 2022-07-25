@@ -1,8 +1,24 @@
-#search-location {
+.search {
   display: flex;
   justify-content: center;
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    min-width: 50%;
+  }
+  &__map {
+    min-width: 50%;
+    height: calc(100vh - 56px);
+    position: sticky;
+    top: 56px;
+  }
 }
-
+.chargers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-shrink: 1;
+}
 .card {
   /* !important used to override MUI styles */
   color: #fff !important;
@@ -13,22 +29,4 @@
   margin: 10px;
   flex: 1 1 150px;
   background: #00814095 !important;
-}
-.cards-container {
-  display: flex;
-  flex-direction: column;
-  min-width: 50%;
-}
-.chargers {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
-  flex-shrink: 1;
-}
-.google-map {
-  min-width: 50%;
-  height: calc(100vh - 56px);
-  position: sticky;
-  top: 56px;
 }

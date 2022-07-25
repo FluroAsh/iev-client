@@ -210,6 +210,35 @@ footer {
   width: 100vw;
 }
 
+/* Charger Detail Classes */
+.flexBox {
+  display: flex;
+  justify-content: space-between;
+  // align-items: center;
+  // flex-direction: row;
+}
+
+.flex-horizon {
+  flex-direction: row;
+}
+
+.flex-vert {
+  flex-direction: column;
+}
+
+.detailImage {
+  max-width: 500px;
+}
+// #appbar {
+//   display: flex !important;
+//   justify-content: center;
+//   width: 100vw;
+// }
+/* Signup/Signin Form */
+// form {
+//   margin-left: 100px;
+// }
+
 /* Media Queries */
 // @media screen and (min-width: $tablet-width) {
 //   .mobile-nav {

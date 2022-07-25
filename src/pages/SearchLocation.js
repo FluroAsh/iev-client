@@ -13,7 +13,7 @@ export const SearchLocation = () => {
   const [error, setError] = useState();
 
   const [width, setWidth] = useState(640); // Change this later
-  const [height, setHeight] = useState(640); // Change this later, try to fix resize function
+  const [height, setHeight] = useState(683); // Change this later, try to fix resize function
   const mapRef = useRef();
 
   const { store } = useGlobalState();
@@ -76,8 +76,8 @@ export const SearchLocation = () => {
         <>
           {chargers.length && (
             <>
-              <section id="search-location">
-                <div className="cards-container">
+              <section className="search">
+                <div className="search__cards">
                   <Typography
                     variant="h3"
                     sx={{ px: 1, py: 2, width: "100%", textAlign: "center" }}
@@ -94,7 +94,7 @@ export const SearchLocation = () => {
                 {!isMobile && (
                   <div
                     // ref={mapRef}
-                    className="google-map"
+                    className="search__map"
                     style={{
                       background: "#e0e0e0",
                     }}
