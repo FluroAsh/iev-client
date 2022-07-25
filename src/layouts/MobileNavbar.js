@@ -27,7 +27,7 @@ export const MobileNavbar = () => {
         onClick={() => setMenuOpen((prevMenuOpen) => !prevMenuOpen)}
         onKeyDown={(e) => handleKeyPress(e)}
       >
-        <MenuRoundedIcon fontSize={"large"} aria-label="mobile- menu-button" />
+        <MenuRoundedIcon fontSize="large" aria-label="mobile-menu-button" />
       </div>
       <Typography
         className="logo"
@@ -39,7 +39,6 @@ export const MobileNavbar = () => {
         iEV
       </Typography>
       <SearchBar setMenuOpen={setMenuOpen} />
-      {/* TODO: Add footer */}
     </>
   );
 };

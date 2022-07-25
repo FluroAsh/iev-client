@@ -4,8 +4,8 @@ import { geocodeLocation, searchLocation } from "../services/searchServices";
 import { Charger } from "../components/Charger";
 import { CssLoader } from "../components/CssLoader";
 import { useGlobalState } from "../context/stateContext";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { ErrorScreen } from "../components/ErrorScreen";
+import { GoogleSearchMap } from "../components/GoogleSearchMap";
 
 export const SearchLocation = () => {
   const [loading, setLoading] = useState(false);
@@ -17,23 +17,6 @@ export const SearchLocation = () => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
-  // defines styles for the map container
-  const containerStyle = {
-    width: "100%",
-    height: "100%",
-  };
-
-  // coordinates to center the map on
-  const center = {
-    lat: coordinates.lat,
-    lng: coordinates.lng,
-  };
-
-  const mapOptions = {
-    disableDefaultUI: true,
-    streetViewControl: true,
-  };
 
   /** Load initial data for charger locations */
   useEffect(() => {
@@ -67,7 +50,7 @@ export const SearchLocation = () => {
         <>
           {chargers.length && (
             <>
-              <section className="search">
+              <div className="search">
                 <div className="search__cards">
                   <Typography
                     variant="h3"
@@ -82,26 +65,8 @@ export const SearchLocation = () => {
                     ))}
                   </section>
                 </div>
-                {!isMobile && (
-                  <div
-                    className="search__map"
-                    style={{
-                      background: "#e0e0e0",
-                    }}
-                  >
-                    <LoadScript
-                      googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-                    >
-                      <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={center}
-                        zoom={13}
-                        options={mapOptions}
-                      ></GoogleMap>
-                    </LoadScript>
-                  </div>
-                )}
-              </section>
+                {!isMobile && <GoogleSearchMap coordinates={coordinates} />}
+              </div>
             </>
           )}
         </>
