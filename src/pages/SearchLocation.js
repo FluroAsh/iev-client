@@ -5,7 +5,7 @@ import { Charger } from "../components/Charger";
 import { CssLoader } from "../components/CssLoader";
 import { useGlobalState } from "../context/stateContext";
 import { ErrorScreen } from "../components/ErrorScreen";
-import { GoogleSearchMap } from "../components/GoogleSearchMap";
+import { GoogleMap } from "../components/GoogleMap";
 
 export const SearchLocation = () => {
   const [loading, setLoading] = useState(false);
@@ -22,23 +22,14 @@ export const SearchLocation = () => {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const queryLocation = searchParams.get("location");
-
-    async function fetchChargers() {
-      setChargers([]);
-      setError();
-      try {
-        setLoading(true);
-        const chargers = await searchLocation(queryLocation || "");
-        const { lat, lng } = await geocodeLocation(chargers[0].Address.city);
-        setCoordinates({ lat, lng });
-        setChargers(chargers);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchChargers();
+    populateSearch(
+      queryLocation,
+      setLoading,
+      setCoordinates,
+      setChargers,
+      setError
+    );
+    console.log(queryLocation);
   }, [location]);
 
   return (
@@ -65,7 +56,7 @@ export const SearchLocation = () => {
                     ))}
                   </section>
                 </div>
-                {!isMobile && <GoogleSearchMap coordinates={coordinates} />}
+                {!isMobile && <GoogleMap coordinates={coordinates} />}
               </div>
             </>
           )}
@@ -74,3 +65,23 @@ export const SearchLocation = () => {
     </>
   );
 };
+
+export async function populateSearch(
+  queryLocation,
+  setLoading,
+  setCoordinates,
+  setChargers,
+  setError
+) {
+  try {
+    setLoading(true);
+    const chargers = await searchLocation(queryLocation || "");
+    const { lat, lng } = await geocodeLocation(chargers[0].Address.city);
+    setCoordinates({ lat, lng });
+    setChargers(chargers);
+  } catch (err) {
+    setError(err);
+  } finally {
+    setLoading(false);
+  }
+}

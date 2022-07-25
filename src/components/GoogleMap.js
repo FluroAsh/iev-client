@@ -1,7 +1,10 @@
 import React from "react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import {
+  GoogleMap as GoogleMapContainer,
+  LoadScript,
+} from "@react-google-maps/api";
 
-export const GoogleSearchMap = ({ coordinates }) => {
+export const GoogleMap = ({ coordinates }) => {
   // defines styles for the map container
   const containerStyle = {
     width: "100%",
@@ -27,12 +30,12 @@ export const GoogleSearchMap = ({ coordinates }) => {
       }}
     >
       <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
-        <GoogleMap
+        <GoogleMapContainer
           mapContainerStyle={containerStyle}
           center={center}
           zoom={13}
           options={mapOptions}
-        ></GoogleMap>
+        ></GoogleMapContainer>
       </LoadScript>
     </div>
   );
