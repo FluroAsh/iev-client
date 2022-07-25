@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import { useGlobalState } from "../context/stateContext";
 import { ChargerCalendar } from "./ChargerCalendar";
-import { handleBooking } from "../pages/ViewCharger";
 import { Container, Typography, Button, Box } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
+
 import { displayAUD } from "../utils/helpers";
 import { ButtonGroup } from "./ButtonGroup";
 
@@ -13,14 +11,12 @@ export const ChargerDetail = ({ charger }) => {
   const { loggedInUser } = store;
 
   return (
-    // <div style={{ display: 'flex', flexDirection: 'column' }}>
     <Container
       sx={{
         display: "inline-flex",
         justifyContent: "space-around",
         alignItems: "center",
         flexWrap: "wrap",
-        // flexDirection: "row"
       }}
     >
       {/* TODO: This box is not display flex */}
@@ -47,43 +43,11 @@ export const ChargerDetail = ({ charger }) => {
           {charger.instructions}
         </Typography>
       </Box>
-      {/* <div className="flex-box flex-vert">
-        <div className="flex-box">
-          <ChargerCalendar />
-        </div> */}
       <Box>
         <Box style={{ marginBottom: "16px" }}>
           <ChargerCalendar />
         </Box>
         <ButtonGroup key={charger.id} charger={charger} />
-        {/* {charger.User.username === loggedInUser ? (
-          <div className="flexBox">
-            <Button type="submit" value="active" variant="contained">
-              Edit
-            </Button>
-            <Button type="submit" value="active" variant="contained">
-              Delete
-            </Button>
-          </div>
-        ) : (
-          <div className="flexBox">
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              style={{ marginTop: "16px" }}
-              startIcon={
-                <FontAwesomeIcon
-                  icon={faCalendarPlus}
-                  style={{ fontSize: "16px" }}
-                />
-              }
-              onClick={handleBooking}
-            >
-              Book
-            </Button>
-          </div>
-        )} */}
       </Box>
     </Container>
   );

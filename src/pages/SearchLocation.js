@@ -2,7 +2,7 @@ import { React, useEffect, useState, useRef } from "react";
 import { Typography, useMediaQuery, useTheme } from "@mui/material";
 // import { useLocation } from "react-router-dom";
 import { searchLocation } from "../services/searchServices";
-import { ChargerCard } from "../components/ChargerCard";
+import { Charger } from "../components/Charger";
 import { CssLoader } from "../components/CssLoader";
 import { useGlobalState } from "../context/stateContext";
 
@@ -22,6 +22,7 @@ export const SearchLocation = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
+  // TODO: Handle no chargers found for particular location
   /** Load initial data for charger locations */
   useEffect(() => {
     console.log("Location", location);
@@ -88,7 +89,7 @@ export const SearchLocation = () => {
                   </Typography>
                   <section className="chargers">
                     {chargers.map((charger) => (
-                      <ChargerCard key={charger.id} charger={charger} />
+                      <Charger key={charger.id} charger={charger} />
                     ))}
                   </section>
                 </div>

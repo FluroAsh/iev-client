@@ -7,11 +7,9 @@ import {
   Button,
   CardActionArea,
 } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {ButtonGroup} from "./ButtonGroup";
+import { ButtonGroup } from "./ButtonGroup";
 import { displayAUD } from "../utils/helpers";
 
 export const Charger = ({ charger }) => {
@@ -23,8 +21,15 @@ export const Charger = ({ charger }) => {
   };
 
   return (
-    
-    <Card sx={{ maxWidth: 300, margin: 5, display: 'inline-flex',alignItems: 'baseline', flexDirection: 'column' }}>
+    <Card
+      sx={{
+        maxWidth: 300,
+        margin: 5,
+        display: "inline-flex",
+        alignItems: "baseline",
+        flexDirection: "column",
+      }}
+    >
       <CardActionArea onClick={handleClick}>
         <CardMedia
           component="img"
@@ -51,24 +56,7 @@ export const Charger = ({ charger }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-
-      <ButtonGroup key={charger.id} charger={charger}/>
-
-{/* 
-        <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          startIcon={
-            <FontAwesomeIcon
-              icon={faCalendarPlus}
-              style={{ fontSize: "16px" }}
-            />
-          }
-          onClick={handleClick}
-        >
-          Book
-        </Button> */}
+        <ButtonGroup key={charger.id} charger={charger} />
       </CardActions>
     </Card>
   );
