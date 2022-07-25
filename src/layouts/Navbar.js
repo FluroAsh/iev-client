@@ -24,7 +24,7 @@ export const Navbar = () => {
       data: location,
     });
 
-    fetchData(location, dispatch);
+    fetchData(location, dispatch, loggedInUser);
   }, [location, dispatch]);
 
   console.log("THIS IS dates array", bookingDates);
@@ -40,7 +40,7 @@ export const Navbar = () => {
   );
 };
 
-async function fetchData(location, dispatch) {
+async function fetchData(location, dispatch, loggedInUser) {
   if (location.pathname === "/chargers/mychargers") {
     try {
       const myChargers = await getMyChargers();
@@ -55,12 +55,14 @@ async function fetchData(location, dispatch) {
     } catch (err) {
       console.log(err.message);
     }
-  } else {
+  } else if (location.pathname === "/chargers") {
     try {
       const chargers = await getChargers();
       if (chargers) {
         const activeList = chargers.filter(
-          (charger) => charger.status === "active"
+          (charger) =>
+            charger.status === "active" &&
+            charger.User.username !== loggedInUser
         );
         dispatch({
           type: "setChargerList",

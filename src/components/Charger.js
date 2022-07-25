@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import {ButtonGroup} from "./ButtonGroup";
 import { displayAUD } from "../utils/helpers";
 
 export const Charger = ({ charger }) => {
@@ -51,6 +51,10 @@ export const Charger = ({ charger }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
+
+      <ButtonGroup key={charger.id} charger={charger}/>
+
+{/* 
         <Button
           variant="contained"
           size="large"
@@ -64,7 +68,7 @@ export const Charger = ({ charger }) => {
           onClick={handleClick}
         >
           Book
-        </Button>
+        </Button> */}
       </CardActions>
     </Card>
   );

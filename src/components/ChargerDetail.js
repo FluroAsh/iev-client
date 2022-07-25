@@ -6,6 +6,7 @@ import { Container, Typography, Button, Box } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import { displayAUD } from "../utils/helpers";
+import { ButtonGroup } from "./ButtonGroup";
 
 export const ChargerDetail = ({ charger }) => {
   const { store } = useGlobalState();
@@ -51,9 +52,11 @@ export const ChargerDetail = ({ charger }) => {
           <ChargerCalendar />
         </div> */}
       <Box>
-        <ChargerCalendar />
-
-        {charger.User.username === loggedInUser ? (
+        <Box style={{ marginBottom: "16px" }}>
+          <ChargerCalendar />
+        </Box>
+        <ButtonGroup key={charger.id} charger={charger} />
+        {/* {charger.User.username === loggedInUser ? (
           <div className="flexBox">
             <Button type="submit" value="active" variant="contained">
               Edit
@@ -80,7 +83,7 @@ export const ChargerDetail = ({ charger }) => {
               Book
             </Button>
           </div>
-        )}
+        )} */}
       </Box>
     </Container>
   );
