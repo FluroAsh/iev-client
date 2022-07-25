@@ -29,7 +29,6 @@ export const SearchLocation = () => {
       setChargers,
       setError
     );
-    console.log(queryLocation);
   }, [location]);
 
   return (

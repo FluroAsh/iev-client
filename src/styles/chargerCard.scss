@@ -21,14 +21,16 @@
 .chargers {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  // justify-content: center;
   flex-shrink: 1;
 }
 .card {
   /* !important used to override MUI styles */
   color: #fff !important;
   position: relative;
+  display: flex;
   flex-direction: column;
+  justify-content: space-between;
   min-width: 250px;
   max-width: 300px;
   margin: 10px;
