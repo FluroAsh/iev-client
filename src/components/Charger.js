@@ -19,26 +19,15 @@ export const Charger = ({ charger }) => {
   };
 
   return (
-    <Card
-      sx={{
-        maxWidth: 300,
-        display: "inline-flex",
-        alignItems: "baseline",
-        flexDirection: "column",
-        background: "#00814095",
-        color: "#fff",
-      }}
-      className="card"
-    >
+    <Card className="card">
       <CardActionArea onClick={handleClick}>
         <CardMedia
           component="img"
-          // height="140"
           image={charger.imageUrl}
           alt={charger.name}
         />
         <CardContent>
-          <div className="flex-box">
+          <div>
             <Typography gutterBottom variant="h5" component="div">
               {charger.name}
             </Typography>

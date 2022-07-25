@@ -30,10 +30,7 @@ function App() {
   };
 
   const [store, dispatch] = useReducer(reducer, initialState);
-
   const { loggedInUser } = store;
-
-  console.log("THIS IS STORE ", store);
 
   return (
     <div className="app">
@@ -42,11 +39,10 @@ function App() {
           <Navbar />
           <Container disableGutters>
             <Routes>
-              <Route path="/" element={<Navigate to="chargers" replace/>} />
+              <Route path="/" element={<Navigate to="chargers" replace />} />
               <Route path="/search" element={<SearchLocation />} />
               <Route path="/auth/signup" element={<SignupForm />} />
               <Route path="/auth/signin" element={<SigninForm />} />
-
               <Route path="chargers">
                 <Route index element={<ViewChargers />} />
                 <Route
@@ -60,13 +56,11 @@ function App() {
                   }
                 />
                 <Route path="mychargers" element={<ViewChargers />} />
-
                 {/* <Route path="user/:username" element={<Chargers />} /> */}
               </Route>
               <Route path="charger">
                 <Route path=":chargerId" element={<ViewCharger />} />
               </Route>
-
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Container>
