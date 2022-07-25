@@ -1,85 +1,48 @@
-import { React, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, useMediaQuery, useTheme } from "@mui/material";
-// import { useLocation } from "react-router-dom";
-import { searchLocation } from "../services/searchServices";
+import { geocodeLocation, searchLocation } from "../services/searchServices";
 import { Charger } from "../components/Charger";
 import { CssLoader } from "../components/CssLoader";
 import { useGlobalState } from "../context/stateContext";
+import { ErrorScreen } from "../components/ErrorScreen";
+import { GoogleMap } from "../components/GoogleMap";
 
 export const SearchLocation = () => {
-  // const { search } = useLocation();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [chargers, setChargers] = useState([]);
-  const [error, setError] = useState({});
-
-  const [width, setWidth] = useState(640); // Change this later
-  const [height, setHeight] = useState(640); // Change this later, try to fix resize function
-  const mapRef = useRef();
-
+  const [error, setError] = useState();
+  const [coordinates, setCoordinates] = useState({});
   const { store } = useGlobalState();
   const { location } = store;
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  // TODO: Handle no chargers found for particular location
   /** Load initial data for charger locations */
   useEffect(() => {
-    console.log("Location", location);
     const searchParams = new URLSearchParams(location.search);
-    console.log("Search Params", searchParams);
     const queryLocation = searchParams.get("location");
-
-    async function fetchChargers() {
-      setChargers([]);
-      setError();
-      setLoading(true);
-      try {
-        const data = await searchLocation(queryLocation);
-        setChargers(data);
-      } catch (err) {
-        setError(err);
-      }
-
-      setLoading(false);
-    }
-    fetchChargers();
+    populateSearch(
+      queryLocation,
+      setLoading,
+      setCoordinates,
+      setChargers,
+      setError
+    );
+    console.log(queryLocation);
   }, [location]);
-
-  // const getMapSize = () => {
-  //   if (!isMobile) {
-  //     setWidth(mapRef.current.clientWidth);
-  //     setHeight(mapRef.current.clientHeight);
-  //     console.log('resized');
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   let lastMove = 0;
-  //   window.addEventListener('resize', function() {
-  //     if (Date.now() - lastMove > 2) {
-  //       lastMove = Date.now();
-  //       getMapSize();
-  //     }
-  //   }); // adds event listener and causes remounts
-  //   // getMapSize(); // runs once
-  // }, []);
 
   return (
     <>
-      {error && (
-        <div className="error-container">
-          <Typography variant="h5">{error.message}</Typography>
-        </div>
-      )}
+      {error && <ErrorScreen error={error} />}
       {loading ? (
         <CssLoader />
       ) : (
         <>
-          {chargers.length > 0 && (
+          {chargers.length && (
             <>
-              <section id="search-location">
-                <div className="cards-container">
+              <div className="search">
+                <div className="search__cards">
                   <Typography
                     variant="h3"
                     sx={{ px: 1, py: 2, width: "100%", textAlign: "center" }}
@@ -93,22 +56,8 @@ export const SearchLocation = () => {
                     ))}
                   </section>
                 </div>
-                {!isMobile && (
-                  <div
-                    // ref={mapRef}
-                    className="google-map"
-                    style={{
-                      background: "#e0e0e0",
-                    }}
-                  >
-                    <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${chargers[0].Address.city}
-          &zoom=13&size=${height}x${width}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`}
-                      alt="google maps location"
-                    />
-                  </div>
-                )}
-              </section>
+                {!isMobile && <GoogleMap coordinates={coordinates} />}
+              </div>
             </>
           )}
         </>
@@ -116,3 +65,23 @@ export const SearchLocation = () => {
     </>
   );
 };
+
+export async function populateSearch(
+  queryLocation,
+  setLoading,
+  setCoordinates,
+  setChargers,
+  setError
+) {
+  try {
+    setLoading(true);
+    const chargers = await searchLocation(queryLocation || "");
+    const { lat, lng } = await geocodeLocation(chargers[0].Address.city);
+    setCoordinates({ lat, lng });
+    setChargers(chargers);
+  } catch (err) {
+    setError(err);
+  } finally {
+    setLoading(false);
+  }
+}

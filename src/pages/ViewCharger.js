@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useGlobalState } from "../context/stateContext";
 // import { Card, CardContent, Typography } from "@mui/material";
 import { getCharger } from "../services/chargerServices";
 import { ChargerDetail } from "../components/ChargerDetail";
+import { CssLoader } from "../components/CssLoader";
 
 export const ViewCharger = () => {
   const { chargerId } = useParams();
 
   console.log("CHARGERID", chargerId);
   const [charger, setChargerDetail] = useState();
+  const [loading, setLoading] = useState(false);
+  // TODO: Add error state
 
   useEffect(() => {
-    getChargerById(chargerId).then((data) => {
+    getChargerById(chargerId, setLoading).then((data) => {
       console.log("THIS IS DATA", data);
       setChargerDetail(data);
     });
@@ -21,7 +23,9 @@ export const ViewCharger = () => {
   console.log("THIS IS CHARGER", charger);
   return (
     <>
-      {charger !== undefined ? (
+      {loading ? (
+        <CssLoader />
+      ) : charger !== undefined ? (
         <div>
           <ChargerDetail key={charger.id} charger={charger} />
         </div>
@@ -35,15 +39,16 @@ export const ViewCharger = () => {
   );
 };
 
-async function getChargerById(chargerId) {
+async function getChargerById(chargerId, setLoading) {
   try {
+    setLoading(true);
     const chargerDetails = await getCharger(chargerId);
     return chargerDetails;
   } catch (err) {
     console.log(err.message);
+  } finally {
+    setLoading(false);
   }
 }
 
-export async function handleBooking(e) {
-
-}
+export async function handleBooking(e) {}

@@ -9,9 +9,11 @@ export const ViewChargers = () => {
     <>
       {chargerList.length ? (
         <>
-          {chargerList.map((charger) => (
-            <Charger key={charger.id} charger={charger} />
-          ))}
+          <div className="chargers">
+            {chargerList.map((charger) => (
+              <Charger key={charger.id} charger={charger} />
+            ))}
+          </div>
         </>
       ) : (
         <p>List of chargers is empty</p>

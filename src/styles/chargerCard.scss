@@ -1,31 +1,37 @@
-#search-location {
+.search {
   display: flex;
   justify-content: center;
-}
-
-.card {
-  position: relative;
-  min-width: 250px;
-  max-width: 100%;
-  margin: 10px;
-  flex: 1 1 150px;
-  background: #00814095;
-}
-.cards-container {
-  display: flex;
-  flex-direction: column;
-  min-width: 50%;
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    min-width: 50%;
+  }
+  &__map {
+    min-width: 50%;
+    height: calc(100vh - 56px);
+    position: sticky;
+    top: 56px;
+    #map {
+      height: 100%;
+      width: 100%;
+      background: yellow;
+    }
+  }
 }
 .chargers {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
   justify-content: center;
   flex-shrink: 1;
 }
-.google-map {
-  min-width: 50%;
-  height: calc(100vh - 56px);
-  position: sticky;
-  top: 56px;
+.card {
+  /* !important used to override MUI styles */
+  color: #fff !important;
+  position: relative;
+  flex-direction: column;
+  min-width: 250px;
+  max-width: 300px;
+  margin: 10px;
+  flex: 1 1 150px;
+  background: #00814095 !important;
 }
