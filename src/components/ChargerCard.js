@@ -1,21 +1,21 @@
-import React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import { Typography } from '@mui/material';
-import { Button, CardActionArea, CardActions } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarPlus } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import { Typography } from "@mui/material";
+import { Button, CardActionArea, CardActions } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
-import { displayAUD } from '../utils/helpers';
+import { displayAUD } from "../utils/helpers";
 
 export const ChargerCard = ({ charger }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log('Clicked!');
-    navigate(`/chargers/${charger.id}`);
+    console.log("Clicked!");
+    navigate(`/charger/${charger.id}`);
   };
 
   return (
@@ -28,7 +28,7 @@ export const ChargerCard = ({ charger }) => {
      * 5. Available Date
      * 6. Price (per date)
      */
-    <Card className="card" style={{ color: 'white', background: '#00814095' }}>
+    <Card className="card" style={{ color: "white", background: "#00814095" }}>
       <CardActionArea onClick={handleClick}>
         <div className="card__image">
           <CardMedia
@@ -59,7 +59,7 @@ export const ChargerCard = ({ charger }) => {
           startIcon={
             <FontAwesomeIcon
               icon={faCalendarPlus}
-              style={{ fontSize: '16px' }}
+              style={{ fontSize: "16px" }}
             />
           }
           onClick={handleClick}
