@@ -3,7 +3,7 @@ import { useGlobalState } from "../context/stateContext";
 import Box from "@mui/material/Box";
 
 export const Chargers = () => {
-  const { store } = useGlobalState();
+  const { store, dispatch } = useGlobalState();
   const { chargerList } = store;
 
   return (

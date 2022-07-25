@@ -42,7 +42,7 @@ function App() {
           <Navbar />
           <Container disableGutters>
             <Routes>
-              <Route path="/" element={<h1>Root Path!</h1>} />
+              <Route path="/" element={<Navigate to="chargers" replace/>} />
               <Route path="/search" element={<SearchLocation />} />
               <Route
                 path="/chargers/:id"

@@ -3,7 +3,7 @@ import { Toolbar, AppBar, useMediaQuery, useTheme } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useGlobalState } from "../context/stateContext";
 import { getMyChargers, getChargers } from "../services/chargerServices";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import { MobileNavbar } from "./MobileNavbar";
 import { DesktopNavBar } from "./DesktopNavBar";
@@ -13,9 +13,9 @@ export const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const location = useLocation();
-  const {store, dispatch } = useGlobalState();
-  const { loggedInUser, bookingDates } = store
-  const navigate = useNavigate()
+  const { store, dispatch } = useGlobalState();
+  const { loggedInUser, bookingDates } = store;
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("THIS IS LOCATION", location);
@@ -27,8 +27,7 @@ export const Navbar = () => {
     fetchData(location, dispatch);
   }, [location, dispatch]);
 
-  console.log("THIS IS dates array", bookingDates)
-
+  console.log("THIS IS dates array", bookingDates);
 
   return (
     <>
@@ -59,10 +58,15 @@ async function fetchData(location, dispatch) {
   } else {
     try {
       const chargers = await getChargers();
-      dispatch({
-        type: "setChargerList",
-        data: chargers,
-      });
+      if (chargers) {
+        const activeList = chargers.filter(
+          (charger) => charger.status === "active"
+        );
+        dispatch({
+          type: "setChargerList",
+          data: activeList,
+        });
+      }
     } catch (err) {
       console.log(err.message);
     }
