@@ -3,9 +3,11 @@ import {
   InputLabel,
   TextField,
   Typography,
-  Select,
-  MenuItem,
-  FormControl,
+  // Select,
+  // MenuItem,
+  // FormControl,
+  Container,
+  Box,
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -55,8 +57,8 @@ export const ChargerForm = () => {
       console.log("FORM DATA AFTER SUBMIT", result);
 
       setFormData(initialFormData);
-      
-      navigate(`/`);
+
+      navigate(`/chargers/mychargers`);
       // navigate(`/charger/${result.}`);
 
       // if (!result.error) {
@@ -84,14 +86,24 @@ export const ChargerForm = () => {
     });
   };
 
+
   console.log("FORM DATA ---", formData);
 
   return (
-    <>
+    <Container
+      sx={{
+        display: "inline-flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        flexWrap: "wrap",
+        margin: "16px"
+      }}
+    >
       {error && <p>{error}</p>}
-      <Typography variant="h4">List Charger</Typography>
 
       <form onSubmit={handleSubmit}>
+        <Typography variant="h4">List Charger</Typography>
+
         <InputLabel>Charger Name:</InputLabel>
         <TextField
           type="text"
@@ -119,7 +131,7 @@ export const ChargerForm = () => {
           onChange={handleFormData}
         />
         <InputLabel id="demo-simple-select-label">Plug Name</InputLabel>
-        <div>
+        <Box sx={{ marginBottom: "16px" }}>
           <select
             name="plugName"
             id="plugName"
@@ -137,27 +149,37 @@ export const ChargerForm = () => {
               Charge de Move (CHAdeMO)
             </option>
           </select>
-        </div>
-        <Button>
-          <input
-            name="image"
-            accept="image/*"
-            type="file"
-            onChange={(e) => handleFile(e.target.files[0])}
-          />
-        </Button>
-        <div>
-          
-          <Button type="submit" variant="contained">
-            Save as draft
+        </Box>
+
+        <input
+          name="image"
+          accept="image/*"
+          type="file"
+          onChange={(e) => handleFile(e.target.files[0])}
+        />
+        <Box sx={{ marginTop: "16px", marginRight: "16px" }}>
+          <Button sx={{ marginRight: "16px" }}
+            type="submit"
+            id="status"
+            value="pending"
+            variant="contained"
+            onClick={handleFormData}
+          >
+            Save draft
           </Button>
-          <Button type="submit" value="active" variant="contained">
+          <Button
+            type="submit"
+            id="status"
+            value="active"
+            variant="contained"
+            onClick={handleFormData}
+          >
             List charger
           </Button>
-        </div>
+        </Box>
       </form>
+
       {/* TODO: for updating, handle 'disabled' status */}
-    </>
+    </Container>
   );
 };
-

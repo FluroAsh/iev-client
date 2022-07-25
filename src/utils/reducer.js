@@ -11,6 +11,13 @@ export const reducer = (state, action) => {
       };
     }
 
+    case "setBookingDates": {
+      return {
+        ...state,
+        bookingDates: action.data,
+      };
+    }
+
     case "setChargerList": {
       return {
         ...state,

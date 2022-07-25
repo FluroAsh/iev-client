@@ -139,7 +139,7 @@ export const DesktopMenu = () => {
               My Chargers
             </MenuItem>
 
-            <MenuItem component={Link} to="/">
+            <MenuItem component={Link} to="/chargers/new">
               <ListItemIcon>
                 <FontAwesomeIcon icon={faPlugCirclePlus} />
               </ListItemIcon>

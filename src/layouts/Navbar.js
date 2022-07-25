@@ -3,6 +3,7 @@ import { Toolbar, AppBar, useMediaQuery, useTheme } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useGlobalState } from "../context/stateContext";
 import { getMyChargers, getChargers } from "../services/chargerServices";
+import { useNavigate } from "react-router-dom";
 
 import { MobileNavbar } from "./MobileNavbar";
 import { DesktopNavBar } from "./DesktopNavBar";
@@ -12,7 +13,10 @@ export const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const location = useLocation();
-  const { dispatch } = useGlobalState();
+  const { store, dispatch } = useGlobalState();
+  const { loggedInUser, bookingDates } = store;
+  const navigate = useNavigate();
+
   useEffect(() => {
     console.log("THIS IS LOCATION", location);
     dispatch({
@@ -22,6 +26,8 @@ export const Navbar = () => {
 
     fetchData(location, dispatch);
   }, [location, dispatch]);
+
+  console.log("THIS IS dates array", bookingDates);
 
   return (
     <>
@@ -49,13 +55,15 @@ async function fetchData(location, dispatch) {
     } catch (err) {
       console.log(err.message);
     }
-  } else {
+  } else if (location.pathname === "/chargers") {
     try {
       const chargers = await getChargers();
-      dispatch({
-        type: "setChargerList",
-        data: chargers,
-      });
+      if (chargers) {
+        dispatch({
+          type: "setChargerList",
+          data: chargers,
+        });
+      }
     } catch (err) {
       console.log(err.message);
     }

@@ -23,6 +23,7 @@ import { SearchLocation } from "./pages/SearchLocation";
 function App() {
   const initialState = {
     chargerList: [],
+    bookingDates: [],
     loggedInUser: sessionStorage.getItem("username") || null,
     token: sessionStorage.getItem("token") || null,
     location: {},
@@ -41,7 +42,7 @@ function App() {
           <Navbar />
           <Container disableGutters>
             <Routes>
-              <Route path="/" element={<h1>Root Path!</h1>} />
+              <Route path="/" element={<Navigate to="chargers" replace/>} />
               <Route path="/search" element={<SearchLocation />} />
               <Route
                 path="/chargers/:id"
