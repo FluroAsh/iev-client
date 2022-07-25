@@ -58,7 +58,7 @@ export const ChargerForm = () => {
 
       setFormData(initialFormData);
 
-      navigate(`/`);
+      navigate(`/chargers/mychargers`);
       // navigate(`/charger/${result.}`);
 
       // if (!result.error) {

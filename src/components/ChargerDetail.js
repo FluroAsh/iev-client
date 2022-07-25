@@ -48,6 +48,7 @@ export const ChargerDetail = ({ charger }) => {
           <ChargerCalendar />
         </Box>
         <ButtonGroup key={charger.id} charger={charger} />
+
       </Box>
     </Container>
   );
