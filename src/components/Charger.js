@@ -4,10 +4,8 @@ import {
   Typography,
   CardMedia,
   CardActions,
-  Button,
   CardActionArea,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ButtonGroup } from "./ButtonGroup";
 import { displayAUD } from "../utils/helpers";
@@ -24,11 +22,13 @@ export const Charger = ({ charger }) => {
     <Card
       sx={{
         maxWidth: 300,
-        margin: 5,
         display: "inline-flex",
         alignItems: "baseline",
         flexDirection: "column",
+        background: "#00814095",
+        color: "#fff",
       }}
+      className="card"
     >
       <CardActionArea onClick={handleClick}>
         <CardMedia
@@ -40,19 +40,17 @@ export const Charger = ({ charger }) => {
         <CardContent>
           <div className="flex-box">
             <Typography gutterBottom variant="h5" component="div">
-              <Link
-                to={`/charger/${charger.id}`}
-                style={{ textDecoration: "none" }}
-              >
-                {charger.name}
-              </Link>
+              {charger.name}
             </Typography>
-            <Typography variant="h6">{displayAUD(charger.price)}</Typography>
-          </div>
 
-          <Typography variant="h6">
-            {Object.values(charger.Address.city)}
-          </Typography>
+            <Typography variant="h6" color="text.secondary">
+              {Object.values(charger.Address.city)}
+            </Typography>
+
+            <Typography variant="body1" color="text.secondary">
+              {displayAUD(charger.price)}
+            </Typography>
+          </div>
         </CardContent>
       </CardActionArea>
       <CardActions>

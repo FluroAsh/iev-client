@@ -1,6 +1,6 @@
-@import 'mixins';
-@import 'cssLoader';
-@import 'chargerCard';
+@import "mixins";
+@import "cssLoader";
+@import "chargerCard";
 
 /* Break Points (Width) */
 $mobile-width: 375px;
@@ -42,7 +42,7 @@ html {
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
 }
 
@@ -58,7 +58,7 @@ h1 {
   width: 35%;
 }
 
-input[name='searchbar'] {
+input[name="searchbar"] {
   /* Overrides */
   border: none;
   outline: none;
@@ -149,7 +149,7 @@ input[name='searchbar'] {
 
 /* Logo Element */
 a.logo {
-  font-family: 'Red Hat Display', sans-serif;
+  font-family: "Red Hat Display", sans-serif;
   font-weight: 600;
   font-size: 1.6em;
   letter-spacing: 1px;
@@ -210,7 +210,6 @@ footer {
   width: 100vw;
 }
 
-
 .flexBox {
   display: flex;
   justify-content: space-between;
@@ -225,20 +224,6 @@ footer {
 .flex-vert {
   flex-direction: column;
 }
-
-
-.detailImage {
-  max-width: 500px;
-}
-// #appbar {
-//   display: flex !important;
-//   justify-content: center;
-//   width: 100vw;
-// }
-/* Signup/Signin Form */
-// form {
-//   margin-left: 100px;
-// }
 
 /* Media Queries */
 // @media screen and (min-width: $tablet-width) {

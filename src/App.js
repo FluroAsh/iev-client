@@ -44,14 +44,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="chargers" replace/>} />
               <Route path="/search" element={<SearchLocation />} />
-              <Route
-                path="/chargers/:id"
-                element={<h1>View Charger Page!</h1>}
-              />
-              {/* 
-                TODO: Change these to /auth/session later, will need to have everything
-                in one form and conditionally render the correct form based on state.
-              */}
               <Route path="/auth/signup" element={<SignupForm />} />
               <Route path="/auth/signin" element={<SigninForm />} />
 
