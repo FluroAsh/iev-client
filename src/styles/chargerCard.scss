@@ -4,7 +4,8 @@
 }
 
 .card {
-  color: #fff;
+  /* !important used to override MUI styles */
+  color: #fff !important;
   position: relative;
   flex-direction: column;
   min-width: 250px;
