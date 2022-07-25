@@ -11,6 +11,11 @@
     height: calc(100vh - 56px);
     position: sticky;
     top: 56px;
+    #map {
+      height: 100%;
+      width: 100%;
+      background: yellow;
+    }
   }
 }
 .chargers {

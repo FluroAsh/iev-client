@@ -1,6 +1,5 @@
 import { Charger } from "../components/Charger";
 import { useGlobalState } from "../context/stateContext";
-import { Container } from "@mui/material";
 
 export const ViewChargers = () => {
   const { store } = useGlobalState();
