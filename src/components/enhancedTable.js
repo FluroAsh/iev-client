@@ -23,6 +23,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 
 function createData(name, calories, fat, carbs, protein) {
+  // construct the columns
   return {
     name,
     calories,
@@ -33,6 +34,7 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 const rows = [
+  // construct data for the rows
   createData("Cupcake", 305, 3.7, 67, 4.3),
   createData("Donut", 452, 25.0, 51, 4.9),
   createData("Eclair", 262, 16.0, 24, 6.0),

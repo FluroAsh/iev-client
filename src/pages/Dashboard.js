@@ -3,12 +3,13 @@ import EnhancedTable from "../components/enhancedTable";
 import { getUserBookings } from "../services/bookingServices";
 import { useGlobalState } from "../context/stateContext";
 import { CssLoader } from "../components/CssLoader";
+import { ErrorScreen } from "../components/ErrorScreen";
 
 export const Dashboard = () => {
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
-  const { store, dispatch } = useGlobalState();
+  const { store } = useGlobalState();
   const { loggedInUser } = store;
 
   useEffect(() => {
@@ -21,10 +22,16 @@ export const Dashboard = () => {
         <CssLoader />
       ) : (
         <>
-          <h1>User/Host Bookings Dashboard</h1>
-          <h3>Username: {loggedInUser}</h3>
-          {error && <p>{error.message}</p>}
-          {!error && <EnhancedTable bookings={bookings} />}
+          {error ? (
+            <ErrorScreen error={error} />
+          ) : (
+            <>
+              <h1>User/Host Bookings Dashboard</h1>
+              <h3>Welcome Back {loggedInUser}!</h3>
+              {error && <p>{error.message}</p>}
+              <EnhancedTable bookings={bookings} />
+            </>
+          )}
         </>
       )}
     </>
