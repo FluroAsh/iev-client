@@ -49,7 +49,9 @@ export const SearchLocation = () => {
                     {/* TODO: Pluralize the string with an NPM package */}
                     {`${chargers.length} charger(s) found`}
                   </Typography>
-                  <section className="chargers">
+                  <section
+                    className="chargers"
+                  >
                     {chargers.map((charger) => (
                       <Charger key={charger.id} charger={charger} />
                     ))}

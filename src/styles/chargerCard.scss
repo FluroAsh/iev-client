@@ -26,14 +26,19 @@
 }
 .card {
   /* !important used to override MUI styles */
-  color: #fff !important;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-width: 250px;
+  min-width: 200px;
   max-width: 300px;
   margin: 10px;
   flex: 1 1 150px;
-  background: #00814095 !important;
+  background: #f4f5e5 !important;
+}
+
+@media only screen and (max-width: 880px) {
+  .chargers {
+    justify-content: center;
+  }
 }
