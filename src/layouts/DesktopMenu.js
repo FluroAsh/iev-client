@@ -127,7 +127,7 @@ export const DesktopMenu = () => {
 
             <MenuItem
               component={Link}
-              to={`/bookings/${loggedInUser.username}`}
+              to={`/bookings/${loggedInUser}`}
             >
               <ListItemIcon>
                 <FontAwesomeIcon icon={faBookOpenReader} />
