@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const ievAPI = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL || "http://localhost:3000",
+  baseURL: process.env.REACT_APP_BACKEND_URL || "http://localhost:3001",
 });
 
 ievAPI.interceptors.request.use((req) => {
