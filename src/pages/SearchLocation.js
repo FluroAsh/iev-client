@@ -29,7 +29,6 @@ export const SearchLocation = () => {
       setChargers,
       setError
     );
-    console.log(queryLocation);
   }, [location]);
 
   return (
@@ -44,7 +43,7 @@ export const SearchLocation = () => {
               <div className="search">
                 <div className="search__cards">
                   <Typography
-                    variant="h3"
+                    variant="h5"
                     sx={{ px: 1, py: 2, width: "100%", textAlign: "center" }}
                   >
                     {/* TODO: Pluralize the string with an NPM package */}

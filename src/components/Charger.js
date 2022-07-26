@@ -32,11 +32,11 @@ export const Charger = ({ charger }) => {
               {charger.name}
             </Typography>
 
-            <Typography variant="h6" color="text.secondary">
+            <Typography variant="h6" color="text.primary">
               {Object.values(charger.Address.city)}
             </Typography>
 
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1" color="text.primary">
               {displayAUD(charger.price)}
             </Typography>
           </div>
