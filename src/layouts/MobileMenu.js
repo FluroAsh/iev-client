@@ -46,7 +46,10 @@ export const MobileMenu = ({ setMenuOpen }) => {
               Home
             </Link>
 
-            <Link to="/" onClick={() => setMenuOpen(false)}>
+            <Link
+              to={`/bookings/${loggedInUser.username}`}
+              onClick={() => setMenuOpen(false)}
+            >
               <FontAwesomeIcon icon={faBookOpenReader} />
               Bookings
             </Link>
