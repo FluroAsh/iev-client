@@ -29,6 +29,7 @@ export const SearchLocation = () => {
       setChargers,
       setError
     );
+    console.log("location -->", location.search);
   }, [location]);
 
   return (
@@ -75,6 +76,7 @@ export async function populateSearch(
   try {
     setLoading(true);
     const chargers = await searchLocation(queryLocation || "");
+    console.log("chargers", chargers);
     const { lat, lng } = await geocodeLocation(chargers[0].Address.city);
     setCoordinates({ lat, lng });
     setChargers(chargers);

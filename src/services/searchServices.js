@@ -4,6 +4,7 @@ import axios from "axios";
 export async function searchLocation(location) {
   try {
     const response = await ievAPI.get(`/search?location=${location}`);
+    console.log("data", response.data);
     return response.data;
   } catch (err) {
     throw Error(err.response.data.error);
