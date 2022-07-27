@@ -5,6 +5,6 @@ export async function getUserBookings(username) {
     const response = await ievAPI.get(`/bookings/user/${username}`);
     return response.data;
   } catch (err) {
-    throw Error(err || err.response.data.error);
+    throw Error(err.response.data.err);
   }
 }

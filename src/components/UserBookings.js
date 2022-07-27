@@ -7,15 +7,19 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import { Button, Toolbar, Typography } from "@mui/material";
+// import TableFooter from "@mui/material/TableFooter";
+// import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
+// import TablePagination from "@mui/material/TablePagination";
 
 import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
-import { Button, Toolbar, Typography } from "@mui/material";
 
 function createData(id, city, stationName, price, date, status) {
   return { id, city, stationName, price, date, status };
 }
 
-export default function BasicTable({ bookings }) {
+export default function UserBookings({ bookings }) {
+  // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const rows = bookings.map((booking) => {
     const { bookingDate: date, status } = booking;
     const { name: stationName, price } = booking.Charger;
@@ -37,7 +41,7 @@ export default function BasicTable({ bookings }) {
      * 2. Add pagination
      * 3. Add mobile conditionals (should not display some columns, change styling etc)
      */
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ height: "45vh" }}>
       <Toolbar sx={{ Width: "100%" }}>
         <Typography variant="h5">My Bookings</Typography>
       </Toolbar>
@@ -52,11 +56,12 @@ export default function BasicTable({ bookings }) {
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody sx={{ height: "500px" }}>
           {rows.map((row) => (
             <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              hover
             >
               <TableCell component="th" scope="row">
                 {row.city}
