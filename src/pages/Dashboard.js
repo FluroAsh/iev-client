@@ -16,29 +16,20 @@ export const Dashboard = () => {
     populateBookings(loggedInUser, setBookings, setError, setLoading);
   }, []);
 
-  // console.log(bookings || "No data");
-  // console.log(bookings[0].User.firstName);
-  // const { firstName } = bookings[0].User.firstName || "";
-  // console.log(bookings.User.firstName);
-
+  // TODO: Determine if current user is host or regular user
+  // ** 1. Has an active charging station
+  // ** 2. Doesn't have an active charging station
+  // >> Should be performed on the backend, return error: User is not a host, if
   return (
     <>
-      {loading ? (
-        <CssLoader />
-      ) : (
+      {loading && <CssLoader />}
+      {error && <ErrorScreen error={error} />}
+      {bookings && (
         <>
-          {error ? (
-            <ErrorScreen error={error} />
-          ) : (
-            bookings && (
-              <>
-                <h1>User/Host Bookings Dashboard</h1>
-                <h3>Welcome Back {bookings[0].User.firstName}!</h3>
-                {error && <p>{error.message}</p>}
-                <EnhancedTable bookings={bookings} />
-              </>
-            )
-          )}
+          <h1>User/Host Bookings Dashboard</h1>
+          <h3>Welcome Back {bookings[0].User.firstName}!</h3>
+          {error && <p>{error.message}</p>}
+          <EnhancedTable bookings={bookings} />
         </>
       )}
     </>
