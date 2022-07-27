@@ -6,7 +6,7 @@ import { CssLoader } from "../components/CssLoader";
 import { ErrorScreen } from "../components/ErrorScreen";
 
 export const Dashboard = () => {
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState();
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
   const { store } = useGlobalState();
@@ -15,6 +15,11 @@ export const Dashboard = () => {
   useEffect(() => {
     populateBookings(loggedInUser, setBookings, setError, setLoading);
   }, []);
+
+  // console.log(bookings || "No data");
+  // console.log(bookings[0].User.firstName);
+  // const { firstName } = bookings[0].User.firstName || "";
+  // console.log(bookings.User.firstName);
 
   return (
     <>
@@ -25,12 +30,14 @@ export const Dashboard = () => {
           {error ? (
             <ErrorScreen error={error} />
           ) : (
-            <>
-              <h1>User/Host Bookings Dashboard</h1>
-              <h3>Welcome Back {loggedInUser}!</h3>
-              {error && <p>{error.message}</p>}
-              <EnhancedTable bookings={bookings} />
-            </>
+            bookings && (
+              <>
+                <h1>User/Host Bookings Dashboard</h1>
+                <h3>Welcome Back {bookings[0].User.firstName}!</h3>
+                {error && <p>{error.message}</p>}
+                <EnhancedTable bookings={bookings} />
+              </>
+            )
           )}
         </>
       )}
@@ -38,8 +45,15 @@ export const Dashboard = () => {
   );
 };
 
-async function populateBookings(username, setBookings, setError, setLoading) {
+async function populateBookings(
+  username,
+  setBookings,
+  setError,
+  setLoading,
+  s
+) {
   try {
+    console.log("!");
     setLoading(true);
     const bookings = await getUserBookings(username);
     setBookings(bookings);
