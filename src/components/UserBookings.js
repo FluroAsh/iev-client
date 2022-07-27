@@ -56,7 +56,7 @@ export default function UserBookings({ bookings }) {
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
-        <TableBody sx={{ height: "500px" }}>
+        <TableBody>
           {rows.map((row) => (
             <TableRow
               key={row.id}

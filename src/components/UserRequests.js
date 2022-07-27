@@ -15,19 +15,9 @@ function createData(id, city, stationName, price, date, status) {
   return { id, city, stationName, price, date, status };
 }
 
-export default function BasicTable({ bookings }) {
-  const rows = bookings.map((booking) => {
-    const { bookingDate: date, status } = booking;
-    const { name: stationName, price } = booking.Charger;
-    const { city } = booking.Charger.Address;
-    return createData(
-      booking.id,
-      city,
-      stationName,
-      displayAUD(price),
-      displayLocalTime(date),
-      capitalize(status)
-    );
+export default function BasicTable({ requests }) {
+  const rows = requests.map((request, i) => {
+    return createData(i, "city", "stationName", "price", "date", "status");
   });
 
   return (
