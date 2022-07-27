@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import EnhancedTable from "../components/enhancedTable";
+import EnhancedTable from "../components/userBookings";
 import { getUserBookings } from "../services/bookingServices";
 import { useGlobalState } from "../context/stateContext";
 import { CssLoader } from "../components/CssLoader";
 import { ErrorScreen } from "../components/ErrorScreen";
+import { Typography } from "@mui/material";
 
 export const Dashboard = () => {
   const [bookings, setBookings] = useState();
@@ -26,23 +27,19 @@ export const Dashboard = () => {
       {error && <ErrorScreen error={error} />}
       {bookings && (
         <>
-          <h1>User/Host Bookings Dashboard</h1>
-          <h3>Welcome Back {bookings[0].User.firstName}!</h3>
-          {error && <p>{error.message}</p>}
-          <EnhancedTable bookings={bookings} />
+          <div className="page-container" style={{ margin: "0 2em" }}>
+            <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
+              Welcome Back {bookings[0].User.firstName}!
+            </Typography>
+            <EnhancedTable bookings={bookings} />
+          </div>
         </>
       )}
     </>
   );
 };
 
-async function populateBookings(
-  username,
-  setBookings,
-  setError,
-  setLoading,
-  s
-) {
+async function populateBookings(username, setBookings, setError, setLoading) {
   try {
     console.log("!");
     setLoading(true);
