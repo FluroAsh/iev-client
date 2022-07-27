@@ -51,7 +51,7 @@ export const DesktopMenu = () => {
     });
     navigate("/");
   };
-
+  console.log("user", loggedInUser);
   return (
     <div>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -125,10 +125,7 @@ export const DesktopMenu = () => {
               Home
             </MenuItem>
 
-            <MenuItem
-              component={Link}
-              to={`/bookings/${loggedInUser}`}
-            >
+            <MenuItem component={Link} to={`/bookings/${loggedInUser}`}>
               <ListItemIcon>
                 <FontAwesomeIcon icon={faBookOpenReader} />
               </ListItemIcon>

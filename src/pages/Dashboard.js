@@ -77,7 +77,6 @@ export async function populateRequests(
   setLoading
 ) {
   try {
-    setLoading(true);
     let requests = await getUserBookingRequests(username);
     if (requests) {
       /** Found requests, so the user must be a host */
@@ -106,7 +105,5 @@ export async function populateBookings(
     setBookings(bookings);
   } catch (err) {
     setError(err);
-  } finally {
-    setLoading(false);
   }
 }
