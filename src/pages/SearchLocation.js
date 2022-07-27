@@ -22,6 +22,7 @@ export const SearchLocation = () => {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const queryLocation = searchParams.get("location");
+
     populateSearch(
       queryLocation,
       setLoading,
@@ -74,9 +75,9 @@ export async function populateSearch(
   setError
 ) {
   try {
+    setError(false); // clear previous errors
     setLoading(true);
     const chargers = await searchLocation(queryLocation || "");
-    console.log("chargers", chargers);
     const { lat, lng } = await geocodeLocation(chargers[0].Address.city);
     setCoordinates({ lat, lng });
     setChargers(chargers);
