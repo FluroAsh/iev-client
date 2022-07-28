@@ -3,7 +3,7 @@ export const reducer = (state, action) => {
     case "cleanState": {
       //State goes back to default values
       return {
-        chargerList: [],
+        chargerList: [], // chargerList isn't stored in session storage so it'll be cleared on refresh
         loggedInUser: "",
       };
     }
@@ -46,7 +46,7 @@ export const reducer = (state, action) => {
         },
       };
     }
-    
+
     case "setToken": {
       //updates the token value
       return {

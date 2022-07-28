@@ -112,7 +112,7 @@ export const Dashboard = () => {
     },
   };
 
-  console.log(error);
+  // console.log(error);
   console.log("Host", host);
 
   if (loading) {

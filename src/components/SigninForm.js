@@ -29,6 +29,8 @@ const SigninForm = () => {
         console.log("THIS IS USER", user);
         sessionStorage.setItem("username", user.username);
         sessionStorage.setItem("token", user.jwt);
+        sessionStorage.setItem("firstName", user.firstName);
+        sessionStorage.setItem("lastName", user.lastName);
         dispatch({
           type: "setLoggedInUser",
           data: user.username,

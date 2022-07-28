@@ -24,10 +24,10 @@ function App() {
   const initialState = {
     chargerList: [],
     bookingDates: [],
-    loggedInUser: sessionStorage.getItem("username") || null,
+    loggedInUser: sessionStorage.getItem("username") || "",
     currentUser: {
-      firstName: "",
-      lastName: "",
+      firstName: sessionStorage.getItem("firstName") || "",
+      lastName: sessionStorage.getItem("lastName") || "",
     },
     token: sessionStorage.getItem("token") || null,
     location: {},
