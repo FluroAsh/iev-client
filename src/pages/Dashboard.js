@@ -19,8 +19,6 @@ export const Dashboard = () => {
   const { username } = useParams();
 
   useEffect(() => {
-    setBookings([]);
-    setRequests([]);
     populateBookings(username, setBookings, setError, setLoading);
     populateRequests(username, setRequests, setHost, setError, setLoading);
   }, [username]);
@@ -30,13 +28,9 @@ export const Dashboard = () => {
   const styles = {
     // user.host && styles.host.tableheight ()
     host: {
-      tableHeight: "45vw",
+      tableMinHeight: "40vw",
     },
   };
-
-  console.log("host?", host);
-  console.log("stored requests", requests);
-  console.log("stored bookings", bookings);
 
   if (loading) {
     return <CssLoader />;
@@ -51,24 +45,52 @@ export const Dashboard = () => {
       {/* {error && <p>{error.message}</p>} */}
       {/* NOTE: Not every host will have bookings */}
 
-      {bookings.length > 0 && (
-        <>
-          <div className="page-container" style={{ margin: "0 2em" }}>
-            <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
-              Welcome Back{" "}
-              {requests
-                ? requests[0].Charger.Host.firstName
-                : bookings[0].User.firstName}
-              !
-            </Typography>
+      <div className="page-container" style={{ margin: "2em" }}>
+        <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
+          Welcome Back (firstName)
+          {/* {requests
+            ? requests[0].Charger.Host.firstName
+            : bookings[0].User.firstName} */}
+        </Typography>
+        {bookings.length > 0 ? (
+          <>
             <UserBookings bookings={bookings} />
-            {/* <UserRequests /> is causing booking undefined for some reason... ? */}
+          </>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "200px",
+              border: "2px solid black",
+              margin: "2em 0",
+            }}
+          >
+            <p>You haven't made any bookings... Yet 😉</p>
           </div>
-        </>
-      )}
+        )}
 
-      {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
-      {requests.length > 0 && <UserRequests requests={requests} />}
+        {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
+        {requests.length > 0 && host ? (
+          <UserRequests requests={requests} />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "200px",
+              border: "2px solid black",
+              margin: "2em 0",
+            }}
+          >
+            <p>No requests... Yet! </p>
+          </div>
+        )}
+      </div>
     </>
   );
 };
