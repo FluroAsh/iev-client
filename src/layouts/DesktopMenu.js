@@ -23,9 +23,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useGlobalState } from "../context/stateContext";
+import { returnInitials } from "../utils/helpers";
 export const DesktopMenu = () => {
   const { store, dispatch } = useGlobalState();
-  const { loggedInUser } = store;
+  const { loggedInUser, currentUser } = store;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -74,7 +75,11 @@ export const DesktopMenu = () => {
               }}
             >
               {/* TODO; Update 'AT' with 'user.firstName.charAt[0] + user.lastName.charAt[0]' */}
-              {loggedInUser ? "AT" : <FontAwesomeIcon icon={faUser} />}
+              {loggedInUser ? (
+                returnInitials(currentUser.firstName, currentUser.lastName)
+              ) : (
+                <FontAwesomeIcon icon={faUser} />
+              )}
             </Avatar>
           </IconButton>
         </Tooltip>

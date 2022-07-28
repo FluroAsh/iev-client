@@ -16,3 +16,7 @@ export function displayLocalTime(dateTime) {
 export function capitalize(string) {
   return string[0].toUpperCase() + string.slice(1);
 }
+
+export function returnInitials(firstName, lastName) {
+  return firstName[0] + lastName[0];
+}
