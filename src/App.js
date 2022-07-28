@@ -31,6 +31,7 @@ function App() {
     },
     token: sessionStorage.getItem("token") || null,
     location: {},
+    errorMessage: "",
   };
 
   const [store, dispatch] = useReducer(reducer, initialState);

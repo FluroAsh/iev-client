@@ -54,6 +54,14 @@ export const reducer = (state, action) => {
         token: action.data,
       };
     }
+
+    case "setErrorMessage": {
+      //updates the token value
+      return {
+        ...state,
+        errorMessage: action.data,
+      };
+    }
     default:
       return state;
   }
