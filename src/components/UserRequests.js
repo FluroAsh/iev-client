@@ -7,20 +7,40 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
+import { displayAUD, displayLocalTime } from "../utils/helpers";
 import { Button, Toolbar, Typography } from "@mui/material";
 
-function createData(id, city, stationName, price, date, status) {
-  return { id, city, stationName, price, date, status };
+function createData(
+  id,
+  name,
+  vehicle,
+  price,
+  bookingDate,
+  sentDate,
+  stationName
+) {
+  return { id, name, vehicle, price, bookingDate, sentDate, stationName };
 }
 
-export default function BasicTable({ requests }) {
+export default function BasicTable({ requests, styles, host }) {
   const rows = requests.map((request, i) => {
-    const { bookingDate: date, status } = request;
-    const { name: stationName, price } = request.Charger;
-    const { city } = request.Charger.Address;
-    return createData(i, "city", "stationName", "price", "date", "status");
+    /**
+     * Name, Vehicle, Price, Booking Date, Date Sent, Station Name
+     */
+    console.log(request.User.UserVehicle.Vehicle.make);
+    return createData(
+      i,
+      request.User.firstName,
+      // request.User.UserVehicle.Vehicle.model,
+      "vehicle",
+      displayAUD(request.Charger.price),
+      displayLocalTime(request.bookingDate),
+      displayLocalTime(request.createdAt),
+      request.Charger.name
+    );
   });
 
   return (
@@ -37,11 +57,12 @@ export default function BasicTable({ requests }) {
       <Table sx={{ minWidth: 600 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>City</TableCell>
-            <TableCell align="right">Station Name</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell align="right">Vehicle</TableCell>
             <TableCell align="right">Price</TableCell>
             <TableCell align="right">Booking Date</TableCell>
-            <TableCell align="right">Status</TableCell>
+            <TableCell align="right">Sent Date</TableCell>
+            <TableCell align="right">Station Name</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
@@ -50,26 +71,23 @@ export default function BasicTable({ requests }) {
             <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              hover
             >
-              <TableCell component="th" scope="row">
-                {row.city}
-              </TableCell>
-              <TableCell align="right">{row.stationName}</TableCell>
+              <TableCell component="th">{row.name}</TableCell>
+              <TableCell align="right">{row.vehicle}</TableCell>
               <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.date}</TableCell>
-              <TableCell align="right">{row.status}</TableCell>
+              <TableCell align="right">{row.bookingDate}</TableCell>
+              <TableCell align="right">{row.sentDate}</TableCell>
+              <TableCell align="right">{row.stationName}</TableCell>
               <TableCell align="center">
-                {row.status === "Pending" && (
-                  // TODO: Render modals/dialog for confirming actions
-                  <ButtonGroup variant="contained">
-                    <Button color="success" size="small">
-                      Pay
-                    </Button>
-                    <Button color="error" size="small">
-                      Cancel
-                    </Button>
-                  </ButtonGroup>
-                )}
+                <ButtonGroup variant="contained">
+                  <Button color="success" size="small" sx={{ width: "50%" }}>
+                    <FontAwesomeIcon icon={faCheck} size="xl" />
+                  </Button>
+                  <Button color="error" size="small" sx={{ width: "50%" }}>
+                    <FontAwesomeIcon icon={faXmark} size="xl" />
+                  </Button>
+                </ButtonGroup>
               </TableCell>
             </TableRow>
           ))}

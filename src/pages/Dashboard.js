@@ -6,94 +6,8 @@ import {
   getUserBookings,
 } from "../services/bookingServices";
 import { CssLoader } from "../components/CssLoader";
-import { ErrorScreen } from "../components/ErrorScreen";
 import { Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
-
-export const Dashboard = () => {
-  const [bookings, setBookings] = useState([]);
-  const [requests, setRequests] = useState([]);
-  const [host, setHost] = useState(false);
-  const [error, setError] = useState();
-  const [loading, setLoading] = useState();
-  const { username } = useParams();
-
-  useEffect(() => {
-    populateBookings(username, setBookings, setError, setLoading);
-    populateRequests(username, setRequests, setHost, setError, setLoading);
-  }, [username]);
-
-  // TODO: Pass styles as prop based on if user is a prop or not
-  // this is to resize the tables to the correct height & ??? etc.
-  const styles = {
-    // user.host && styles.host.tableheight ()
-    host: {
-      tableMinHeight: "40vw",
-    },
-  };
-
-  if (loading) {
-    return <CssLoader />;
-  }
-
-  return (
-    <>
-      {/* Below 2 lines of code will probably be replaced.. Ignore for now */}
-      {/* {loading && <CssLoader />} */}
-      {/* {error && <ErrorScreen error={error} />} */}
-
-      {/* {error && <p>{error.message}</p>} */}
-      {/* NOTE: Not every host will have bookings */}
-
-      <div className="page-container" style={{ margin: "2em" }}>
-        <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
-          Welcome Back (firstName)
-          {/* {requests
-            ? requests[0].Charger.Host.firstName
-            : bookings[0].User.firstName} */}
-        </Typography>
-        {bookings.length > 0 ? (
-          <>
-            <UserBookings bookings={bookings} />
-          </>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              height: "200px",
-              border: "2px solid black",
-              margin: "2em 0",
-            }}
-          >
-            <p>You haven't made any bookings... Yet 😉</p>
-          </div>
-        )}
-
-        {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
-        {requests.length > 0 && host ? (
-          <UserRequests requests={requests} />
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              height: "200px",
-              border: "2px solid black",
-              margin: "2em 0",
-            }}
-          >
-            <p>No requests... Yet! </p>
-          </div>
-        )}
-      </div>
-    </>
-  );
-};
 
 export async function populateRequests(
   username,
@@ -131,11 +45,92 @@ export async function populateBookings(
     console.log("API Bookings", bookings);
     setBookings(bookings);
   } catch (err) {
-    console.log("API Error", err);
-    // console.log(bookings);
-
     setError(err);
   } finally {
     setLoading(false);
   }
 }
+
+const NoResults = ({ message }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "200px",
+        border: "2px solid black",
+        margin: "2em 0",
+      }}
+    >
+      <p>{message}</p>
+    </div>
+  );
+};
+
+export const Dashboard = () => {
+  const [bookings, setBookings] = useState([]);
+  const [requests, setRequests] = useState([]);
+  const [host, setHost] = useState(false);
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState();
+  const { username } = useParams();
+
+  useEffect(() => {
+    populateBookings(username, setBookings, setError, setLoading);
+    populateRequests(username, setRequests, setHost, setError, setLoading);
+  }, [username]);
+
+  // TODO: Pass styles as prop based on if user is a prop or not
+  // this is to resize the tables to the correct height & ??? etc.
+  const styles = {
+    // user.host && styles.host.tableheight ()
+    host: {
+      tableMinHeight: "40vw",
+    },
+  };
+  console.log(error);
+  console.log("Host", host);
+
+  if (loading) {
+    return <CssLoader />;
+  }
+
+  return (
+    <>
+      {/* Below 2 lines of code will probably be replaced.. Ignore for now */}
+      {/* {loading && <CssLoader />} */}
+      {/* {error && <ErrorScreen error={error} />} */}
+
+      {/* NOTE: Not every host will have bookings */}
+
+      <div className="page-container" style={{ margin: "0 2em 2em" }}>
+        <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
+          Welcome Back (firstName)!
+          {/* {requests
+            ? requests[0].Charger.Host.firstName
+            : bookings[0].User.firstName} */}
+        </Typography>
+        {error && <p style={{ color: "red" }}>{error.message}</p>}
+
+        {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
+
+        {host &&
+          (requests.length > 0 ? (
+            <UserRequests requests={requests} styles={styles} host={host} />
+          ) : (
+            <NoResults message={"No requests... Yet!"} />
+          ))}
+
+        {bookings.length > 0 ? (
+          <>
+            <UserBookings bookings={bookings} styles={styles} host={host} />
+          </>
+        ) : (
+          <NoResults message={"You haven't made any bookings... Yet 😉"} />
+        )}
+      </div>
+    </>
+  );
+};
