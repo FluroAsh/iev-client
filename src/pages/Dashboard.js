@@ -63,6 +63,7 @@ const NoResults = ({ message }) => {
         width: "100%",
         height: "200px",
         border: "2px solid black",
+        borderRadius: "5px",
         margin: "2em 0",
       }}
     >
