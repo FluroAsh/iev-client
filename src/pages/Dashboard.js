@@ -6,7 +6,7 @@ import {
   getUserBookings,
 } from "../services/bookingServices";
 import { CssLoader } from "../components/CssLoader";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 
 export async function populateRequests(
@@ -115,7 +115,6 @@ export const Dashboard = () => {
         {error && <p style={{ color: "red" }}>{error.message}</p>}
 
         {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
-
         {host &&
           (requests.length > 0 ? (
             <UserRequests requests={requests} styles={styles} host={host} />
@@ -130,7 +129,23 @@ export const Dashboard = () => {
         ) : (
           <NoResults message={"You haven't made any bookings... Yet 😉"} />
         )}
+
+        {!host && <BecomeHost />}
       </div>
     </>
+  );
+};
+
+const BecomeHost = () => {
+  return (
+    <div className="host-container">
+    <div className="host">
+      <Typography variant="p" sx={{padding: "0 10px 10px"}}>
+        Looking to become a host? Click below to create your first charging
+        station!
+      </Typography>
+      <Button variant="contained">Become a Host</Button>
+    </div>
+    </div>
   );
 };
