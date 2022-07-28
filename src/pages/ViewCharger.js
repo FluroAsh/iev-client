@@ -9,7 +9,6 @@ import { useGlobalState } from "../context/stateContext";
 export const ViewCharger = () => {
   const { chargerId } = useParams();
   const { store, dispatch } = useGlobalState();
-  const { successMessage } = store;
   console.log("CHARGERID", chargerId);
   const [charger, setChargerDetail] = useState();
   const [loading, setLoading] = useState(false);
@@ -29,7 +28,6 @@ export const ViewCharger = () => {
         <CssLoader />
       ) : charger !== undefined ? (
         <>
-          {successMessage && <p>{successMessage}</p>}
           <div>
             <ChargerDetail key={charger.id} charger={charger} />
           </div>

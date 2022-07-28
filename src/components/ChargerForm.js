@@ -8,6 +8,7 @@ import {
   // FormControl,
   Container,
   Box,
+  Alert,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +23,11 @@ export const ChargerForm = ({ editFormData }) => {
   const { loggedInUser, errorMessage } = store;
 
   console.log("THIS IS STORE", store);
+
+  useEffect( () => () => dispatch({
+    type: "setErrorMessage",
+    data: "",
+  }) , [ dispatch ] );
 
   let initialFormData;
 
@@ -69,8 +75,8 @@ export const ChargerForm = ({ editFormData }) => {
   //   username: loggedInUser,
   // };
   const [formData, setFormData] = useState(initialFormData);
-  const [error, setError] = useState(null);
 
+  console.log("THIS IS EDIT FORM DATA", editFormData);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -86,24 +92,24 @@ export const ChargerForm = ({ editFormData }) => {
       data.append(key, value);
     }
 
-    let response;
+    let response
     if (editFormData) {
       response = await updateCharger(data, editFormData.id);
     } else {
       response = await addCharger(data);
+
     }
 
-    if (response.error) {
+    if (response.status === 500) {
       dispatch({
         type: "setErrorMessage",
         data: response.data.message,
       });
       return;
     } else {
-
       // TODO: handle success message
       // setFormData({});
-
+      console.log("updated successful");
       navigate(`/chargers/mychargers`);
     }
 
@@ -122,7 +128,9 @@ export const ChargerForm = ({ editFormData }) => {
     // }
   }
 
+
   const handleFile = (file) => {
+    console.log("THIS IS FILE DETAIL", file);
     setFormData({
       ...formData,
       image: file,
@@ -152,7 +160,7 @@ export const ChargerForm = ({ editFormData }) => {
         margin: "16px",
       }}
     >
-      {errorMessage && <p>{errorMessage}</p>}
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
 
       <form onSubmit={handleSubmit}>
         <Typography variant="h4">List Charger</Typography>
