@@ -35,7 +35,7 @@ export default function BasicTable({ requests, styles, host }) {
       i,
       request.User.firstName,
       // request.User.UserVehicle.Vehicle.model,
-      "vehicle",
+      request.User.UserVehicle.Vehicle.model,
       displayAUD(request.Charger.price),
       displayLocalTime(request.bookingDate),
       displayLocalTime(request.createdAt),
