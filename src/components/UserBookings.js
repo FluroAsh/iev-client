@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Button, Toolbar, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 // import TableFooter from "@mui/material/TableFooter";
 // import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 // import TablePagination from "@mui/material/TablePagination";
@@ -61,7 +62,10 @@ export default function UserBookings({ bookings }) {
           {rows.map((row) => (
             <TableRow
               key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              sx={{
+                "&:last-child td, &:last-child th": { border: 0 },
+                textDecoration: "none",
+              }}
               hover
             >
               <TableCell component="th" scope="row">
@@ -74,14 +78,17 @@ export default function UserBookings({ bookings }) {
               <TableCell align="center">
                 {row.status === "Pending" && (
                   // TODO: Render modals/dialog for confirming actions
-                  <ButtonGroup variant="contained">
+                  <ButtonGroup variant="contained" sx={{ zIndex: 999999 }}>
                     <Button color="success" size="small">
                       Pay
                     </Button>
                     <Button
+                      // loading
+                      // loadingPosition="start"
                       color="error"
                       size="small"
                       onClick={() => console.log("Cancelling...")}
+                      // disable={1 + 1 === 2 ? false : true}
                     >
                       Cancel
                     </Button>

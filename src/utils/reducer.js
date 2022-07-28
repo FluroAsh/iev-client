@@ -1,12 +1,12 @@
 export const reducer = (state, action) => {
   switch (action.type) {
-    case "cleanState": {
-      //State goes back to default values
-      return {
-        chargerList: [],
-        loggedInUser: "",
-      };
-    }
+    // case "cleanState": {
+    //   //State goes back to default values
+    //   return {
+    //     chargerList: [],
+    //     loggedInUser: "",
+    //   };
+    // }
 
     case "setBookingDates": {
       return {
@@ -46,7 +46,7 @@ export const reducer = (state, action) => {
         },
       };
     }
-    
+
     case "setToken": {
       //updates the token value
       return {

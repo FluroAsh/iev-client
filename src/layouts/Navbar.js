@@ -14,8 +14,9 @@ export const Navbar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const location = useLocation();
   const { store, dispatch } = useGlobalState();
-  const { loggedInUser, bookingDates } = store;
+  const { loggedInUser, bookingDates, currentUser } = store;
   const navigate = useNavigate();
+  console.log("currentUser", currentUser);
 
   useEffect(() => {
     // console.log("location", location);
