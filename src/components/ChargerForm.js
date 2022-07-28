@@ -9,7 +9,7 @@ import {
   Container,
   Box,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addCharger, updateCharger } from "../services/chargerServices";
 import { useGlobalState } from "../context/stateContext";
@@ -19,25 +19,58 @@ import { useGlobalState } from "../context/stateContext";
 export const ChargerForm = ({ editFormData }) => {
   const { store, dispatch } = useGlobalState();
   const navigate = useNavigate();
-  const { loggedInUser, errorMessage, successMessage } = store;
+  const { loggedInUser, errorMessage } = store;
 
   console.log("THIS IS STORE", store);
 
-  const initialFormData = {
-    name: editFormData.name || "",
-    instructions: editFormData.instructions || "",
-    price: editFormData.price || "",
+  let initialFormData;
 
-    // TODO: handle status(handle submit)
-    status: editFormData.status || "",
-    plugName: editFormData.plugName || "",
-    // TODO: need to handle if user not logged in
-    // if not logged in, they shouldnt see the form but need to handle
-    // incase they use direct link
-    username: loggedInUser,
-  };
+  if (editFormData) {
+    initialFormData = {
+      name: editFormData.name,
+      instructions: editFormData.instructions,
+      price: editFormData.price,
+
+      // TODO: handle status(handle submit)
+      status: editFormData.status,
+      plugName: editFormData.plugName,
+      // TODO: need to handle if user not logged in
+      // if not logged in, they shouldnt see the form but need to handle
+      // incase they use direct link
+      username: loggedInUser,
+    };
+  } else {
+    initialFormData = {
+      name: "",
+      instructions: "",
+      price: "",
+
+      // TODO: handle status(handle submit)
+      status: "",
+      plugName: "",
+      // TODO: need to handle if user not logged in
+      // if not logged in, they shouldnt see the form but need to handle
+      // incase they use direct link
+      username: loggedInUser,
+    };
+  }
+
+  // const initialFormData = {
+  //   name: editFormData.name || "",
+  //   instructions: editFormData.instructions || "",
+  //   price: editFormData.price || "",
+
+  //   // TODO: handle status(handle submit)
+  //   status: editFormData.status || "",
+  //   plugName: editFormData.plugName || "",
+  //   // TODO: need to handle if user not logged in
+  //   // if not logged in, they shouldnt see the form but need to handle
+  //   // incase they use direct link
+  //   username: loggedInUser,
+  // };
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState(null);
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -60,20 +93,18 @@ export const ChargerForm = ({ editFormData }) => {
       response = await addCharger(data);
     }
 
-    if (response.status === 500) {
+    if (response.error) {
       dispatch({
         type: "setErrorMessage",
         data: response.data.message,
       });
       return;
     } else {
-      setFormData({});
-      dispatch({
-        type: "setSuccessMessage",
-        data: response.data.message,
-      });
+
       // TODO: handle success message
-      navigate(`/charger/${response.data.id}`);
+      // setFormData({});
+
+      navigate(`/chargers/mychargers`);
     }
 
     console.log("charger after created", response);

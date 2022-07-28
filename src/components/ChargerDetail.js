@@ -26,6 +26,10 @@ export const ChargerDetail = ({ charger }) => {
   // const [editFormData, setEditFormData] = useState({});
   const navigate = useNavigate();
 
+  useEffect( () => () => dispatch({
+    type: "setErrorMessage",
+    data: "",
+  }) , [ dispatch ] );
 
   const handleBooking = (e) => {
     navigate(`/charger/${charger.id}`);
