@@ -17,6 +17,7 @@ import { ChargerForm } from "./components/ChargerForm";
 import { NotFound } from "./pages/NotFound";
 import { ViewCharger } from "./pages/ViewCharger";
 import { ViewChargers } from "./pages/ViewChargers";
+import { EditCharger } from "./pages/EditCharger";
 import { SearchLocation } from "./pages/SearchLocation";
 import { Dashboard } from "./pages/Dashboard";
 
@@ -24,6 +25,8 @@ function App() {
   const initialState = {
     chargerList: [],
     bookingDates: [],
+    editFormData: {},
+    successMessage: "",
     loggedInUser: sessionStorage.getItem("username") || "",
     currentUser: {
       firstName: sessionStorage.getItem("firstName") || "",
@@ -71,6 +74,8 @@ function App() {
               </Route>
               <Route path="charger">
                 <Route path=":chargerId" element={<ViewCharger />} />
+                <Route path=":chargerId/edit" element={<EditCharger />} />
+
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

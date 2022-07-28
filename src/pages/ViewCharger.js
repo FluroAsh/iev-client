@@ -4,10 +4,12 @@ import { Link, useParams } from "react-router-dom";
 import { getCharger } from "../services/chargerServices";
 import { ChargerDetail } from "../components/ChargerDetail";
 import { CssLoader } from "../components/CssLoader";
+import { useGlobalState } from "../context/stateContext";
 
 export const ViewCharger = () => {
   const { chargerId } = useParams();
-
+  const { store, dispatch } = useGlobalState();
+  const { successMessage } = store;
   console.log("CHARGERID", chargerId);
   const [charger, setChargerDetail] = useState();
   const [loading, setLoading] = useState(false);
@@ -26,9 +28,12 @@ export const ViewCharger = () => {
       {loading ? (
         <CssLoader />
       ) : charger !== undefined ? (
-        <div>
-          <ChargerDetail key={charger.id} charger={charger} />
-        </div>
+        <>
+          {successMessage && <p>{successMessage}</p>}
+          <div>
+            <ChargerDetail key={charger.id} charger={charger} />
+          </div>
+        </>
       ) : (
         <div>
           <p>charger not found</p>

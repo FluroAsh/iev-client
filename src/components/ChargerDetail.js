@@ -18,14 +18,35 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import { deleteCharger } from "../services/chargerServices";
+import { ChargerForm } from "./ChargerForm";
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
-  const { loggedInUser, errorMessage } = store;
+  const { loggedInUser, errorMessage, editFormData } = store;
+  // const [editFormData, setEditFormData] = useState({});
+  const navigate = useNavigate();
+
+
+  const handleBooking = (e) => {
+    navigate(`/charger/${charger.id}`);
+  };
+
+  const handleEdit = async (e) => {
+    // setEditFormData(charger)
+    dispatch({
+      type: "setEditFormData",
+      data: charger
+    })
+    console.log("THIS IS FORM DATA WITH CHARGER DETAIL", editFormData)
+    // return (
+    //   <ChargerForm key={charger.id} editFormData={editFormData}/>
+    // )
+    navigate(`/charger/${charger.id}/edit`)
+  };
 
   return (
     <StateContext.Provider value={{ store, dispatch }}>
-      <div style={{ display: "flex"}}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       </div>
       <Container
@@ -56,7 +77,11 @@ export const ChargerDetail = ({ charger }) => {
           <Typography variant="h6">
             {Object.values(charger.Address.city)}
           </Typography>
-          <Typography variant="body2 contained" color="text.secondary" style={{ maxWidth: "450px", marginBottom: "16px"}}>
+          <Typography
+            variant="body2 contained"
+            color="text.secondary"
+            style={{ maxWidth: "450px", marginBottom: "16px" }}
+          >
             {charger.instructions}
           </Typography>
         </Box>
@@ -64,14 +89,45 @@ export const ChargerDetail = ({ charger }) => {
           <Box style={{ marginBottom: "16px" }}>
             <ChargerCalendar />
           </Box>
-          <ButtonGroup key={charger.id} charger={charger} />
+          {charger.User.username === loggedInUser ? (
+            <div className="flex-box">
+              <Button
+                // type="submit"
+                value="active"
+                variant="contained"
+                onClick={handleEdit}
+                style={{ marginRight: "16px" }}
+              >
+                Edit
+              </Button>
+              <DeleteButton key={charger.id} charger={charger} />
+            </div>
+          ) : (
+            <div className="flexBox">
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                startIcon={
+                  <FontAwesomeIcon
+                    icon={faCalendarPlus}
+                    style={{ fontSize: "16px" }}
+                  />
+                }
+                onClick={handleBooking}
+              >
+                Book
+              </Button>
+            </div>
+          )}
+          {/* <ButtonGroup key={charger.id} charger={charger} /> */}
         </Box>
       </Container>
     </StateContext.Provider>
   );
 };
 
-export default function AlertDialog({ charger }) {
+export default function DeleteButton({ charger }) {
   const { store, dispatch } = useGlobalState();
   const { chargerList } = store;
 
@@ -128,42 +184,43 @@ export default function AlertDialog({ charger }) {
   );
 }
 
-export const ButtonGroup = ({ charger }) => {
-  const navigate = useNavigate();
-  const { store } = useGlobalState();
-  const { loggedInUser } = store;
+// export const ButtonGroup = ({ charger }) => {
+//   const navigate = useNavigate();
+//   const { store } = useGlobalState();
+//   const { loggedInUser } = store;
 
-  const handleBooking = (e) => {
-    navigate(`/charger/${charger.id}`);
-  };
+//   const handleBooking = (e) => {
+//     navigate(`/charger/${charger.id}`);
+//   };
 
-  const handleEdit = async (e) => {};
-  return charger.User.username === loggedInUser ? (
-    <div className="flex-box">
-      <Button
-        type="submit"
-        value="active"
-        variant="contained"
-        onClick={handleEdit}
-        style={{ marginRight: "16px" }}
-      >
-        Edit
-      </Button>
-      <AlertDialog key={charger.id} charger={charger} />
-    </div>
-  ) : (
-    <div className="flexBox">
-      <Button
-        variant="contained"
-        size="large"
-        color="primary"
-        startIcon={
-          <FontAwesomeIcon icon={faCalendarPlus} style={{ fontSize: "16px" }} />
-        }
-        onClick={handleBooking}
-      >
-        Book
-      </Button>
-    </div>
-  );
-};
+//   const handleEdit = async (e) => {};
+
+//   return charger.User.username === loggedInUser ? (
+//     <div className="flex-box">
+//       <Button
+//         // type="submit"
+//         value="active"
+//         variant="contained"
+//         onClick={handleEdit}
+//         style={{ marginRight: "16px" }}
+//       >
+//         Edit
+//       </Button>
+//       <DeleteButton key={charger.id} charger={charger} />
+//     </div>
+//   ) : (
+//     <div className="flexBox">
+//       <Button
+//         variant="contained"
+//         size="large"
+//         color="primary"
+//         startIcon={
+//           <FontAwesomeIcon icon={faCalendarPlus} style={{ fontSize: "16px" }} />
+//         }
+//         onClick={handleBooking}
+//       >
+//         Book
+//       </Button>
+//     </div>
+//   );
+// };

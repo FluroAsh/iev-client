@@ -11,26 +11,26 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addCharger } from "../services/chargerServices";
+import { addCharger, updateCharger } from "../services/chargerServices";
 import { useGlobalState } from "../context/stateContext";
 
 // import { reducer } from "../utils/reducer"
 
-export const ChargerForm = () => {
+export const ChargerForm = ({ editFormData }) => {
   const { store, dispatch } = useGlobalState();
   const navigate = useNavigate();
-  const { loggedInUser } = store;
+  const { loggedInUser, errorMessage, successMessage } = store;
 
   console.log("THIS IS STORE", store);
 
   const initialFormData = {
-    name: "",
-    instructions: "",
-    price: "",
+    name: editFormData.name || "",
+    instructions: editFormData.instructions || "",
+    price: editFormData.price || "",
 
     // TODO: handle status(handle submit)
-    status: "pending",
-    plugName: "",
+    status: editFormData.status || "",
+    plugName: editFormData.plugName || "",
     // TODO: need to handle if user not logged in
     // if not logged in, they shouldnt see the form but need to handle
     // incase they use direct link
@@ -42,34 +42,53 @@ export const ChargerForm = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    try {
-      if (e.target.value) {
-        formData.status = e.target.value;
-      }
+    // try {
+    // if (e.target.value) {
+    //   formData.status = e.target.value;
+    // }
 
-      const data = new FormData();
+    const data = new FormData();
 
-      for (const [key, value] of Object.entries(formData)) {
-        data.append(key, value);
-      }
-
-      const result = await addCharger(data);
-      console.log("FORM DATA AFTER SUBMIT", result);
-
-      setFormData(initialFormData);
-
-      navigate(`/chargers/mychargers`);
-      // navigate(`/charger/${result.}`);
-
-      // if (!result.error) {
-      // } else {
-      //     setError(result.error);
-
-      // }
-    } catch (err) {
-      // TODO: handle error
-      console.error(err.message);
+    for (const [key, value] of Object.entries(formData)) {
+      data.append(key, value);
     }
+
+    let response;
+    if (editFormData) {
+      response = await updateCharger(data, editFormData.id);
+    } else {
+      response = await addCharger(data);
+    }
+
+    if (response.status === 500) {
+      dispatch({
+        type: "setErrorMessage",
+        data: response.data.message,
+      });
+      return;
+    } else {
+      setFormData({});
+      dispatch({
+        type: "setSuccessMessage",
+        data: response.data.message,
+      });
+      // TODO: handle success message
+      navigate(`/charger/${response.data.id}`);
+    }
+
+    console.log("charger after created", response);
+
+    // navigate(`/charger/${result.}`);
+
+    // if (!result.error) {
+    // } else {
+    //     setError(result.error);
+
+    // }
+    // } catch (err) {
+    //   // TODO: handle error
+    //   console.error(err.message);
+    // }
   }
 
   const handleFile = (file) => {
@@ -86,6 +105,9 @@ export const ChargerForm = () => {
     });
   };
 
+  const handleCancel = (e) => {
+    navigate("/chargers/mychargers");
+  };
 
   console.log("FORM DATA ---", formData);
 
@@ -96,10 +118,10 @@ export const ChargerForm = () => {
         justifyContent: "space-around",
         alignItems: "center",
         flexWrap: "wrap",
-        margin: "16px"
+        margin: "16px",
       }}
     >
-      {error && <p>{error}</p>}
+      {errorMessage && <p>{errorMessage}</p>}
 
       <form onSubmit={handleSubmit}>
         <Typography variant="h4">List Charger</Typography>
@@ -158,7 +180,8 @@ export const ChargerForm = () => {
           onChange={(e) => handleFile(e.target.files[0])}
         />
         <Box sx={{ marginTop: "16px", marginRight: "16px" }}>
-          <Button sx={{ marginRight: "16px" }}
+          <Button
+            sx={{ marginRight: "16px" }}
             type="submit"
             id="status"
             value="pending"
@@ -167,14 +190,33 @@ export const ChargerForm = () => {
           >
             Save draft
           </Button>
+          {editFormData ? (
+            <Button
+              type="submit"
+              id="status"
+              value="active"
+              variant="contained"
+              onClick={handleFormData}
+            >
+              Update charger
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              id="status"
+              value="active"
+              variant="contained"
+              onClick={handleFormData}
+            >
+              List charger
+            </Button>
+          )}
           <Button
-            type="submit"
-            id="status"
-            value="active"
             variant="contained"
-            onClick={handleFormData}
+            sx={{ marginLeft: "16px" }}
+            onClick={handleCancel}
           >
-            List charger
+            Cancel
           </Button>
         </Box>
       </form>

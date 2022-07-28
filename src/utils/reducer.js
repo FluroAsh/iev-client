@@ -62,6 +62,23 @@ export const reducer = (state, action) => {
         errorMessage: action.data,
       };
     }
+    case "setEditFormData": {
+      //updates the token value
+      return {
+        ...state,
+        editFormData: action.data,
+      };
+    }
+
+    case "setSuccessMessage": {
+      //updates the token value
+      return {
+        ...state,
+        successMessage: action.data,
+      };
+    }
+    
+    
     default:
       return state;
   }
