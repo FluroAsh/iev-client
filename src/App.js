@@ -25,6 +25,10 @@ function App() {
     chargerList: [],
     bookingDates: [],
     loggedInUser: sessionStorage.getItem("username") || null,
+    currentUser: {
+      firstName: "",
+      lastName: "",
+    },
     token: sessionStorage.getItem("token") || null,
     location: {},
   };

@@ -42,7 +42,7 @@ export default function UserBookings({ bookings }) {
      * 2. Add pagination
      * 3. Add mobile conditionals (should not display some columns, change styling etc)
      */
-    <TableContainer component={Paper} sx={{ height: "45vh" }}>
+    <TableContainer component={Paper}>
       <Toolbar sx={{ Width: "100%" }}>
         <Typography variant="h5">My Bookings</Typography>
       </Toolbar>
