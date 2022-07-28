@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import UserBookings from "../components/UserBookings";
 import UserRequests from "../components/UserRequests";
 import {
@@ -139,13 +140,15 @@ export const Dashboard = () => {
 const BecomeHost = () => {
   return (
     <div className="host-container">
-    <div className="host">
-      <Typography variant="p" sx={{padding: "0 10px 10px"}}>
-        Looking to become a host? Click below to create your first charging
-        station!
-      </Typography>
-      <Button variant="contained">Become a Host</Button>
-    </div>
+      <div className="host">
+        <Typography variant="p" sx={{ padding: "0 10px 10px" }}>
+          Looking to become a host? Click below to create your first charging
+          station!
+        </Typography>
+        <Link to={"/chargers/new"}>
+          <Button variant="contained">Become a Host</Button>
+        </Link>
+      </div>
     </div>
   );
 };
