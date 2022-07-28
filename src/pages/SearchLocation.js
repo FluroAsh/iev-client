@@ -9,7 +9,7 @@ import { GoogleMap } from "../components/GoogleMap";
 
 export const SearchLocation = () => {
   const [loading, setLoading] = useState(false);
-  const [chargers, setChargers] = useState([]);
+  const [chargers, setChargers] = useState();
   const [error, setError] = useState();
   const [coordinates, setCoordinates] = useState({});
   const { store } = useGlobalState();
@@ -30,38 +30,30 @@ export const SearchLocation = () => {
       setChargers,
       setError
     );
-    console.log("location -->", location.search);
   }, [location]);
 
   return (
     <>
+      {loading && <CssLoader />}
       {error && <ErrorScreen error={error} />}
-      {loading ? (
-        <CssLoader />
-      ) : (
-        <>
-          {chargers.length && (
-            <>
-              <div className="search">
-                <div className="search__cards">
-                  <Typography
-                    variant="h5"
-                    sx={{ px: 1, py: 2, width: "100%", textAlign: "center" }}
-                  >
-                    {/* TODO: Pluralize the string with an NPM package */}
-                    {`${chargers.length} charger(s) found`}
-                  </Typography>
-                  <section className="chargers">
-                    {chargers.map((charger) => (
-                      <Charger key={charger.id} charger={charger} />
-                    ))}
-                  </section>
-                </div>
-                {!isMobile && <GoogleMap coordinates={coordinates} />}
-              </div>
-            </>
-          )}
-        </>
+      {chargers && (
+        <div className="search">
+          <div className="search__cards">
+            <Typography
+              variant="h5"
+              sx={{ px: 1, py: 2, width: "100%", textAlign: "center" }}
+            >
+              {/* TODO: Pluralize the string with an NPM package */}
+              {`${chargers.length} charger(s) found`}
+            </Typography>
+            <section className="chargers">
+              {chargers.map((charger) => (
+                <Charger key={charger.id} charger={charger} />
+              ))}
+            </section>
+          </div>
+          {!isMobile && <GoogleMap coordinates={coordinates} />}
+        </div>
       )}
     </>
   );

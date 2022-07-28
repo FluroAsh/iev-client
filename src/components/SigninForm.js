@@ -21,14 +21,16 @@ const SigninForm = () => {
     signIn(formData).then((user) => {
       // console.log(user)
       if (user.error) {
-        // TODO: Handle error front end 
+        // TODO: Handle error front end
         console.log("user.error", user.error);
         setError(user.error);
       } else {
         setError(null);
-        console.log("THIS IS USER", user)
+        console.log("THIS IS USER", user);
         sessionStorage.setItem("username", user.username);
         sessionStorage.setItem("token", user.jwt);
+        sessionStorage.setItem("firstName", user.firstName);
+        sessionStorage.setItem("lastName", user.lastName);
         dispatch({
           type: "setLoggedInUser",
           data: user.username,
@@ -36,6 +38,10 @@ const SigninForm = () => {
         dispatch({
           type: "setToken",
           data: user.jwt,
+        });
+        dispatch({
+          type: "setUserDetails",
+          data: { firstName: user.firstName, lastName: user.lastName },
         });
         setFormData(initialFormData);
         navigate("/");

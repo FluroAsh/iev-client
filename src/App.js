@@ -5,26 +5,30 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-
+import { Container } from "@mui/material";
+import { reducer } from "./utils/reducer";
+import { StateContext } from "./context/stateContext";
 import "./styles/main.scss";
+
 import { Navbar } from "./layouts/Navbar.js";
 import SignupForm from "./components/SignupForm";
 import SigninForm from "./components/SigninForm";
-
-import { reducer } from "./utils/reducer";
-import { StateContext } from "./context/stateContext";
-import { NotFound } from "./pages/NotFound";
-import { Container } from "@mui/material";
 import { ChargerForm } from "./components/ChargerForm";
+import { NotFound } from "./pages/NotFound";
 import { ViewCharger } from "./pages/ViewCharger";
 import { ViewChargers } from "./pages/ViewChargers";
 import { SearchLocation } from "./pages/SearchLocation";
+import { Dashboard } from "./pages/Dashboard";
 
 function App() {
   const initialState = {
     chargerList: [],
     bookingDates: [],
-    loggedInUser: sessionStorage.getItem("username") || null,
+    loggedInUser: sessionStorage.getItem("username") || "",
+    currentUser: {
+      firstName: sessionStorage.getItem("firstName") || "",
+      lastName: sessionStorage.getItem("lastName") || "",
+    },
     token: sessionStorage.getItem("token") || null,
     location: {},
   };
@@ -43,6 +47,12 @@ function App() {
               <Route path="/search" element={<SearchLocation />} />
               <Route path="/auth/signup" element={<SignupForm />} />
               <Route path="/auth/signin" element={<SigninForm />} />
+              <Route
+                path="/bookings/:username"
+                element={
+                  loggedInUser ? <Dashboard /> : <Navigate to="/auth/signin" />
+                }
+              />
               <Route path="chargers">
                 <Route index element={<ViewChargers />} />
                 <Route
