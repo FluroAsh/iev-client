@@ -18,7 +18,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("location", location);
+    // console.log("location", location);
     dispatch({
       type: "setLocation",
       data: location,
@@ -27,7 +27,7 @@ export const Navbar = () => {
     fetchData(location, dispatch);
   }, [location, dispatch]);
 
-  console.log("dates", bookingDates);
+  // console.log("dates", bookingDates);
 
   return (
     <>

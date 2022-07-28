@@ -6,68 +6,46 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import ButtonGroup from "@mui/material/ButtonGroup";
 
-import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
-import { Button, Toolbar, Typography } from "@mui/material";
-
-function createData(id, city, stationName, price, date, status) {
-  return { id, city, stationName, price, date, status };
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
 }
 
-export default function BasicTable({ requests }) {
-  const rows = requests.map((request, i) => {
-    return createData(i, "city", "stationName", "price", "date", "status");
-  });
+const rows = [
+  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+  createData("Eclair", 262, 16.0, 24, 6.0),
+  createData("Cupcake", 305, 3.7, 67, 4.3),
+  createData("Gingerbread", 356, 16.0, 49, 3.9),
+];
 
+export default function DenseTable() {
+  // console.log("Requests inside table", requests);
   return (
-    /**
-     * TODO:
-     * 1. Add clickable row for popup actions
-     * 2. Add pagination
-     * 3. Add mobile conditionals (should not display some columns, change styling etc)
-     */
-    <TableContainer component={Paper} sx={{ background: "#aa55ee" }}>
-      <Toolbar sx={{ Width: "100%" }}>
-        <Typography variant="h5">My Bookings</Typography>
-      </Toolbar>
-      <Table sx={{ minWidth: 600 }} aria-label="simple table">
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>City</TableCell>
-            <TableCell align="right">Station Name</TableCell>
-            <TableCell align="right">Price</TableCell>
-            <TableCell align="right">Booking Date</TableCell>
-            <TableCell align="right">Status</TableCell>
-            <TableCell></TableCell>
+            <TableCell>Dessert (100g serving)</TableCell>
+            <TableCell align="right">Calories</TableCell>
+            <TableCell align="right">Fat&nbsp;(g)</TableCell>
+            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+            <TableCell align="right">Protein&nbsp;(g)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
             <TableRow
-              key={row.id}
+              key={row.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.city}
+                {row.name}
               </TableCell>
-              <TableCell align="right">{row.stationName}</TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.date}</TableCell>
-              <TableCell align="right">{row.status}</TableCell>
-              <TableCell align="center">
-                {row.status === "Pending" && (
-                  // TODO: Render modals/dialog for confirming actions
-                  <ButtonGroup variant="contained">
-                    <Button color="success" size="small">
-                      Pay
-                    </Button>
-                    <Button color="error" size="small">
-                      Cancel
-                    </Button>
-                  </ButtonGroup>
-                )}
-              </TableCell>
+              <TableCell align="right">{row.calories}</TableCell>
+              <TableCell align="right">{row.fat}</TableCell>
+              <TableCell align="right">{row.carbs}</TableCell>
+              <TableCell align="right">{row.protein}</TableCell>
             </TableRow>
           ))}
         </TableBody>

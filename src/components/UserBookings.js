@@ -20,6 +20,7 @@ function createData(id, city, stationName, price, date, status) {
 
 export default function UserBookings({ bookings }) {
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  // console.log("bookings table", bookings);
   const rows = bookings.map((booking) => {
     const { bookingDate: date, status } = booking;
     const { name: stationName, price } = booking.Charger;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserBookings from "../components/UserBookings";
-import UserRequests from "../components/UserBookings";
+import UserRequests from "../components/UserRequests";
 import {
   getUserBookingRequests,
   getUserBookings,
@@ -11,17 +11,19 @@ import { Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 
 export const Dashboard = () => {
-  const [bookings, setBookings] = useState();
-  const [requests, setRequests] = useState();
+  const [bookings, setBookings] = useState([]);
+  const [requests, setRequests] = useState([]);
   const [host, setHost] = useState(false);
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
   const { username } = useParams();
 
   useEffect(() => {
+    setBookings([]);
+    setRequests([]);
     populateBookings(username, setBookings, setError, setLoading);
     populateRequests(username, setRequests, setHost, setError, setLoading);
-  }, []);
+  }, [username]);
 
   // TODO: Pass styles as prop based on if user is a prop or not
   // this is to resize the tables to the correct height & ??? etc.
@@ -33,38 +35,40 @@ export const Dashboard = () => {
   };
 
   console.log("host?", host);
-  console.log("requests", requests);
-  console.log("bookings", bookings);
+  console.log("stored requests", requests);
+  console.log("stored bookings", bookings);
 
-  // TODO: Determine if current user is host or regular user
-  // ** 1. Has an active charging station (API Request, search user
-  // ** 2. Doesn't have an active charging station
-  // >> Should be performed on the backend, return error: User is not a host, if
+  if (loading) {
+    return <CssLoader />;
+  }
+
   return (
     <>
-      {loading && <CssLoader />}
-      {error && <ErrorScreen error={error} />}
-      {bookings && (
+      {/* Below 2 lines of code will probably be replaced.. Ignore for now */}
+      {/* {loading && <CssLoader />} */}
+      {/* {error && <ErrorScreen error={error} />} */}
+
+      {/* {error && <p>{error.message}</p>} */}
+      {/* NOTE: Not every host will have bookings */}
+
+      {bookings.length > 0 && (
         <>
           <div className="page-container" style={{ margin: "0 2em" }}>
             <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
               Welcome Back{" "}
-              {host
+              {requests
                 ? requests[0].Charger.Host.firstName
                 : bookings[0].User.firstName}
               !
             </Typography>
-
             <UserBookings bookings={bookings} />
-            {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
-            {/* <UserRequests/> is causing booking undefined for some reason... ? */}
-            {/* {host &&
-              requests.map((request) => {
-                return <p>{request.Charger.name}</p>;
-              })} */}
+            {/* <UserRequests /> is causing booking undefined for some reason... ? */}
           </div>
         </>
       )}
+
+      {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
+      {requests.length > 0 && <UserRequests requests={requests} />}
     </>
   );
 };
@@ -77,13 +81,14 @@ export async function populateRequests(
   setLoading
 ) {
   try {
+    setLoading(true);
+    console.log(">>> Setting requests");
     let requests = await getUserBookingRequests(username);
-    if (requests) {
-      /** Found requests, so the user must be a host */
-      setHost(true);
-      let data = requests.filter((request) => request.Charger !== null);
-      setRequests(data || []);
-    }
+    console.log("API requests", requests);
+    /** Found requests, so the user must be a host.
+     * The below won't run if the API service throws an error */
+    setHost(true);
+    setRequests(requests);
   } catch (err) {
     setError(err);
   } finally {
@@ -97,13 +102,18 @@ export async function populateBookings(
   setError,
   setLoading
 ) {
+  console.log(">>> Setting bookings");
   try {
     setLoading(true);
     const bookings = await getUserBookings(username);
-    // check if user is a host
-    console.log("bookings", bookings);
+    console.log("API Bookings", bookings);
     setBookings(bookings);
   } catch (err) {
+    console.log("API Error", err);
+    // console.log(bookings);
+
     setError(err);
+  } finally {
+    setLoading(false);
   }
 }

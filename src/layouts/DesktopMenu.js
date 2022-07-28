@@ -51,7 +51,6 @@ export const DesktopMenu = () => {
     });
     navigate("/");
   };
-  console.log("user", loggedInUser);
   return (
     <div>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
