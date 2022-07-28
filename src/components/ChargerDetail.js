@@ -13,6 +13,7 @@ import {
   DialogContentText,
   DialogTitle,
   Typography,
+  Alert,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
@@ -24,8 +25,8 @@ export const ChargerDetail = ({ charger }) => {
 
   return (
     <StateContext.Provider value={{ store, dispatch }}>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        {errorMessage && <p className="errorMessage">{errorMessage}</p>}
+      <div style={{ display: "flex"}}>
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       </div>
       <Container
         sx={{
@@ -55,7 +56,7 @@ export const ChargerDetail = ({ charger }) => {
           <Typography variant="h6">
             {Object.values(charger.Address.city)}
           </Typography>
-          <Typography variant="body2 contained" color="text.secondary">
+          <Typography variant="body2 contained" color="text.secondary" style={{ maxWidth: "450px", marginBottom: "16px"}}>
             {charger.instructions}
           </Typography>
         </Box>
@@ -138,7 +139,7 @@ export const ButtonGroup = ({ charger }) => {
 
   const handleEdit = async (e) => {};
   return charger.User.username === loggedInUser ? (
-    <div className="flexBox">
+    <div className="flex-box">
       <Button
         type="submit"
         value="active"
