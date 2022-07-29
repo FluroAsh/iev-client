@@ -8,7 +8,6 @@ import {
   Button
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { ButtonGroup } from "./ButtonGroup";
 import { displayAUD } from "../utils/helpers";
 
 export const Charger = ({ charger }) => {

@@ -15,7 +15,6 @@ import {
   Typography,
   Alert,
   Switch,
-  FormControl,
   FormControlLabel,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,7 +23,6 @@ import {
   deleteCharger,
   updateChargerStatus,
 } from "../services/chargerServices";
-import { ChargerForm } from "./ChargerForm";
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
@@ -97,7 +95,7 @@ export const ChargerDetail = ({ charger }) => {
     } else {
       // TODO: handle success message
       console.log("updated successful");
-      // navigate(`/chargers/mychargers`);
+      navigate(`/chargers/mychargers`);
     }
 
     console.log("charger after created", response);
@@ -153,16 +151,10 @@ export const ChargerDetail = ({ charger }) => {
               control={<Switch checked={status} onChange={handleSwitch} />}
               label="Activate"
             />
-            <Button type="submit" variant="contained">
-              Activate
+            <Button type="submit" variant="contained" style={{margin: "16px"}}>
+              Switch
             </Button>
           </form>
-
-          {/* <Switch
-            checked={status}
-            onChange={handleSwitch}
-            inputProps={{ "aria-label": "controlled" }}
-          /> */}
 
           <Box style={{ marginBottom: "16px" }}>
             <ChargerCalendar />
@@ -198,7 +190,6 @@ export const ChargerDetail = ({ charger }) => {
               </Button>
             </div>
           )}
-          {/* <ButtonGroup key={charger.id} charger={charger} /> */}
         </Box>
       </Container>
     </StateContext.Provider>
