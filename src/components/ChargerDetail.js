@@ -14,6 +14,9 @@ import {
   DialogTitle,
   Typography,
   Alert,
+  Switch,
+  FormControl,
+  FormControlLabel,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
@@ -23,13 +26,27 @@ import { ChargerForm } from "./ChargerForm";
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, errorMessage, editFormData } = store;
-  // const [editFormData, setEditFormData] = useState({});
+
+  let initalStatus;
+
+  if (charger.status === "active") {
+    initalStatus = true;
+  } else {
+    initalStatus = false;
+  }
+
+  const [status, setChecked] = useState(initalStatus);
+
   const navigate = useNavigate();
 
-  useEffect( () => () => dispatch({
-    type: "setErrorMessage",
-    data: "",
-  }) , [ dispatch ] );
+  useEffect(
+    () => () =>
+      dispatch({
+        type: "setErrorMessage",
+        data: "",
+      }),
+    [dispatch]
+  );
 
   const handleBooking = (e) => {
     navigate(`/charger/${charger.id}`);
@@ -39,13 +56,17 @@ export const ChargerDetail = ({ charger }) => {
     // setEditFormData(charger)
     dispatch({
       type: "setEditFormData",
-      data: charger
-    })
-    console.log("THIS IS FORM DATA WITH CHARGER DETAIL", editFormData)
+      data: charger,
+    });
+    console.log("THIS IS FORM DATA WITH CHARGER DETAIL", editFormData);
     // return (
     //   <ChargerForm key={charger.id} editFormData={editFormData}/>
     // )
-    navigate(`/charger/${charger.id}/edit`)
+    navigate(`/charger/${charger.id}/edit`);
+  };
+
+  const handleSwitch = (event) => {
+    setChecked(event.target.checked);
   };
 
   return (
@@ -89,7 +110,17 @@ export const ChargerDetail = ({ charger }) => {
             {charger.instructions}
           </Typography>
         </Box>
+
         <Box>
+          <Typography variant="h6">Current Status: {charger.status}</Typography>
+
+          <FormControl>
+            <FormControlLabel
+              control={<Switch checked={status} onChange={handleSwitch} />}
+              label="Activate"
+            />
+          </FormControl>
+
           <Box style={{ marginBottom: "16px" }}>
             <ChargerCalendar />
           </Box>
