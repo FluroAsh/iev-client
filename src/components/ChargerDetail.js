@@ -26,7 +26,9 @@ import {
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
-  const { loggedInUser, errorMessage, editFormData, chargerStatus} = store;
+  const { loggedInUser, errorMessage, editFormData, chargerStatus } = store;
+  const navigate = useNavigate();
+
 
   let initalStatus;
 
@@ -39,11 +41,37 @@ export const ChargerDetail = ({ charger }) => {
   const [checked, setStatus] = useState(initalStatus);
 
   useEffect(() => {
-    updateStatus()
-  },[chargerStatus])
+    const updateStatus = (e) => {
+      let data = {};
+
+      if (checked === true) {
+        data["status"] = "active";
+      } else {
+        data["status"] = "disabled";
+      }
+
+      console.log("THIS IS DATA SENT", data);
+
+      const response = updateChargerStatus(data, charger.id);
+
+      if (response.status === 500) {
+        dispatch({
+          type: "setErrorMessage",
+          data: response.data.message,
+        });
+        return;
+      } else {
+        // TODO: handle success message
+        console.log("updated successful");
+        navigate(`/chargers/mychargers`);
+      }
+
+      console.log("charger after created", response);
+    };
+    updateStatus();
+  }, [chargerStatus, dispatch, charger.id, navigate, checked]);
 
   console.log("THIS IS STATUS", checked);
-  const navigate = useNavigate();
 
   useEffect(
     () => () =>
@@ -53,8 +81,6 @@ export const ChargerDetail = ({ charger }) => {
       }),
     [dispatch]
   );
-
-
 
   const handleBooking = (e) => {
     navigate(`/charger/${charger.id}`);
@@ -77,37 +103,8 @@ export const ChargerDetail = ({ charger }) => {
     setStatus(e.target.checked);
     dispatch({
       type: "setChargerStatus",
-      data: e.target.checked
-    })
-  };
-
-  const updateStatus = (e) => {
-
-    let data = {}
-
-    if (checked === true) {
-      data["status"] = "active";
-    } else {
-      data["status"] = "disabled";
-    }
-
-    console.log("THIS IS DATA SENT", data);
-
-    const response = updateChargerStatus(data, charger.id);
-
-    if (response.status === 500) {
-      dispatch({
-        type: "setErrorMessage",
-        data: response.data.message,
-      });
-      return;
-    } else {
-      // TODO: handle success message
-      console.log("updated successful");
-      navigate(`/chargers/mychargers`);
-    }
-
-    console.log("charger after created", response);
+      data: e.target.checked,
+    });
   };
 
   return (
@@ -140,9 +137,7 @@ export const ChargerDetail = ({ charger }) => {
             </Link>
           </Typography>
           <Typography variant="h6">{displayAUD(charger.price)}</Typography>
-          <Typography variant="h6">
-            {Object.values(charger.Address.city)}
-          </Typography>
+          <Typography variant="h6">{charger.Address.city}</Typography>
           <Typography
             variant="body2 contained"
             color="text.secondary"
@@ -155,11 +150,10 @@ export const ChargerDetail = ({ charger }) => {
         <Box>
           <Typography variant="h6">Charger Status: {charger.status}</Typography>
 
-            <FormControlLabel
-              control={<Switch checked={checked} onChange={handleSwitch} />}
-              label="Activate"
-            />
-
+          <FormControlLabel
+            control={<Switch checked={checked} onChange={handleSwitch} />}
+            label="Activate"
+          />
 
           <Box style={{ marginBottom: "16px" }}>
             <ChargerCalendar />
@@ -202,12 +196,11 @@ export const ChargerDetail = ({ charger }) => {
 };
 
 export default function DeleteButton({ charger }) {
-  const { store, dispatch } = useGlobalState();
-  const { chargerList } = store;
+  const { dispatch } = useGlobalState();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
 
-  const navigate = useNavigate();
   const handleClickOpen = () => {
     setOpen(true);
   };
