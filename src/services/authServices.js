@@ -5,13 +5,15 @@ export async function signUp(data) {
     const response = await ievAPI.post("/auth/signup", data);
     return response.data;
   } catch (err) {
-    console.log("Axios ERROR----");
-    console.error(err.response.data);
+    throw Error(err.response.data.error);
   }
 }
 
 export async function signIn(data) {
-  console.log(data);
-  const response = await ievAPI.post("/auth/signin", data);
-  return response.data;
+  try {
+    const response = await ievAPI.post("/auth/signin", data);
+    return response.data;
+  } catch (err) {
+    throw Error(err.response.data.error);
+  }
 }

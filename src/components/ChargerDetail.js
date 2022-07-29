@@ -164,7 +164,7 @@ export const ChargerDetail = ({ charger }) => {
           <Box style={{ marginBottom: "16px" }}>
             <ChargerCalendar />
           </Box>
-          {charger.User.username === loggedInUser ? (
+          {charger.Host.username === loggedInUser ? (
             <div className="flex-box">
               <Button
                 // type="submit"

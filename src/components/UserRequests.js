@@ -25,17 +25,12 @@ function createData(
   return { id, name, vehicle, price, bookingDate, sentDate, stationName };
 }
 
-export default function BasicTable({ requests, styles, host }) {
+export default function UserRequests({ requests, styles, host }) {
   const rows = requests.map((request, i) => {
-    /**
-     * Name, Vehicle, Price, Booking Date, Date Sent, Station Name
-     */
-    console.log(request.User.UserVehicle.Vehicle.make);
     return createData(
       i,
       request.User.firstName,
-      // request.User.UserVehicle.Vehicle.model,
-      "vehicle",
+      request.User.UserVehicle.Vehicle.model,
       displayAUD(request.Charger.price),
       displayLocalTime(request.bookingDate),
       displayLocalTime(request.createdAt),
@@ -51,11 +46,13 @@ export default function BasicTable({ requests, styles, host }) {
      * 3. Add mobile conditionals (should not display some columns, change styling etc)
      */
     <TableContainer component={Paper}>
-      <Toolbar sx={{ Width: "100%" }}>
-        <Typography variant="h5">Requests</Typography>
-      </Toolbar>
       <Table sx={{ minWidth: 600 }} aria-label="simple table">
         <TableHead>
+          <TableRow>
+            <TableCell sx={{ p: 2, background: "#e0e0e0" }} colSpan={7}>
+              <Typography variant="h5">Requests</Typography>
+            </TableCell>
+          </TableRow>
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell align="right">Vehicle</TableCell>

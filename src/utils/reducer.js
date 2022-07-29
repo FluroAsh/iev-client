@@ -70,7 +70,6 @@ export const reducer = (state, action) => {
         chargerStatus: action.data,
       };
     }
-    
 
     case "setEditFormData": {
       //updates the token value
@@ -79,8 +78,7 @@ export const reducer = (state, action) => {
         editFormData: action.data,
       };
     }
-    
-    
+
     default:
       return state;
   }

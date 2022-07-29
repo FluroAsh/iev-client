@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
+import { ErrorAlert } from "./ErrorAlert";
 
 const SigninForm = () => {
   const { dispatch } = useGlobalState();
@@ -13,19 +14,14 @@ const SigninForm = () => {
     password: "",
   };
   const [formData, setFormData] = useState(initialFormData);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    signIn(formData).then((user) => {
-      // console.log(user)
-      if (user.error) {
-        // TODO: Handle error front end
-        console.log("user.error", user.error);
-        setError(user.error);
-      } else {
-        setError(null);
+    signIn(formData)
+      .then((user) => {
+        setError();
         console.log("THIS IS USER", user);
         sessionStorage.setItem("username", user.username);
         sessionStorage.setItem("token", user.jwt);
@@ -45,8 +41,10 @@ const SigninForm = () => {
         });
         setFormData(initialFormData);
         navigate("/");
-      }
-    });
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
 
   const handleFormData = (e) => {
@@ -57,11 +55,13 @@ const SigninForm = () => {
   };
   return (
     <>
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <Typography variant="h4">Sign in</Typography>
-        <div>
-          <InputLabel>Username:</InputLabel>
+      {error && <ErrorAlert message={error.message} setError={setError} />}
+
+      <div className="form-container">
+        <form onSubmit={handleSubmit}>
+          <Typography variant="h4">Sign in</Typography>
+
+          <InputLabel>Username / Email:</InputLabel>
           <TextField
             type="text"
             name="username"
@@ -69,8 +69,7 @@ const SigninForm = () => {
             value={formData.username}
             onChange={handleFormData}
           />
-        </div>
-        <div>
+
           <InputLabel htmlFor="password">Password:</InputLabel>
           <TextField
             type="password"
@@ -79,12 +78,12 @@ const SigninForm = () => {
             value={formData.password}
             onChange={handleFormData}
           />
-        </div>
 
-        <Button variant="contained" type="submit">
-          Login
-        </Button>
-      </form>
+          <Button variant="contained" type="submit">
+            Login
+          </Button>
+        </form>
+      </div>
     </>
   );
 };

@@ -44,11 +44,13 @@ export default function UserBookings({ bookings }) {
      * 3. Add mobile conditionals (should not display some columns, change styling etc)
      */
     <TableContainer component={Paper}>
-      <Toolbar sx={{ Width: "100%" }}>
-        <Typography variant="h5">My Bookings</Typography>
-      </Toolbar>
       <Table sx={{ minWidth: 600 }} aria-label="simple table">
         <TableHead>
+          <TableRow>
+            <TableCell sx={{ p: 2, background: "#e0e0e0" }} colSpan={7}>
+              <Typography variant="h5">Bookings</Typography>
+            </TableCell>
+          </TableRow>
           <TableRow>
             <TableCell>City</TableCell>
             <TableCell align="right">Station Name</TableCell>

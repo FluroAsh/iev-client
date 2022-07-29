@@ -45,7 +45,7 @@ function App() {
       <StateContext.Provider value={{ store, dispatch }}>
         <Router>
           <Navbar />
-          <Container disableGutters>
+          <Container className="inner-container" disableGutters>
             <Routes>
               <Route path="/" element={<Navigate to="chargers" replace />} />
               <Route path="/search" element={<SearchLocation />} />
