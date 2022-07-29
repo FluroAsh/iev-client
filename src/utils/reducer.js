@@ -1,12 +1,12 @@
 export const reducer = (state, action) => {
   switch (action.type) {
-    case "cleanState": {
-      //State goes back to default values
-      return {
-        chargerList: [], // chargerList isn't stored in session storage so it'll be cleared on refresh
-        loggedInUser: "",
-      };
-    }
+    // case "cleanState": {
+    //   //State goes back to default values
+    //   return {
+    //     chargerList: [],
+    //     loggedInUser: "",
+    //   };
+    // }
 
     case "setBookingDates": {
       return {
@@ -54,6 +54,31 @@ export const reducer = (state, action) => {
         token: action.data,
       };
     }
+
+    case "setErrorMessage": {
+      //updates the token value
+      return {
+        ...state,
+        errorMessage: action.data,
+      };
+    }
+
+    case "setChargerStatus": {
+      //updates the token value
+      return {
+        ...state,
+        chargerStatus: action.data,
+      };
+    }
+
+    case "setEditFormData": {
+      //updates the token value
+      return {
+        ...state,
+        editFormData: action.data,
+      };
+    }
+
     default:
       return state;
   }

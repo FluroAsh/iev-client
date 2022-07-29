@@ -80,7 +80,7 @@ export default function UserBookings({ bookings }) {
               <TableCell align="center">
                 {row.status === "Pending" && (
                   // TODO: Render modals/dialog for confirming actions
-                  <ButtonGroup variant="contained">
+                  <ButtonGroup variant="contained" sx={{ zIndex: 999999 }}>
                     <Button color="success" size="small">
                       Pay
                     </Button>

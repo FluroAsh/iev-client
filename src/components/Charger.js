@@ -5,9 +5,9 @@ import {
   CardMedia,
   CardActions,
   CardActionArea,
+  Button
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { ButtonGroup } from "./ButtonGroup";
 import { displayAUD } from "../utils/helpers";
 
 export const Charger = ({ charger }) => {
@@ -43,7 +43,16 @@ export const Charger = ({ charger }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <ButtonGroup key={charger.id} charger={charger} />
+        <Button
+          type="submit"
+          value="active"
+          variant="contained"
+          onClick={handleClick}
+          style={{ marginRight: "16px" }}
+        >
+          View
+        </Button>
+        {/* <ButtonGroup key={charger.id} charger={charger} /> */}
       </CardActions>
     </Card>
   );

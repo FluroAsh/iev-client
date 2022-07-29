@@ -72,9 +72,9 @@ footer {
 }
 
 /* Charger Detail Classes */
-.flexBox {
+.flex-box {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   // align-items: center;
   // flex-direction: row;
 }
@@ -88,8 +88,17 @@ footer {
 }
 
 .detailImage {
-  max-width: 500px;
+  max-width: 450px;
+  margin-top: 25px;
 }
+
+.errorMessage {
+  background-color: bisque;
+  margin: auto;
+  padding: 1em;
+  max-width: 450px;
+}
+
 // #appbar {
 //   display: flex !important;
 //   justify-content: center;

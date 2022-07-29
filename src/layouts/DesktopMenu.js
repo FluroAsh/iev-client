@@ -75,7 +75,8 @@ export const DesktopMenu = () => {
             >
               {/* TODO; Update 'AT' with 'user.firstName.charAt[0] + user.lastName.charAt[0]' */}
               {loggedInUser ? (
-                returnInitials(currentUser.firstName, currentUser.lastName)
+                returnInitials(currentUser.firstName, currentUser.lastName) ||
+                "ERR"
               ) : (
                 <FontAwesomeIcon icon={faUser} />
               )}
