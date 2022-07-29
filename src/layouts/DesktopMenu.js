@@ -64,7 +64,6 @@ export const DesktopMenu = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            {/* Retrieve first */}
             <Avatar
               sx={{
                 width: 32,
@@ -121,7 +120,6 @@ export const DesktopMenu = () => {
       >
         {loggedInUser ? (
           <div>
-            {/* TODO: Add links to Bookings, List Charger, & Edit Vehicle */}
             <MenuItem component={Link} to="/">
               <ListItemIcon>
                 <FontAwesomeIcon icon={faHouse} />

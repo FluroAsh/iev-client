@@ -14,10 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function AlertDialog({ charger }) {
-
-    const {store, dispatch} = useGlobalState();
-    const {chargerList} = store
-
+  const { store, dispatch } = useGlobalState();
+  const { chargerList } = store;
 
   const [open, setOpen] = useState(false);
 
@@ -33,11 +31,11 @@ export default function AlertDialog({ charger }) {
       .then((response) => console.log(response.message))
       .then((err) => console.log(err));
 
-      dispatch({
-        type: "setChargerList",
-        data: chargerList
-      })
-      // TODO: to navigate to chargers/mychargers page but change the chargerlist in store
+    dispatch({
+      type: "setChargerList",
+      data: chargerList,
+    });
+    // TODO: to navigate to chargers/mychargers page but change the chargerlist in store
     navigate(`/chargers/mychargers`);
   };
 
@@ -81,7 +79,7 @@ export const ButtonGroup = ({ charger }) => {
   };
 
   const handleEdit = async (e) => {};
-  return charger.User.username === loggedInUser ? (
+  return charger.Host.username === loggedInUser ? (
     <div className="flexBox">
       <Button
         type="submit"

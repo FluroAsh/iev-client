@@ -25,7 +25,7 @@ function createData(
   return { id, name, vehicle, price, bookingDate, sentDate, stationName };
 }
 
-export default function BasicTable({ requests, styles, host }) {
+export default function UserRequests({ requests, styles, host }) {
   const rows = requests.map((request, i) => {
     return createData(
       i,
