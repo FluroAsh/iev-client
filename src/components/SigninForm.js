@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
+import { ErrorAlert } from "./ErrorAlert";
 
 const SigninForm = () => {
   const { dispatch } = useGlobalState();
@@ -13,14 +14,14 @@ const SigninForm = () => {
     password: "",
   };
   const [formData, setFormData] = useState(initialFormData);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     signIn(formData)
       .then((user) => {
-        setError(null);
+        setError();
         console.log("THIS IS USER", user);
         sessionStorage.setItem("username", user.username);
         sessionStorage.setItem("token", user.jwt);
@@ -54,9 +55,8 @@ const SigninForm = () => {
   };
   return (
     <>
-      {error && (
-        <p style={{ color: "red", fontWeight: "bold" }}>{error.message}</p>
-      )}
+      {error && <ErrorAlert message={error.message} setError={setError} />}
+
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <Typography variant="h4">Sign in</Typography>
