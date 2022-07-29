@@ -57,29 +57,27 @@ const SigninForm = () => {
       {error && (
         <p style={{ color: "red", fontWeight: "bold" }}>{error.message}</p>
       )}
-      <div>
+      <div className="form-container">
         <form onSubmit={handleSubmit}>
           <Typography variant="h4">Sign in</Typography>
-          <div>
-            <InputLabel>Username / Email:</InputLabel>
-            <TextField
-              type="text"
-              name="username"
-              id="username"
-              value={formData.username}
-              onChange={handleFormData}
-            />
-          </div>
-          <div>
-            <InputLabel htmlFor="password">Password:</InputLabel>
-            <TextField
-              type="password"
-              name="password"
-              id="password"
-              value={formData.password}
-              onChange={handleFormData}
-            />
-          </div>
+
+          <InputLabel>Username / Email:</InputLabel>
+          <TextField
+            type="text"
+            name="username"
+            id="username"
+            value={formData.username}
+            onChange={handleFormData}
+          />
+
+          <InputLabel htmlFor="password">Password:</InputLabel>
+          <TextField
+            type="password"
+            name="password"
+            id="password"
+            value={formData.password}
+            onChange={handleFormData}
+          />
 
           <Button variant="contained" type="submit">
             Login
