@@ -35,6 +35,13 @@ footer {
   color: #000;
 }
 
+form ~ h4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 450px;
+}
+
 .error-container {
   display: flex;
   justify-content: center;

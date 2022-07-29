@@ -3,7 +3,6 @@ import { Toolbar, AppBar, useMediaQuery, useTheme } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useGlobalState } from "../context/stateContext";
 import { getMyChargers, getChargers } from "../services/chargerServices";
-import { useNavigate } from "react-router-dom";
 
 import { MobileNavbar } from "./MobileNavbar";
 import { DesktopNavBar } from "./DesktopNavBar";
@@ -13,12 +12,9 @@ export const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const location = useLocation();
-  const { store, dispatch } = useGlobalState();
-  const { loggedInUser, bookingDates, currentUser } = store;
-  const navigate = useNavigate();
+  const { dispatch } = useGlobalState();
 
   useEffect(() => {
-    // console.log("location", location);
     dispatch({
       type: "setLocation",
       data: location,
@@ -26,8 +22,6 @@ export const Navbar = () => {
 
     fetchData(location, dispatch);
   }, [location, dispatch]);
-
-  // console.log("dates", bookingDates);
 
   return (
     <>

@@ -7,11 +7,16 @@ export async function signUp(data) {
   } catch (err) {
     console.log("Axios ERROR----");
     console.error(err.response.data);
+    throw Error(err);
   }
 }
 
 export async function signIn(data) {
-  console.log(data);
-  const response = await ievAPI.post("/auth/signin", data);
-  return response.data;
+  try {
+    console.log(data);
+    const response = await ievAPI.post("/auth/signin", data);
+    return response.data;
+  } catch (err) {
+    throw Error(err.response.data.error);
+  }
 }

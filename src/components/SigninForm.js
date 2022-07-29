@@ -18,13 +18,8 @@ const SigninForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    signIn(formData).then((user) => {
-      // console.log(user)
-      if (user.error) {
-        // TODO: Handle error front end
-        console.log("user.error", user.error);
-        setError(user.error);
-      } else {
+    signIn(formData)
+      .then((user) => {
         setError(null);
         console.log("THIS IS USER", user);
         sessionStorage.setItem("username", user.username);
@@ -45,8 +40,10 @@ const SigninForm = () => {
         });
         setFormData(initialFormData);
         navigate("/");
-      }
-    });
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
 
   const handleFormData = (e) => {
@@ -57,34 +54,38 @@ const SigninForm = () => {
   };
   return (
     <>
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <Typography variant="h4">Sign in</Typography>
-        <div>
-          <InputLabel>Username:</InputLabel>
-          <TextField
-            type="text"
-            name="username"
-            id="username"
-            value={formData.username}
-            onChange={handleFormData}
-          />
-        </div>
-        <div>
-          <InputLabel htmlFor="password">Password:</InputLabel>
-          <TextField
-            type="password"
-            name="password"
-            id="password"
-            value={formData.password}
-            onChange={handleFormData}
-          />
-        </div>
+      {error && (
+        <p style={{ color: "red", fontWeight: "bold" }}>{error.message}</p>
+      )}
+      <div>
+        <form onSubmit={handleSubmit}>
+          <Typography variant="h4">Sign in</Typography>
+          <div>
+            <InputLabel>Username / Email:</InputLabel>
+            <TextField
+              type="text"
+              name="username"
+              id="username"
+              value={formData.username}
+              onChange={handleFormData}
+            />
+          </div>
+          <div>
+            <InputLabel htmlFor="password">Password:</InputLabel>
+            <TextField
+              type="password"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleFormData}
+            />
+          </div>
 
-        <Button variant="contained" type="submit">
-          Login
-        </Button>
-      </form>
+          <Button variant="contained" type="submit">
+            Login
+          </Button>
+        </form>
+      </div>
     </>
   );
 };

@@ -8,7 +8,6 @@ import {
 } from "../services/bookingServices";
 import { CssLoader } from "../components/CssLoader";
 import { Button, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
 import { useGlobalState } from "../context/stateContext";
 
 export async function populateRequests(
@@ -20,11 +19,9 @@ export async function populateRequests(
 ) {
   try {
     setLoading(true);
-    console.log(">>> Setting requests");
     let requests = await getUserBookingRequests(username);
-    console.log("API requests", requests);
     /** Found requests, so the user must be a host.
-     * The below won't run if the API service throws an error */
+     * Below assignment won't run if the API service throws an error */
     setHost(true);
     setRequests(requests);
   } catch (err) {
@@ -40,7 +37,6 @@ export async function populateBookings(
   setError,
   setLoading
 ) {
-  console.log(">>> Setting bookings");
   try {
     setLoading(true);
     const bookings = await getUserBookings(username);
@@ -55,18 +51,7 @@ export async function populateBookings(
 
 const NoResults = ({ message }) => {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "200px",
-        border: "2px solid black",
-        borderRadius: "5px",
-        margin: "2em 0",
-      }}
-    >
+    <div className="no-results">
       <p>{message}</p>
     </div>
   );
@@ -95,14 +80,13 @@ export const Dashboard = () => {
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
 
-  const { username } = useParams();
   const { store } = useGlobalState();
-  const { currentUser } = store;
+  const { currentUser, loggedInUser } = store;
 
   useEffect(() => {
-    populateBookings(username, setBookings, setError, setLoading);
-    populateRequests(username, setRequests, setHost, setError, setLoading);
-  }, [username]);
+    populateBookings(loggedInUser, setBookings, setError, setLoading);
+    populateRequests(loggedInUser, setRequests, setHost, setError, setLoading);
+  }, [loggedInUser]);
 
   // TODO: Pass styles as prop based on if user is a prop or not
   // this is to resize the tables to the correct height & ??? etc.
@@ -112,9 +96,6 @@ export const Dashboard = () => {
       tableMinHeight: "40vw",
     },
   };
-
-  // console.log(error);
-  console.log("Host", host);
 
   if (loading) {
     return <CssLoader />;
