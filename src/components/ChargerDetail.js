@@ -20,7 +20,10 @@ import {
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
-import { deleteCharger } from "../services/chargerServices";
+import {
+  deleteCharger,
+  updateChargerStatus,
+} from "../services/chargerServices";
 import { ChargerForm } from "./ChargerForm";
 
 export const ChargerDetail = ({ charger }) => {
@@ -35,8 +38,9 @@ export const ChargerDetail = ({ charger }) => {
     initalStatus = false;
   }
 
-  const [status, setChecked] = useState(initalStatus);
+  const [status, setStatus] = useState(initalStatus);
 
+  console.log("THIS IS STATUS", status);
   const navigate = useNavigate();
 
   useEffect(
@@ -65,8 +69,38 @@ export const ChargerDetail = ({ charger }) => {
     navigate(`/charger/${charger.id}/edit`);
   };
 
-  const handleSwitch = (event) => {
-    setChecked(event.target.checked);
+  const handleSwitch = (e) => {
+    setStatus(e.target.checked);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let data = {}
+
+    if (status === true) {
+      data["status"] = "active";
+    } else {
+      data["status"] = "disabled";
+    }
+
+    console.log("THIS IS DATA SENT", data);
+
+    const response = updateChargerStatus(data, charger.id);
+
+    if (response.status === 500) {
+      dispatch({
+        type: "setErrorMessage",
+        data: response.data.message,
+      });
+      return;
+    } else {
+      // TODO: handle success message
+      console.log("updated successful");
+      // navigate(`/chargers/mychargers`);
+    }
+
+    console.log("charger after created", response);
   };
 
   return (
@@ -112,14 +146,23 @@ export const ChargerDetail = ({ charger }) => {
         </Box>
 
         <Box>
-          <Typography variant="h6">Current Status: {charger.status}</Typography>
+          <Typography variant="h6">Charger Status: {charger.status}</Typography>
 
-          <FormControl>
+          <form onSubmit={handleSubmit}>
             <FormControlLabel
               control={<Switch checked={status} onChange={handleSwitch} />}
               label="Activate"
             />
-          </FormControl>
+            <Button type="submit" variant="contained">
+              Activate
+            </Button>
+          </form>
+
+          {/* <Switch
+            checked={status}
+            onChange={handleSwitch}
+            inputProps={{ "aria-label": "controlled" }}
+          /> */}
 
           <Box style={{ marginBottom: "16px" }}>
             <ChargerCalendar />
@@ -218,44 +261,3 @@ export default function DeleteButton({ charger }) {
     </div>
   );
 }
-
-// export const ButtonGroup = ({ charger }) => {
-//   const navigate = useNavigate();
-//   const { store } = useGlobalState();
-//   const { loggedInUser } = store;
-
-//   const handleBooking = (e) => {
-//     navigate(`/charger/${charger.id}`);
-//   };
-
-//   const handleEdit = async (e) => {};
-
-//   return charger.User.username === loggedInUser ? (
-//     <div className="flex-box">
-//       <Button
-//         // type="submit"
-//         value="active"
-//         variant="contained"
-//         onClick={handleEdit}
-//         style={{ marginRight: "16px" }}
-//       >
-//         Edit
-//       </Button>
-//       <DeleteButton key={charger.id} charger={charger} />
-//     </div>
-//   ) : (
-//     <div className="flexBox">
-//       <Button
-//         variant="contained"
-//         size="large"
-//         color="primary"
-//         startIcon={
-//           <FontAwesomeIcon icon={faCalendarPlus} style={{ fontSize: "16px" }} />
-//         }
-//         onClick={handleBooking}
-//       >
-//         Book
-//       </Button>
-//     </div>
-//   );
-// };

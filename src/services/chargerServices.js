@@ -26,6 +26,19 @@ export async function updateCharger(data, id) {
   }
 }
 
+export async function updateChargerStatus(data, id) {
+  try {
+    const response = await ievAPI.patch(`/charger/${id}`, data);
+    //console.log(response.data)
+    // TODO: Check what comes back from the data to handle messages
+    return response.data;
+  } catch (err) {
+    console.log("Axios ERROR----");
+    console.log(err.message);
+    return err.response;
+  }
+}
+
 export async function deleteCharger(id) {
   try {
     const response = await ievAPI.delete(`/charger/${id}`);

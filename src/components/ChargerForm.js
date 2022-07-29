@@ -3,9 +3,6 @@ import {
   InputLabel,
   TextField,
   Typography,
-  // Select,
-  // MenuItem,
-  // FormControl,
   Container,
   Box,
   Alert,
@@ -15,8 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { addCharger, updateCharger } from "../services/chargerServices";
 import { useGlobalState } from "../context/stateContext";
 
-// import { reducer } from "../utils/reducer"
-
 export const ChargerForm = ({ editFormData }) => {
   const { store, dispatch } = useGlobalState();
   const navigate = useNavigate();
@@ -24,10 +19,14 @@ export const ChargerForm = ({ editFormData }) => {
 
   console.log("THIS IS STORE", store);
 
-  useEffect( () => () => dispatch({
-    type: "setErrorMessage",
-    data: "",
-  }) , [ dispatch ] );
+  useEffect(
+    () => () =>
+      dispatch({
+        type: "setErrorMessage",
+        data: "",
+      }),
+    [dispatch]
+  );
 
   let initialFormData;
 
@@ -61,19 +60,6 @@ export const ChargerForm = ({ editFormData }) => {
     };
   }
 
-  // const initialFormData = {
-  //   name: editFormData.name || "",
-  //   instructions: editFormData.instructions || "",
-  //   price: editFormData.price || "",
-
-  //   // TODO: handle status(handle submit)
-  //   status: editFormData.status || "",
-  //   plugName: editFormData.plugName || "",
-  //   // TODO: need to handle if user not logged in
-  //   // if not logged in, they shouldnt see the form but need to handle
-  //   // incase they use direct link
-  //   username: loggedInUser,
-  // };
   const [formData, setFormData] = useState(initialFormData);
 
   console.log("THIS IS EDIT FORM DATA", editFormData);
@@ -81,23 +67,17 @@ export const ChargerForm = ({ editFormData }) => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // try {
-    // if (e.target.value) {
-    //   formData.status = e.target.value;
-    // }
-
     const data = new FormData();
 
     for (const [key, value] of Object.entries(formData)) {
       data.append(key, value);
     }
 
-    let response
+    let response;
     if (editFormData) {
       response = await updateCharger(data, editFormData.id);
     } else {
       response = await addCharger(data);
-
     }
 
     if (response.status === 500) {
@@ -108,26 +88,9 @@ export const ChargerForm = ({ editFormData }) => {
       return;
     } else {
       // TODO: handle success message
-      // setFormData({});
-      console.log("updated successful");
       navigate(`/chargers/mychargers`);
     }
-
-    console.log("charger after created", response);
-
-    // navigate(`/charger/${result.}`);
-
-    // if (!result.error) {
-    // } else {
-    //     setError(result.error);
-
-    // }
-    // } catch (err) {
-    //   // TODO: handle error
-    //   console.error(err.message);
-    // }
   }
-
 
   const handleFile = (file) => {
     console.log("THIS IS FILE DETAIL", file);
