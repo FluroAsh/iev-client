@@ -26,6 +26,7 @@ function App() {
     chargerList: [],
     bookingDates: [],
     editFormData: {},
+    chargerStatus: "",
     loggedInUser: sessionStorage.getItem("username") || "",
     currentUser: {
       firstName: sessionStorage.getItem("firstName") || "",

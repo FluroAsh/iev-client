@@ -26,7 +26,7 @@ import {
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
-  const { loggedInUser, errorMessage, editFormData } = store;
+  const { loggedInUser, errorMessage, editFormData, chargerStatus} = store;
 
   let initalStatus;
 
@@ -36,9 +36,13 @@ export const ChargerDetail = ({ charger }) => {
     initalStatus = false;
   }
 
-  const [status, setStatus] = useState(initalStatus);
+  const [checked, setStatus] = useState(initalStatus);
 
-  console.log("THIS IS STATUS", status);
+  useEffect(() => {
+    updateStatus()
+  },[chargerStatus])
+
+  console.log("THIS IS STATUS", checked);
   const navigate = useNavigate();
 
   useEffect(
@@ -49,6 +53,8 @@ export const ChargerDetail = ({ charger }) => {
       }),
     [dispatch]
   );
+
+
 
   const handleBooking = (e) => {
     navigate(`/charger/${charger.id}`);
@@ -69,14 +75,17 @@ export const ChargerDetail = ({ charger }) => {
 
   const handleSwitch = (e) => {
     setStatus(e.target.checked);
+    dispatch({
+      type: "setChargerStatus",
+      data: e.target.checked
+    })
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const updateStatus = (e) => {
 
     let data = {}
 
-    if (status === true) {
+    if (checked === true) {
       data["status"] = "active";
     } else {
       data["status"] = "disabled";
@@ -146,15 +155,11 @@ export const ChargerDetail = ({ charger }) => {
         <Box>
           <Typography variant="h6">Charger Status: {charger.status}</Typography>
 
-          <form onSubmit={handleSubmit}>
             <FormControlLabel
-              control={<Switch checked={status} onChange={handleSwitch} />}
+              control={<Switch checked={checked} onChange={handleSwitch} />}
               label="Activate"
             />
-            <Button type="submit" variant="contained" style={{margin: "16px"}}>
-              Switch
-            </Button>
-          </form>
+
 
           <Box style={{ marginBottom: "16px" }}>
             <ChargerCalendar />

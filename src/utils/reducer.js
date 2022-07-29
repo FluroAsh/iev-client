@@ -62,6 +62,16 @@ export const reducer = (state, action) => {
         errorMessage: action.data,
       };
     }
+
+    case "setChargerStatus": {
+      //updates the token value
+      return {
+        ...state,
+        chargerStatus: action.data,
+      };
+    }
+    
+
     case "setEditFormData": {
       //updates the token value
       return {
