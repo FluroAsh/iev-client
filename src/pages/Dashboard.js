@@ -21,9 +21,14 @@ export async function populateRequests(
   try {
     setLoading(true);
     let requests = await getUserBookingRequests(username);
+    console.log(requests);
+
     /** Found requests, so the user must be a host.
      * Below assignment won't run if the API service throws an error */
-    setHost(true);
+    if (requests.length > 0) {
+      setHost(true);
+    }
+
     setRequests(requests);
   } catch (err) {
     setError(err);
@@ -105,10 +110,6 @@ export const Dashboard = () => {
   return (
     <>
       {error && <ErrorAlert message={error.message} setError={setError} />}
-      {/* Below 2 lines of code will probably be replaced.. Ignore for now */}
-      {/* {loading && <CssLoader />} */}
-      {/* {error && <ErrorScreen error={error} />} */}
-
       <div className="page-container" style={{ margin: "0 2em 2em" }}>
         <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
           Welcome Back {currentUser.firstName}!
