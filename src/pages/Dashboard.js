@@ -9,6 +9,7 @@ import {
 import { CssLoader } from "../components/CssLoader";
 import { Button, Typography } from "@mui/material";
 import { useGlobalState } from "../context/stateContext";
+import { ErrorAlert } from "../components/ErrorAlert";
 
 export async function populateRequests(
   username,
@@ -103,6 +104,7 @@ export const Dashboard = () => {
 
   return (
     <>
+      {error && <ErrorAlert message={error.message} setError={setError} />}
       {/* Below 2 lines of code will probably be replaced.. Ignore for now */}
       {/* {loading && <CssLoader />} */}
       {/* {error && <ErrorScreen error={error} />} */}
@@ -111,7 +113,6 @@ export const Dashboard = () => {
         <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
           Welcome Back {currentUser.firstName}!
         </Typography>
-        {error && <p style={{ color: "red" }}>{error.message}</p>}
 
         {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
         {host &&
