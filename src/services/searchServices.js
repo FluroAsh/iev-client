@@ -16,7 +16,7 @@ export async function searchLocation(location) {
 export async function geocodeLocation(city) {
   try {
     const response = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${process.env.REACT_APP_GOOGLE_API_KEY}&components=country:AU`
     );
     return response.data.results[0].geometry.location;
   } catch (err) {
