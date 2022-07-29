@@ -15,7 +15,7 @@ export async function addCharger(data) {
 
 export async function updateCharger(data, id) {
   try {
-    const response = await ievAPI.patch(`/charger/${id}`, data);
+    const response = await ievAPI.put(`/charger/${id}`, data);
     //console.log(response.data)
     // TODO: Check what comes back from the data to handle messages
     return response.data;
