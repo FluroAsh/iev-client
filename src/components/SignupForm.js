@@ -22,10 +22,7 @@ const SignupForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(Object.values(formData));
-    console.log("Contains empty string?", Object.values(formData).includes(""));
 
-    /** Handle Errors */
     try {
       if (Object.values(formData).includes("")) {
         throw Error("Fields cannot be empty");
