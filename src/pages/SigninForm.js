@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
-import { ErrorAlert } from "./ErrorAlert";
+import { ErrorAlert } from "../components/ErrorAlert";
 
 const SigninForm = () => {
   const { dispatch } = useGlobalState();
@@ -18,33 +18,42 @@ const SigninForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError(null);
 
-    signIn(formData)
-      .then((user) => {
-        setError();
-        console.log("THIS IS USER", user);
-        sessionStorage.setItem("username", user.username);
-        sessionStorage.setItem("token", user.jwt);
-        sessionStorage.setItem("firstName", user.firstName);
-        sessionStorage.setItem("lastName", user.lastName);
-        dispatch({
-          type: "setLoggedInUser",
-          data: user.username,
+    try {
+      if (Object.values(formData).includes("")) {
+        throw Error("Fields cannot be empty");
+      }
+
+      signIn(formData)
+        .then((user) => {
+          setError();
+          console.log("THIS IS USER", user);
+          sessionStorage.setItem("username", user.username);
+          sessionStorage.setItem("token", user.jwt);
+          sessionStorage.setItem("firstName", user.firstName);
+          sessionStorage.setItem("lastName", user.lastName);
+          dispatch({
+            type: "setLoggedInUser",
+            data: user.username,
+          });
+          dispatch({
+            type: "setToken",
+            data: user.jwt,
+          });
+          dispatch({
+            type: "setUserDetails",
+            data: { firstName: user.firstName, lastName: user.lastName },
+          });
+          setFormData(initialFormData);
+          navigate("/");
+        })
+        .catch((err) => {
+          setError(err);
         });
-        dispatch({
-          type: "setToken",
-          data: user.jwt,
-        });
-        dispatch({
-          type: "setUserDetails",
-          data: { firstName: user.firstName, lastName: user.lastName },
-        });
-        setFormData(initialFormData);
-        navigate("/");
-      })
-      .catch((err) => {
-        setError(err);
-      });
+    } catch (err) {
+      setError(err);
+    }
   };
 
   const handleFormData = (e) => {

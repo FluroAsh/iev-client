@@ -11,8 +11,8 @@ import { StateContext } from "./context/stateContext";
 import "./styles/main.scss";
 
 import { Navbar } from "./layouts/Navbar.js";
-import SignupForm from "./components/SignupForm";
-import SigninForm from "./components/SigninForm";
+import SignupForm from "./pages/SignupForm";
+import SigninForm from "./pages/SigninForm";
 import { ChargerForm } from "./components/ChargerForm";
 import { NotFound } from "./pages/NotFound";
 import { ViewCharger } from "./pages/ViewCharger";

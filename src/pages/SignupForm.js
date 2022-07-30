@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
-import { ErrorAlert } from "./ErrorAlert";
+import { ErrorAlert } from "../components/ErrorAlert";
 
 const SignupForm = () => {
   const { dispatch } = useGlobalState();
@@ -22,10 +22,7 @@ const SignupForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(Object.values(formData));
-    console.log("Contains empty string?", Object.values(formData).includes(""));
 
-    /** Handle Errors */
     try {
       if (Object.values(formData).includes("")) {
         throw Error("Fields cannot be empty");
