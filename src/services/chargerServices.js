@@ -3,7 +3,7 @@ import ievAPI from "../config/api";
 // TODO: handle all error response
 export async function addCharger(data) {
   try {
-    const response = await ievAPI.post("/chargers/new", data);
+    const response = await ievAPI.post("/charger/new", data);
     // console.log("ADD CHARGER DATA AFTER SUBMIT", response.data)
     return response.data;
   } catch (err) {
@@ -32,8 +32,8 @@ export async function updateChargerStatus(data, id) {
     return response.data;
   } catch (err) {
     console.log("Axios ERROR----");
-    console.log(err.message);
-    return err.response;
+    console.log(err);
+    throw Error(err.response.data.error);
   }
 }
 
@@ -45,9 +45,7 @@ export async function deleteCharger(id) {
     return response;
   } catch (err) {
     // console.log("Axios ERROR----");
-    // console.log(err);
-    // console.log(err.message);
-    return err.response;
+    throw Error(err.response.data.error);
   }
 }
 

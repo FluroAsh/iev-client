@@ -23,76 +23,101 @@ import {
   deleteCharger,
   updateChargerStatus,
 } from "../services/chargerServices";
+import { ErrorAlert } from "./ErrorAlert";
+import { createUserBookingRequest } from "../services/bookingServices";
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, errorMessage, editFormData, chargerStatus } = store;
+  const [error, setError] = useState(false);
+  const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
 
-  let initalStatus;
-
-  if (charger.status === "active") {
-    initalStatus = true;
-  } else {
-    initalStatus = false;
-  }
-
-  const [checked, setStatus] = useState(initalStatus);
+  const [status, setStatus] = useState("");
+  const [dates, setDates] = useState([]);
 
   useEffect(() => {
-    updateStatus();
-  }, [checked]);
+    // Set charger status local state variables (status, checked)
+    console.log("--> Charger status:", charger.status);
 
-  const updateStatus = (e) => {
-    let data = {};
-
-    if (checked === true) {
-      data["status"] = "active";
-    } else {
-      data["status"] = "disabled";
+    if (charger.status === "active") {
+      setStatus("Active");
+      setChecked(true);
     }
 
+    if (charger.status !== "active") {
+      setStatus("Disabled");
+      setChecked(false);
+    }
+  }, []);
+
+  const updateStatus = async (e) => {
+    let data = {};
     console.log("THIS IS DATA SENT", data);
 
-    const response = updateChargerStatus(data, charger.id);
+    try {
+      if (!checked) {
+        data["status"] = "active";
+        setStatus("Active");
+      } else {
+        data["status"] = "disabled";
+        setStatus("Disabled");
+      }
 
-    if (response.status === 500) {
-      dispatch({
-        type: "setErrorMessage",
-        data: response.data.message,
-      });
-      return;
-    } else {
+      await updateChargerStatus(data, charger.id);
+
+      // if (response.status === 500) {
+      //   dispatch({
+      //     type: "setErrorMessage",
+      //     data: response.data.message,
+      //   });
+      // }
+
       // TODO: handle success message
-      console.log("updated successful");
+      console.log("Update successful");
+      // console.log("charger after created", response);
       // navigate(`/chargers/mychargers`);
+    } catch (err) {
+      setError(err);
     }
-
-    console.log("charger after created", response);
   };
 
-  console.log("THIS IS STATUS", checked);
+  // TODO: add logic to create booking in the backend
+  const handleBooking = async () => {
+    const bookings = [];
 
-  useEffect(
-    () => () =>
-      dispatch({
-        type: "setErrorMessage",
-        data: "",
-      }),
-    [dispatch]
-  );
+    try {
+      for (let date of dates) {
+        // Send date in ISO 8601 format
+        bookings.push({
+          // UserId retrieved in the backend
+          // hours are set to midnight as currently full day bookings (MVP)
+          ChargerId: charger.id,
+          bookingDate: new Date(date).setHours(24, 0, 0, 0),
+          price: charger.price,
+          status: "pending",
+          localTime: new Date(date).toDateString(),
+        });
+      }
 
-  const handleBooking = (e) => {
-    navigate(`/charger/${charger.id}`);
+      if (bookings.length === 0) {
+        throw Error("No dates selected!");
+      }
+      await createUserBookingRequest(bookings);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setDates([]);
+    }
   };
 
-  const handleEdit = async (e) => {
+  const handleEdit = (e) => {
     // setEditFormData(charger)
     dispatch({
       type: "setEditFormData",
       data: charger,
     });
-    console.log("THIS IS FORM DATA WITH CHARGER DETAIL", editFormData);
+    // console.log("THIS IS FORM DATA WITH CHARGER DETAIL", editFormData);
     // return (
     //   <ChargerForm key={charger.id} editFormData={editFormData}/>
     // )
@@ -100,17 +125,19 @@ export const ChargerDetail = ({ charger }) => {
   };
 
   const handleSwitch = (e) => {
-    setStatus(e.target.checked);
+    setChecked(e.target.checked);
     updateStatus();
 
-    // dispatch({
-    //   type: "setChargerStatus",
-    //   data: e.target.checked,
-    // });
+    dispatch({
+      type: "setChargerStatus",
+      data: e.target.checked,
+    });
   };
 
   return (
-    <StateContext.Provider value={{ store, dispatch }}>
+    <>
+      {/* TODO: Add success alert */}
+      {error && <ErrorAlert message={error.message} setError={setError} />}
       <div style={{ display: "flex", justifyContent: "center" }}>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       </div>
@@ -150,10 +177,10 @@ export const ChargerDetail = ({ charger }) => {
         </Box>
 
         <Box>
-          <Typography variant="h6">Charger Status: {charger.status}</Typography>
+          <Typography variant="h6">Charger Status: {status}</Typography>
 
           <Box style={{ marginBottom: "16px" }}>
-            <ChargerCalendar />
+            <ChargerCalendar dates={dates} setDates={setDates} />
           </Box>
           {charger.Host.username === loggedInUser ? (
             <div className="flex-box">
@@ -170,7 +197,11 @@ export const ChargerDetail = ({ charger }) => {
               >
                 Edit
               </Button>
-              <DeleteButton key={charger.id} charger={charger} />
+              <DeleteButton
+                key={charger.id}
+                charger={charger}
+                setError={setError}
+              />
             </div>
           ) : (
             <div className="flexBox">
@@ -192,47 +223,35 @@ export const ChargerDetail = ({ charger }) => {
           )}
         </Box>
       </Container>
-    </StateContext.Provider>
+    </>
   );
 };
 
-export default function DeleteButton({ charger }) {
+export default function DeleteButton({ charger, setError }) {
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
-
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleDelete = async () => {
-    setOpen(false);
-    console.log("CHARGER ID ", charger.id);
-    const response = await deleteCharger(charger.id);
-    if (response.status === 401) {
-      dispatch({
-        type: "setErrorMessage",
-        data: response.data.message,
-      });
-      return;
+    try {
+      setOpen(false);
+      console.log("CHARGER ID ", charger.id);
+      await deleteCharger(charger.id);
+      navigate(`/chargers/mychargers`);
+    } catch (err) {
+      setError(err);
     }
-    navigate(`/chargers/mychargers`);
-    // TODO: to navigate to chargers/mychargers page but change the chargerlist in store
   };
+  // TODO: to navigate to chargers/mychargers page but change the chargerlist in store
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="outlined" onClick={() => setOpen(true)}>
         Delete
       </Button>
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpen(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -245,7 +264,7 @@ export default function DeleteButton({ charger }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDelete}>Delete</Button>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
         </DialogActions>
       </Dialog>
     </div>

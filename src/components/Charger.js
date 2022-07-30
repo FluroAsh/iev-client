@@ -5,7 +5,7 @@ import {
   CardMedia,
   CardActions,
   CardActionArea,
-  Button
+  Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { displayAUD } from "../utils/helpers";
@@ -14,7 +14,6 @@ export const Charger = ({ charger }) => {
   const navigate = useNavigate();
 
   const handleClickView = () => {
-    console.log("Clicked!");
     navigate(`/charger/${charger.id}`);
   };
 

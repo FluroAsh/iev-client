@@ -8,19 +8,19 @@ import { useGlobalState } from "../context/stateContext";
 
 export const ViewCharger = () => {
   const { chargerId } = useParams();
-  console.log("CHARGERID", chargerId);
+  // console.log("CHARGERID", chargerId);
   const [charger, setChargerDetail] = useState();
   const [loading, setLoading] = useState(false);
   // TODO: Add error state
 
   useEffect(() => {
     getChargerById(chargerId, setLoading).then((data) => {
-      console.log("THIS IS DATA", data);
+      // console.log("THIS IS DATA", data);
       setChargerDetail(data);
     });
   }, [chargerId]);
 
-  console.log("THIS IS CHARGER", charger);
+  // console.log("THIS IS CHARGER", charger);
   return (
     <>
       {loading ? (
@@ -52,4 +52,3 @@ async function getChargerById(chargerId, setLoading) {
     setLoading(false);
   }
 }
-

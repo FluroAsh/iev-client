@@ -83,7 +83,7 @@ export const Dashboard = () => {
   const [bookings, setBookings] = useState([]);
   const [requests, setRequests] = useState([]);
   const [host, setHost] = useState(false);
-  const [error, setError] = useState();
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState();
 
   const { store } = useGlobalState();
