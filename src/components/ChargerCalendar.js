@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Calendar } from "react-multi-date-picker";
 import { useGlobalState } from "../context/stateContext";
 
-export function ChargerCalendar() {
-  const { store, dispatch } = useGlobalState();
+export function ChargerCalendar({ dates, setDates }) {
+  const { store } = useGlobalState();
   const { bookingDates } = store;
-  const [dates, setDates] = useState(bookingDates);
 
   const handleCalendar = (date) => {
-    // console.log(new Date(date));
-    // const newDate = new Date(date);
-    setDates(date);
-    console.log("dates", dates);
+    setDates(...bookingDates, date);
 
     // dispatch({
     //   type: "setBookingDates",
@@ -19,6 +15,15 @@ export function ChargerCalendar() {
     // });
   };
 
+  console.log(dates);
+
   // console.log("DATE VALUES", bookingDates);
-  return <Calendar multiple value={dates} onChange={handleCalendar} />;
+  return (
+    <Calendar
+      multiple
+      value={dates}
+      onChange={handleCalendar}
+      minDate={new Date()}
+    />
+  );
 }

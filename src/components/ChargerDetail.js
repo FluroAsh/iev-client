@@ -24,14 +24,17 @@ import {
   updateChargerStatus,
 } from "../services/chargerServices";
 import { ErrorAlert } from "./ErrorAlert";
+import { createUserBookingRequest } from "../services/bookingServices";
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, errorMessage, editFormData, chargerStatus } = store;
   const [error, setError] = useState(false);
   const [checked, setChecked] = useState(false);
-  const [status, setStatus] = useState("");
   const navigate = useNavigate();
+
+  const [status, setStatus] = useState("");
+  const [dates, setDates] = useState([]);
 
   useEffect(() => {
     // Set charger status local state variables (status, checked)
@@ -80,8 +83,32 @@ export const ChargerDetail = ({ charger }) => {
   };
 
   // TODO: add logic to create booking in the backend
-  const handleBooking = (e) => {
-    navigate(`/charger/${charger.id}`);
+  const handleBooking = async () => {
+    const bookings = [];
+
+    try {
+      for (let date of dates) {
+        // Send date in ISO 8601 format
+        bookings.push({
+          // UserId retrieved in the backend
+          // hours are set to midnight as currently full day bookings (MVP)
+          ChargerId: charger.id,
+          bookingDate: new Date(date).setHours(24, 0, 0, 0),
+          price: charger.price,
+          status: "pending",
+          localTime: new Date(date).toDateString(),
+        });
+      }
+
+      if (bookings.length === 0) {
+        throw Error("No dates selected!");
+      }
+      await createUserBookingRequest(bookings);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setDates([]);
+    }
   };
 
   const handleEdit = (e) => {
@@ -152,7 +179,7 @@ export const ChargerDetail = ({ charger }) => {
           <Typography variant="h6">Charger Status: {status}</Typography>
 
           <Box style={{ marginBottom: "16px" }}>
-            <ChargerCalendar />
+            <ChargerCalendar dates={dates} setDates={setDates} />
           </Box>
           {charger.Host.username === loggedInUser ? (
             <div className="flex-box">
@@ -169,7 +196,11 @@ export const ChargerDetail = ({ charger }) => {
               >
                 Edit
               </Button>
-              <DeleteButton key={charger.id} charger={charger} />
+              <DeleteButton
+                key={charger.id}
+                charger={charger}
+                setError={setError}
+              />
             </div>
           ) : (
             <div className="flexBox">
@@ -195,26 +226,22 @@ export const ChargerDetail = ({ charger }) => {
   );
 };
 
-export default function DeleteButton({ charger }) {
+export default function DeleteButton({ charger, setError }) {
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const handleDelete = async () => {
-    setOpen(false);
-    console.log("CHARGER ID ", charger.id);
-    const response = await deleteCharger(charger.id);
-
-    if (response.status === 401) {
-      dispatch({
-        type: "setErrorMessage",
-        data: response.data.message,
-      });
-      return;
+    try {
+      setOpen(false);
+      console.log("CHARGER ID ", charger.id);
+      await deleteCharger(charger.id);
+      navigate(`/chargers/mychargers`);
+    } catch (err) {
+      setError(err);
     }
-    navigate(`/chargers/mychargers`);
-    // TODO: to navigate to chargers/mychargers page but change the chargerlist in store
   };
+  // TODO: to navigate to chargers/mychargers page but change the chargerlist in store
 
   return (
     <div>

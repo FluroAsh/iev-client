@@ -45,9 +45,7 @@ export async function deleteCharger(id) {
     return response;
   } catch (err) {
     // console.log("Axios ERROR----");
-    // console.log(err);
-    // console.log(err.message);
-    return err.response;
+    throw Error(err.response.data.error);
   }
 }
 
