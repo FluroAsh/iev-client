@@ -1,38 +1,37 @@
 import { Button, InputLabel, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signIn } from "../services/authServices";
+import { signUp } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
-import { ErrorAlert } from "./ErrorAlert";
+import { ErrorAlert } from "../components/ErrorAlert";
 
-const SigninForm = () => {
+const SignupForm = () => {
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
 
   const initialFormData = {
+    firstName: "",
+    lastName: "",
     username: "",
+    email: "",
     password: "",
+    password_confirmation: "",
   };
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError(null);
 
     try {
       if (Object.values(formData).includes("")) {
         throw Error("Fields cannot be empty");
       }
 
-      signIn(formData)
+      signUp(formData)
         .then((user) => {
-          setError();
-          console.log("THIS IS USER", user);
           sessionStorage.setItem("username", user.username);
           sessionStorage.setItem("token", user.jwt);
-          sessionStorage.setItem("firstName", user.firstName);
-          sessionStorage.setItem("lastName", user.lastName);
           dispatch({
             type: "setLoggedInUser",
             data: user.username,
@@ -41,14 +40,11 @@ const SigninForm = () => {
             type: "setToken",
             data: user.jwt,
           });
-          dispatch({
-            type: "setUserDetails",
-            data: { firstName: user.firstName, lastName: user.lastName },
-          });
           setFormData(initialFormData);
           navigate("/");
         })
         .catch((err) => {
+          console.log(err);
           setError(err);
         });
     } catch (err) {
@@ -62,20 +58,47 @@ const SigninForm = () => {
       [e.target.id]: e.target.value,
     });
   };
+
   return (
     <>
       {error && <ErrorAlert message={error.message} setError={setError} />}
-
       <div className="form-container">
         <form onSubmit={handleSubmit}>
-          <Typography variant="h4">Sign in</Typography>
+          <Typography variant="h4">Register user</Typography>
 
-          <InputLabel>Username / Email:</InputLabel>
+          <InputLabel>First Name:</InputLabel>
+          <TextField
+            type="text"
+            name="firstName"
+            id="firstName"
+            value={formData.firstName}
+            onChange={handleFormData}
+          />
+
+          <InputLabel>Last Name:</InputLabel>
+          <TextField
+            type="text"
+            name="lastName"
+            id="lastName"
+            value={formData.lastName}
+            onChange={handleFormData}
+          />
+
+          <InputLabel>Username:</InputLabel>
           <TextField
             type="text"
             name="username"
             id="username"
             value={formData.username}
+            onChange={handleFormData}
+          />
+
+          <InputLabel>Email:</InputLabel>
+          <TextField
+            type="text"
+            name="email"
+            id="email"
+            value={formData.email}
             onChange={handleFormData}
           />
 
@@ -88,8 +111,17 @@ const SigninForm = () => {
             onChange={handleFormData}
           />
 
+          <InputLabel htmlFor="password">Password confirmation:</InputLabel>
+          <TextField
+            type="password"
+            name="password_confirmation"
+            id="password_confirmation"
+            value={formData.password_confirmation}
+            onChange={handleFormData}
+          />
+
           <Button variant="contained" type="submit">
-            Login
+            Sign up
           </Button>
         </form>
       </div>
@@ -97,4 +129,4 @@ const SigninForm = () => {
   );
 };
 
-export default SigninForm;
+export default SignupForm;
