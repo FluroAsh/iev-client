@@ -136,6 +136,7 @@ export const ChargerDetail = ({ charger }) => {
 
   return (
     <>
+      {/* TODO: Add success alert */}
       {error && <ErrorAlert message={error.message} setError={setError} />}
       <div style={{ display: "flex", justifyContent: "center" }}>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}

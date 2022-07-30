@@ -59,7 +59,7 @@ export const DesktopMenu = () => {
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ ml: 2 }}
+            sx={{ mx: 1 }}
             aria-controls={open ? "account-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
@@ -75,8 +75,7 @@ export const DesktopMenu = () => {
             >
               {/* TODO; Update 'AT' with 'user.firstName.charAt[0] + user.lastName.charAt[0]' */}
               {loggedInUser ? (
-                returnInitials(currentUser.firstName, currentUser.lastName) ||
-                "ERR"
+                returnInitials(currentUser.firstName, currentUser.lastName)
               ) : (
                 <FontAwesomeIcon icon={faUser} />
               )}

@@ -26,7 +26,17 @@ export const Navbar = () => {
   return (
     <>
       <AppBar position="sticky">
-        <Toolbar sx={{ height: 56, justifyContent: "space-between" }}>
+        <Toolbar
+          id
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            height: 56,
+            maxWidth: 1366,
+            width: "100%",
+            // p: 0,
+          }}
+        >
           {isMobile ? <MobileNavbar /> : <DesktopNavBar />}
         </Toolbar>
       </AppBar>

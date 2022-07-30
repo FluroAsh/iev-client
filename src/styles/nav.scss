@@ -3,16 +3,15 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 35%;
+  width: 100%;
 }
-
 input[name="searchbar"] {
   /* Overrides */
   border: none;
   outline: none;
   /* Carry on... */
   width: 100%;
-  max-width: 500px;
+  max-width: 350px;
   float: right;
   border-radius: 15px;
   padding: 8px 12px;
@@ -24,6 +23,17 @@ input[name="searchbar"] {
   &:hover:not(:focus) {
     box-shadow: $box-shadow2;
   }
+}
+.searchbar {
+  display: flex;
+  justify-content: flex-end;
+  width: 50%;
+}
+
+.MuiAppBar-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Mobile Menu/Nav */
@@ -102,7 +112,6 @@ a.logo {
   font-size: 1.6em;
   letter-spacing: 1px;
   left: calc(50% - 20px); // used for mobile nav
-  margin-right: auto; // testing
   padding: 5px;
   color: #fff;
   text-shadow: 2px 2px 2px #00000090;
@@ -140,4 +149,25 @@ a.logo {
 .menu-link-item {
   list-style: none;
   margin-right: 20px;
+}
+
+@media only screen and (max-width: $tablet-width) {
+  #searchbar-form {
+    width: 35%;
+  }
+  div.MuiToolbar-root {
+    padding: 0 1em;
+  }
+}
+
+@media only screen and (min-width: $laptop-width) {
+  #searchbar-form {
+    width: 100%;
+  }
+  div.MuiToolbar-root {
+    padding: 0 0 0 1em;
+  }
+  .searchbar {
+    width: 100%;
+  }
 }
