@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobalState, StateContext } from "../context/stateContext";
 import { ChargerCalendar } from "./ChargerCalendar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { displayAUD } from "../utils/helpers";
 import {
   Box,
@@ -29,7 +29,6 @@ export const ChargerDetail = ({ charger }) => {
   const { loggedInUser, errorMessage, editFormData, chargerStatus } = store;
   const navigate = useNavigate();
 
-
   let initalStatus;
 
   if (charger.status === "active") {
@@ -41,35 +40,36 @@ export const ChargerDetail = ({ charger }) => {
   const [checked, setStatus] = useState(initalStatus);
 
   useEffect(() => {
-    const updateStatus = (e) => {
-      let data = {};
-
-      if (checked === true) {
-        data["status"] = "active";
-      } else {
-        data["status"] = "disabled";
-      }
-
-      console.log("THIS IS DATA SENT", data);
-
-      const response = updateChargerStatus(data, charger.id);
-
-      if (response.status === 500) {
-        dispatch({
-          type: "setErrorMessage",
-          data: response.data.message,
-        });
-        return;
-      } else {
-        // TODO: handle success message
-        console.log("updated successful");
-        navigate(`/chargers/mychargers`);
-      }
-
-      console.log("charger after created", response);
-    };
     updateStatus();
-  }, [chargerStatus, dispatch, charger.id, navigate, checked]);
+  }, [checked]);
+
+  const updateStatus = (e) => {
+    let data = {};
+
+    if (checked === true) {
+      data["status"] = "active";
+    } else {
+      data["status"] = "disabled";
+    }
+
+    console.log("THIS IS DATA SENT", data);
+
+    const response = updateChargerStatus(data, charger.id);
+
+    if (response.status === 500) {
+      dispatch({
+        type: "setErrorMessage",
+        data: response.data.message,
+      });
+      return;
+    } else {
+      // TODO: handle success message
+      console.log("updated successful");
+      // navigate(`/chargers/mychargers`);
+    }
+
+    console.log("charger after created", response);
+  };
 
   console.log("THIS IS STATUS", checked);
 
@@ -101,10 +101,12 @@ export const ChargerDetail = ({ charger }) => {
 
   const handleSwitch = (e) => {
     setStatus(e.target.checked);
-    dispatch({
-      type: "setChargerStatus",
-      data: e.target.checked,
-    });
+    updateStatus();
+
+    // dispatch({
+    //   type: "setChargerStatus",
+    //   data: e.target.checked,
+    // });
   };
 
   return (
@@ -150,16 +152,15 @@ export const ChargerDetail = ({ charger }) => {
         <Box>
           <Typography variant="h6">Charger Status: {charger.status}</Typography>
 
-          <FormControlLabel
-            control={<Switch checked={checked} onChange={handleSwitch} />}
-            label="Activate"
-          />
-
           <Box style={{ marginBottom: "16px" }}>
             <ChargerCalendar />
           </Box>
           {charger.Host.username === loggedInUser ? (
             <div className="flex-box">
+              <FormControlLabel
+                control={<Switch checked={checked} onChange={handleSwitch} />}
+                label="Activate"
+              />
               <Button
                 // type="submit"
                 value="active"

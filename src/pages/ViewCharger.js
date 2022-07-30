@@ -8,7 +8,6 @@ import { useGlobalState } from "../context/stateContext";
 
 export const ViewCharger = () => {
   const { chargerId } = useParams();
-  const { store, dispatch } = useGlobalState();
   console.log("CHARGERID", chargerId);
   const [charger, setChargerDetail] = useState();
   const [loading, setLoading] = useState(false);
@@ -54,4 +53,3 @@ async function getChargerById(chargerId, setLoading) {
   }
 }
 
-export async function handleBooking(e) {}
