@@ -32,8 +32,8 @@ export async function updateChargerStatus(data, id) {
     return response.data;
   } catch (err) {
     console.log("Axios ERROR----");
-    console.log(err.message);
-    return err.response;
+    console.log(err);
+    throw Error(err.response.data.error);
   }
 }
 
