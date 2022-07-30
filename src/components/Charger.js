@@ -13,14 +13,14 @@ import { displayAUD } from "../utils/helpers";
 export const Charger = ({ charger }) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClickView = () => {
     console.log("Clicked!");
     navigate(`/charger/${charger.id}`);
   };
 
   return (
     <Card className="card">
-      <CardActionArea onClick={handleClick}>
+      <CardActionArea onClick={handleClickView}>
         <CardMedia
           component="img"
           image={charger.imageUrl}
@@ -44,10 +44,9 @@ export const Charger = ({ charger }) => {
       </CardActionArea>
       <CardActions>
         <Button
-          type="submit"
           value="active"
           variant="contained"
-          onClick={handleClick}
+          onClick={handleClickView}
           style={{ marginRight: "16px" }}
         >
           View

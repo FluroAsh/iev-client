@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobalState, StateContext } from "../context/stateContext";
 import { ChargerCalendar } from "./ChargerCalendar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { displayAUD } from "../utils/helpers";
 import {
   Box,
@@ -26,7 +26,8 @@ import {
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
-  const { loggedInUser, errorMessage, editFormData, chargerStatus} = store;
+  const { loggedInUser, errorMessage, editFormData, chargerStatus } = store;
+  const navigate = useNavigate();
 
   let initalStatus;
 
@@ -39,51 +40,11 @@ export const ChargerDetail = ({ charger }) => {
   const [checked, setStatus] = useState(initalStatus);
 
   useEffect(() => {
-    updateStatus()
-  },[chargerStatus])
-
-  console.log("THIS IS STATUS", checked);
-  const navigate = useNavigate();
-
-  useEffect(
-    () => () =>
-      dispatch({
-        type: "setErrorMessage",
-        data: "",
-      }),
-    [dispatch]
-  );
-
-
-
-  const handleBooking = (e) => {
-    navigate(`/charger/${charger.id}`);
-  };
-
-  const handleEdit = async (e) => {
-    // setEditFormData(charger)
-    dispatch({
-      type: "setEditFormData",
-      data: charger,
-    });
-    console.log("THIS IS FORM DATA WITH CHARGER DETAIL", editFormData);
-    // return (
-    //   <ChargerForm key={charger.id} editFormData={editFormData}/>
-    // )
-    navigate(`/charger/${charger.id}/edit`);
-  };
-
-  const handleSwitch = (e) => {
-    setStatus(e.target.checked);
-    dispatch({
-      type: "setChargerStatus",
-      data: e.target.checked
-    })
-  };
+    updateStatus();
+  }, [checked]);
 
   const updateStatus = (e) => {
-
-    let data = {}
+    let data = {};
 
     if (checked === true) {
       data["status"] = "active";
@@ -104,10 +65,48 @@ export const ChargerDetail = ({ charger }) => {
     } else {
       // TODO: handle success message
       console.log("updated successful");
-      navigate(`/chargers/mychargers`);
+      // navigate(`/chargers/mychargers`);
     }
 
     console.log("charger after created", response);
+  };
+
+  console.log("THIS IS STATUS", checked);
+
+  useEffect(
+    () => () =>
+      dispatch({
+        type: "setErrorMessage",
+        data: "",
+      }),
+    [dispatch]
+  );
+
+  const handleBooking = (e) => {
+    navigate(`/charger/${charger.id}`);
+  };
+
+  const handleEdit = async (e) => {
+    // setEditFormData(charger)
+    dispatch({
+      type: "setEditFormData",
+      data: charger,
+    });
+    console.log("THIS IS FORM DATA WITH CHARGER DETAIL", editFormData);
+    // return (
+    //   <ChargerForm key={charger.id} editFormData={editFormData}/>
+    // )
+    navigate(`/charger/${charger.id}/edit`);
+  };
+
+  const handleSwitch = (e) => {
+    setStatus(e.target.checked);
+    updateStatus();
+
+    // dispatch({
+    //   type: "setChargerStatus",
+    //   data: e.target.checked,
+    // });
   };
 
   return (
@@ -140,9 +139,7 @@ export const ChargerDetail = ({ charger }) => {
             </Link>
           </Typography>
           <Typography variant="h6">{displayAUD(charger.price)}</Typography>
-          <Typography variant="h6">
-            {Object.values(charger.Address.city)}
-          </Typography>
+          <Typography variant="h6">{charger.Address.city}</Typography>
           <Typography
             variant="body2 contained"
             color="text.secondary"
@@ -155,17 +152,15 @@ export const ChargerDetail = ({ charger }) => {
         <Box>
           <Typography variant="h6">Charger Status: {charger.status}</Typography>
 
-            <FormControlLabel
-              control={<Switch checked={checked} onChange={handleSwitch} />}
-              label="Activate"
-            />
-
-
           <Box style={{ marginBottom: "16px" }}>
             <ChargerCalendar />
           </Box>
           {charger.Host.username === loggedInUser ? (
             <div className="flex-box">
+              <FormControlLabel
+                control={<Switch checked={checked} onChange={handleSwitch} />}
+                label="Activate"
+              />
               <Button
                 // type="submit"
                 value="active"
@@ -202,12 +197,11 @@ export const ChargerDetail = ({ charger }) => {
 };
 
 export default function DeleteButton({ charger }) {
-  const { store, dispatch } = useGlobalState();
-  const { chargerList } = store;
+  const { dispatch } = useGlobalState();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
 
-  const navigate = useNavigate();
   const handleClickOpen = () => {
     setOpen(true);
   };
