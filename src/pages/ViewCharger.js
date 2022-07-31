@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-// import { Card, CardContent, Typography } from "@mui/material";
 import { getCharger } from "../services/chargerServices";
 import { ChargerDetail } from "../components/ChargerDetail";
 import { CssLoader } from "../components/CssLoader";
-import { useGlobalState } from "../context/stateContext";
 
 export const ViewCharger = () => {
   const { chargerId } = useParams();
   // console.log("CHARGERID", chargerId);
   const [charger, setChargerDetail] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   // TODO: Add error state
 
   useEffect(() => {
@@ -20,12 +18,13 @@ export const ViewCharger = () => {
     });
   }, [chargerId]);
 
-  // console.log("THIS IS CHARGER", charger);
+  if (loading) {
+    return <CssLoader />;
+  }
+
   return (
     <>
-      {loading ? (
-        <CssLoader />
-      ) : charger !== undefined ? (
+      {charger !== undefined ? (
         <>
           <div>
             <ChargerDetail key={charger.id} charger={charger} />

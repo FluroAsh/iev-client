@@ -24,12 +24,15 @@ export async function populateRequests(
     const requests = await getUserBookingRequests(username);
     // Backend checks if user has any current chargers (is a host)
     const response = await checkHost();
+    console.log("Dashboard Response", response);
 
     if (response.message === "User is a host") {
       setHost(true);
     }
     setRequests(requests);
   } catch (err) {
+    // Only throw an error if it's unexpected
+    if (err.message === "User is not a host") return;
     setError(err);
   } finally {
     setLoading(false);
@@ -83,7 +86,7 @@ export const Dashboard = () => {
   const [requests, setRequests] = useState([]);
   const [host, setHost] = useState(false);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
 
   const { store } = useGlobalState();
   const { currentUser, loggedInUser } = store;
@@ -92,8 +95,6 @@ export const Dashboard = () => {
     populateBookings(loggedInUser, setBookings, setError, setLoading);
     populateRequests(loggedInUser, setRequests, setHost, setError, setLoading);
   }, [loggedInUser]);
-
-  useEffect(() => {}, []);
 
   // TODO: Pass styles as prop based on if user is a prop or not
   // this is to resize the tables to the correct height & ??? etc.
@@ -121,7 +122,7 @@ export const Dashboard = () => {
           (requests.length > 0 ? (
             <UserRequests requests={requests} styles={styles} host={host} />
           ) : (
-            <NoResults message={"No requests... Yet!"} />
+            <NoResults message={"No requests... Yet! 🔌"} />
           ))}
 
         {/* NOTE: Not every host will have bookings */}

@@ -6,6 +6,8 @@ import { CssLoader } from "../components/CssLoader";
 import { useGlobalState } from "../context/stateContext";
 import { ErrorScreen } from "../components/ErrorScreen";
 import { GoogleMap } from "../components/GoogleMap";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export const SearchLocation = () => {
   const [loading, setLoading] = useState(false);
@@ -32,6 +34,21 @@ export const SearchLocation = () => {
     );
   }, [location]);
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, x: "-20%" },
+    show: { opacity: 1, x: "0%" },
+  };
+
   return (
     <>
       {loading && <CssLoader />}
@@ -46,11 +63,18 @@ export const SearchLocation = () => {
               {/* TODO: Pluralize the string with an NPM package */}
               {`${chargers.length} charger(s) found`}
             </Typography>
-            <section className="chargers">
-              {chargers.map((charger) => (
-                <Charger key={charger.id} charger={charger} />
-              ))}
-            </section>
+            <AnimatePresence>
+              <motion.section
+                className="chargers"
+                variants={container}
+                initial="hidden"
+                animate="show"
+              >
+                {chargers.map((charger) => (
+                  <Charger key={charger.id} charger={charger} item={item} />
+                ))}
+              </motion.section>
+            </AnimatePresence>
           </div>
           {!isMobile && <GoogleMap coordinates={coordinates} />}
         </div>

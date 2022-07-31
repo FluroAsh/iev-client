@@ -96,7 +96,6 @@ export const ChargerDetail = ({ charger }) => {
       if (bookings.length === 0) {
         throw Error("No dates selected!");
       }
-      // TODO:
       const response = await createUserBookingRequest(bookings);
       setSuccess(response);
     } catch (err) {
@@ -131,7 +130,6 @@ export const ChargerDetail = ({ charger }) => {
 
   return (
     <>
-      {/* TODO: Add success alert */}
       {success && (
         <AlertSuccess message={success.message} setError={setError} />
       )}
