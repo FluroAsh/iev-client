@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
-import { ErrorAlert } from "../components/ErrorAlert";
+import { AlertError } from "../components/AlertError";
 
 const SignupForm = () => {
   const { dispatch } = useGlobalState();
@@ -61,7 +61,7 @@ const SignupForm = () => {
 
   return (
     <>
-      {error && <ErrorAlert message={error.message} setError={setError} />}
+      {error && <AlertError message={error.message} setError={setError} />}
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <Typography variant="h4">Register user</Typography>

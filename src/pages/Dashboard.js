@@ -9,7 +9,7 @@ import {
 import { CssLoader } from "../components/CssLoader";
 import { Button, Typography } from "@mui/material";
 import { useGlobalState } from "../context/stateContext";
-import { ErrorAlert } from "../components/ErrorAlert";
+import { AlertError } from "../components/AlertError";
 
 export async function populateRequests(
   username,
@@ -109,7 +109,7 @@ export const Dashboard = () => {
 
   return (
     <>
-      {error && <ErrorAlert message={error.message} setError={setError} />}
+      {error && <AlertError message={error.message} setError={setError} />}
       <div className="page-container" style={{ margin: "0 2em 2em" }}>
         <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
           Welcome Back {currentUser.firstName}!

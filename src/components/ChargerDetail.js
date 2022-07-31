@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useGlobalState, StateContext } from "../context/stateContext";
+import { useGlobalState } from "../context/stateContext";
 import { ChargerCalendar } from "./ChargerCalendar";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { displayAUD } from "../utils/helpers";
 import {
   Box,
@@ -23,9 +23,9 @@ import {
   deleteCharger,
   updateChargerStatus,
 } from "../services/chargerServices";
-import { ErrorAlert } from "./ErrorAlert";
 import { createUserBookingRequest } from "../services/bookingServices";
-import SuccessAlert from "./SuccessAlert";
+import { AlertError } from "./AlertError";
+import { AlertSuccess } from "./AlertSuccess";
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
@@ -66,18 +66,9 @@ export const ChargerDetail = ({ charger }) => {
         setStatus("Disabled");
       }
 
-      await updateChargerStatus(data, charger.id);
-
-      // if (response.status === 500) {
-      //   dispatch({
-      //     type: "setErrorMessage",
-      //     data: response.data.message,
-      //   });
-      // }
-
-      // TODO: handle success message
+      const response = await updateChargerStatus(data, charger.id);
+      setSuccess(response);
       console.log("Update successful");
-      // console.log("charger after created", response);
       // navigate(`/chargers/mychargers`);
     } catch (err) {
       setError(err);
@@ -141,8 +132,16 @@ export const ChargerDetail = ({ charger }) => {
   return (
     <>
       {/* TODO: Add success alert */}
-      {success && <SuccessAlert message={success.message} />}
-      {error && <ErrorAlert message={error.message} setError={setError} />}
+      {success && (
+        <AlertSuccess message={success.message} setError={setError} />
+      )}
+      {error && (
+        <AlertError
+          message={error.message}
+          setError={setError}
+          setSuccess={setSuccess}
+        />
+      )}
       <div style={{ display: "flex", justifyContent: "center" }}>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       </div>

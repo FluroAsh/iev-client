@@ -6,8 +6,9 @@ import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import { capitalize } from "../utils/helpers";
 
-export const ErrorAlert = ({ message, setError }) => {
+export const AlertError = ({ message, setError, setSuccess }) => {
   const [open, setOpen] = useState(true);
+  setSuccess && setSuccess(false);
 
   return (
     <Box sx={{ width: "100%" }}>
