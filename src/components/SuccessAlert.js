@@ -1,19 +1,18 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
-import { capitalize } from "../utils/helpers";
+import IconButton from "@mui/material/IconButton";
 
-export const ErrorAlert = ({ message, setError }) => {
+export default function SuccessAlert({ message }) {
   const [open, setOpen] = useState(true);
-
+  
   return (
     <Box sx={{ width: "100%" }}>
       <Collapse in={open}>
         <Alert
-          severity="error"
+          severity="success"
           action={
             <IconButton
               aria-label="close"
@@ -21,7 +20,6 @@ export const ErrorAlert = ({ message, setError }) => {
               size="small"
               onClick={() => {
                 setOpen(false);
-                setError(false);
               }}
             >
               <CloseIcon fontSize="inherit" />
@@ -29,9 +27,9 @@ export const ErrorAlert = ({ message, setError }) => {
           }
           sx={{ mb: 2 }}
         >
-          {capitalize(message)}
+          {message}
         </Alert>
       </Collapse>
     </Box>
   );
-};
+}

@@ -24,8 +24,8 @@ export async function getUserBookingRequests(username) {
 
 export async function createUserBookingRequest(bookings) {
   try {
-    const response = await ievAPI.post("/booking/new", bookings);
-    return response.data;
+    await ievAPI.post("/booking/new", bookings);
+    return { message: "Booking request successfully sent" };
   } catch (err) {
     throw Error(err.response.data.error);
   }

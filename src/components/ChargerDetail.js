@@ -25,11 +25,13 @@ import {
 } from "../services/chargerServices";
 import { ErrorAlert } from "./ErrorAlert";
 import { createUserBookingRequest } from "../services/bookingServices";
+import SuccessAlert from "./SuccessAlert";
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, errorMessage, editFormData, chargerStatus } = store;
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
 
@@ -103,7 +105,9 @@ export const ChargerDetail = ({ charger }) => {
       if (bookings.length === 0) {
         throw Error("No dates selected!");
       }
-      await createUserBookingRequest(bookings);
+      // TODO:
+      const response = await createUserBookingRequest(bookings);
+      setSuccess(response);
     } catch (err) {
       setError(err);
     } finally {
@@ -137,6 +141,7 @@ export const ChargerDetail = ({ charger }) => {
   return (
     <>
       {/* TODO: Add success alert */}
+      {success && <SuccessAlert message={success.message} />}
       {error && <ErrorAlert message={error.message} setError={setError} />}
       <div style={{ display: "flex", justifyContent: "center" }}>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
