@@ -23,7 +23,7 @@ export const Charger = ({ charger, item }) => {
       className="card"
       component={motion.div}
       variants={item}
-      // transition={{ type: "spring", duration: 0.5 }}
+      transition={{ type: "spring" }}
     >
       <CardActionArea onClick={handleClickView}>
         <CardMedia
