@@ -3,18 +3,20 @@ import { Link, useParams } from "react-router-dom";
 import { getCharger } from "../services/chargerServices";
 import { ChargerDetail } from "../components/ChargerDetail";
 import { CssLoader } from "../components/CssLoader";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export const ViewCharger = () => {
   const { chargerId } = useParams();
   // console.log("CHARGERID", chargerId);
-  const [charger, setChargerDetail] = useState();
+  const [charger, setCharger] = useState();
   const [loading, setLoading] = useState(true);
   // TODO: Add error state
 
   useEffect(() => {
     getChargerById(chargerId, setLoading).then((data) => {
       // console.log("THIS IS DATA", data);
-      setChargerDetail(data);
+      setCharger(data);
     });
   }, [chargerId]);
 
@@ -26,9 +28,15 @@ export const ViewCharger = () => {
     <>
       {charger !== undefined ? (
         <>
-          <div>
-            <ChargerDetail key={charger.id} charger={charger} />
-          </div>
+          <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <ChargerDetail key={charger.id} charger={charger} />
+            </motion.div>
+          </AnimatePresence>
         </>
       ) : (
         <div>

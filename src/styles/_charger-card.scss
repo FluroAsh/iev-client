@@ -19,20 +19,26 @@
   }
 }
 .chargers {
-  display: flex;
-  flex-wrap: wrap;
-  // justify-content: center;
-  flex-shrink: 1;
+  // display: flex;
+  // flex-wrap: wrap;
+  // // justify-content: center;
+  // flex-shrink: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
 }
+// @media only screen and (min-width: @)
 .card {
   /* !important used to override MUI styles */
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-width: 200px;
-  max-width: 300px;
-  margin: 10px;
+  width: 100%;
+  // min-width: 200px;
+  // max-width: 300px;
   flex: 1 1 150px;
   background: #f4f5e5 !important;
 }
@@ -40,5 +46,14 @@
 @media only screen and (max-width: 880px) {
   .chargers {
     justify-content: center;
+  }
+}
+
+@media only screen and (max-width: $tablet-width) {
+  .search {
+    width: 100%;
+    &__cards {
+      width: 100%;
+    }
   }
 }
