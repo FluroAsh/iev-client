@@ -72,7 +72,7 @@ const SigninForm = () => {
         <motion.div
           className="form-container"
           initial={{ opacity: 0 }}
-          animate={{ opacity: "100%" }}
+          animate={{ opacity: 1 }}
         >
           <form onSubmit={handleSubmit}>
             <Typography variant="h4">Sign in</Typography>

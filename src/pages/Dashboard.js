@@ -11,6 +11,8 @@ import { Button, Typography } from "@mui/material";
 import { useGlobalState } from "../context/stateContext";
 import { AlertError } from "../components/AlertError";
 import { checkHost } from "../services/authServices";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export async function populateRequests(
   username,
@@ -112,28 +114,35 @@ export const Dashboard = () => {
   return (
     <>
       {error && <AlertError message={error.message} setError={setError} />}
-      <div className="page-container" style={{ margin: "0 2em 2em" }}>
-        <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
-          Welcome Back {currentUser.firstName}!
-        </Typography>
+      <AnimatePresence>
+        <motion.div
+          className="page-container"
+          style={{ margin: "0 2em 2em" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
+            Welcome Back {currentUser.firstName}!
+          </Typography>
 
-        {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
-        {host &&
-          (requests.length > 0 ? (
-            <UserRequests requests={requests} styles={styles} host={host} />
+          {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
+          {host &&
+            (requests.length > 0 ? (
+              <UserRequests requests={requests} styles={styles} host={host} />
+            ) : (
+              <NoResults message={"No requests... Yet! 🔌"} />
+            ))}
+
+          {/* NOTE: Not every host will have bookings */}
+          {bookings.length > 0 ? (
+            <UserBookings bookings={bookings} styles={styles} host={host} />
           ) : (
-            <NoResults message={"No requests... Yet! 🔌"} />
-          ))}
+            <NoResults message={"You haven't made any bookings... Yet 😉"} />
+          )}
 
-        {/* NOTE: Not every host will have bookings */}
-        {bookings.length > 0 ? (
-          <UserBookings bookings={bookings} styles={styles} host={host} />
-        ) : (
-          <NoResults message={"You haven't made any bookings... Yet 😉"} />
-        )}
-
-        {!host && <BecomeHost />}
-      </div>
+          {!host && <BecomeHost />}
+        </motion.div>
+      </AnimatePresence>
     </>
   );
 };
