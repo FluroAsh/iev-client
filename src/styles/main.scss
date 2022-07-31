@@ -74,12 +74,6 @@ footer {
 }
 
 /* Charger Detail Classes */
-.flex-box {
-  display: flex;
-  // justify-content: space-between;
-  // align-items: center;
-  // flex-direction: row;
-}
 
 .flex-horizon {
   flex-direction: row;
@@ -91,7 +85,6 @@ footer {
 
 .detailImage {
   max-width: 450px;
-  margin-top: 25px;
 }
 
 .errorMessage {

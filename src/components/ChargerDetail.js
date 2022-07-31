@@ -151,8 +151,9 @@ export const ChargerDetail = ({ charger }) => {
           flexWrap: "wrap",
         }}
       >
-        {/* TODO: This box is not display flex */}
-        <Box sx={{ display: "inline-flex", flexDirection: "column" }}>
+        <Box
+          sx={{ display: "inline-flex", flexDirection: "column", margin: 2 }}
+        >
           <img
             className="detailImage flex-box"
             src={charger.imageUrl}
@@ -178,52 +179,53 @@ export const ChargerDetail = ({ charger }) => {
           </Typography>
         </Box>
 
-        <Box>
-          <Typography variant="h6">Charger Status: {status}</Typography>
-
-          <Box style={{ marginBottom: "16px" }}>
-            <ChargerCalendar dates={dates} setDates={setDates} />
+        <div className="calendar">
+          <Box>
+            <Typography variant="h6">Charger Status: {status}</Typography>
+            <Box style={{ marginBottom: "16px" }}>
+              <ChargerCalendar dates={dates} setDates={setDates} />
+            </Box>
+            {charger.Host.username === loggedInUser ? (
+              <div className="flex-box">
+                <FormControlLabel
+                  control={<Switch checked={checked} onChange={handleSwitch} />}
+                  label="Activate"
+                />
+                <Button
+                  // type="submit"
+                  value="active"
+                  variant="contained"
+                  onClick={handleEdit}
+                  style={{ marginRight: "16px" }}
+                >
+                  Edit
+                </Button>
+                <DeleteButton
+                  key={charger.id}
+                  charger={charger}
+                  setError={setError}
+                />
+              </div>
+            ) : (
+              <div className="flexBox">
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  startIcon={
+                    <FontAwesomeIcon
+                      icon={faCalendarPlus}
+                      style={{ fontSize: "16px" }}
+                    />
+                  }
+                  onClick={handleBooking}
+                >
+                  Book
+                </Button>
+              </div>
+            )}
           </Box>
-          {charger.Host.username === loggedInUser ? (
-            <div className="flex-box">
-              <FormControlLabel
-                control={<Switch checked={checked} onChange={handleSwitch} />}
-                label="Activate"
-              />
-              <Button
-                // type="submit"
-                value="active"
-                variant="contained"
-                onClick={handleEdit}
-                style={{ marginRight: "16px" }}
-              >
-                Edit
-              </Button>
-              <DeleteButton
-                key={charger.id}
-                charger={charger}
-                setError={setError}
-              />
-            </div>
-          ) : (
-            <div className="flexBox">
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                startIcon={
-                  <FontAwesomeIcon
-                    icon={faCalendarPlus}
-                    style={{ fontSize: "16px" }}
-                  />
-                }
-                onClick={handleBooking}
-              >
-                Book
-              </Button>
-            </div>
-          )}
-        </Box>
+        </div>
       </Container>
     </>
   );
