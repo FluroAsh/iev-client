@@ -31,3 +31,13 @@ export async function createUserBookingRequest(bookings) {
     throw Error(err.response.data.error);
   }
 }
+
+// host
+// send confirm request
+
+// send reject request
+
+// user/booker
+// send pay request
+
+// send cancel request

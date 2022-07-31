@@ -10,6 +10,7 @@ import { CssLoader } from "../components/CssLoader";
 import { Button, Typography } from "@mui/material";
 import { useGlobalState } from "../context/stateContext";
 import { AlertError } from "../components/AlertError";
+import { checkHost } from "../services/authServices";
 
 export async function populateRequests(
   username,
@@ -20,15 +21,13 @@ export async function populateRequests(
 ) {
   try {
     setLoading(true);
-    let requests = await getUserBookingRequests(username);
-    console.log(requests);
+    const requests = await getUserBookingRequests(username);
+    // Backend checks if user has any current chargers (is a host)
+    const response = await checkHost();
 
-    /** Found requests, so the user must be a host.
-     * Below assignment won't run if the API service throws an error */
-    if (requests.length > 0) {
+    if (response.message === "User is a host") {
       setHost(true);
     }
-
     setRequests(requests);
   } catch (err) {
     setError(err);
@@ -93,6 +92,8 @@ export const Dashboard = () => {
     populateBookings(loggedInUser, setBookings, setError, setLoading);
     populateRequests(loggedInUser, setRequests, setHost, setError, setLoading);
   }, [loggedInUser]);
+
+  useEffect(() => {}, []);
 
   // TODO: Pass styles as prop based on if user is a prop or not
   // this is to resize the tables to the correct height & ??? etc.
