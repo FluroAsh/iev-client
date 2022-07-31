@@ -9,6 +9,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "^5.0.0-alpha.92",
     "@mui/material": "^5.9.0",
     "@react-google-maps/api": "^2.12.1",
     "axios": "^0.27.2",

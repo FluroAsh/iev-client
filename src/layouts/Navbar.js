@@ -34,7 +34,6 @@ export const Navbar = () => {
             height: 56,
             maxWidth: 1366,
             width: "100%",
-            // p: 0,
           }}
         >
           {isMobile ? <MobileNavbar /> : <DesktopNavBar />}

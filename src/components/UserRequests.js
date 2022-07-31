@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import { displayAUD, displayLocalTime } from "../utils/helpers";
-import { Button, Toolbar, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 function createData(
   id,
@@ -45,7 +45,7 @@ export default function UserRequests({ requests, styles, host }) {
      * 2. Add pagination
      * 3. Add mobile conditionals (should not display some columns, change styling etc)
      */
-    <TableContainer component={Paper}>
+    <TableContainer sx={{ mb: 2 }} component={Paper}>
       <Table sx={{ minWidth: 600 }} aria-label="simple table">
         <TableHead>
           <TableRow>

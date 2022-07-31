@@ -9,8 +9,9 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { displayAUD } from "../utils/helpers";
+import { motion } from "framer-motion";
 
-export const Charger = ({ charger }) => {
+export const Charger = ({ charger, item }) => {
   const navigate = useNavigate();
 
   const handleClickView = () => {
@@ -18,7 +19,7 @@ export const Charger = ({ charger }) => {
   };
 
   return (
-    <Card className="card">
+    <Card className="card" component={motion.div} variants={item}>
       <CardActionArea onClick={handleClickView}>
         <CardMedia
           component="img"

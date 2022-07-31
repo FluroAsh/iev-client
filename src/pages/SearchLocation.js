@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Typography, useMediaQuery, useTheme } from "@mui/material";
 import { geocodeLocation, searchLocation } from "../services/searchServices";
-import { Charger } from "../components/Charger";
 import { CssLoader } from "../components/CssLoader";
 import { useGlobalState } from "../context/stateContext";
 import { ErrorScreen } from "../components/ErrorScreen";
 import { GoogleMap } from "../components/GoogleMap";
+import { ViewChargers } from "./ViewChargers";
 
 export const SearchLocation = () => {
   const [loading, setLoading] = useState(false);
-  const [chargers, setChargers] = useState();
   const [error, setError] = useState();
-  const [coordinates, setCoordinates] = useState({});
-  const { store } = useGlobalState();
-  const { location } = store;
-
+  const { dispatch, store } = useGlobalState();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const [coordinates, setCoordinates] = useState({});
+  const { location, chargerList } = store;
 
   /** Load initial data for charger locations */
   useEffect(() => {
@@ -27,8 +26,8 @@ export const SearchLocation = () => {
       queryLocation,
       setLoading,
       setCoordinates,
-      setChargers,
-      setError
+      setError,
+      dispatch
     );
   }, [location]);
 
@@ -36,7 +35,7 @@ export const SearchLocation = () => {
     <>
       {loading && <CssLoader />}
       {error && <ErrorScreen error={error} />}
-      {chargers && (
+      {chargerList && (
         <div className="search">
           <div className="search__cards">
             <Typography
@@ -44,13 +43,9 @@ export const SearchLocation = () => {
               sx={{ px: 1, py: 2, width: "100%", textAlign: "center" }}
             >
               {/* TODO: Pluralize the string with an NPM package */}
-              {`${chargers.length} charger(s) found`}
+              {`${chargerList.length} charger(s) found`}
             </Typography>
-            <section className="chargers">
-              {chargers.map((charger) => (
-                <Charger key={charger.id} charger={charger} />
-              ))}
-            </section>
+            <ViewChargers />
           </div>
           {!isMobile && <GoogleMap coordinates={coordinates} />}
         </div>
@@ -63,16 +58,19 @@ export async function populateSearch(
   queryLocation,
   setLoading,
   setCoordinates,
-  setChargers,
-  setError
+  setError,
+  dispatch
 ) {
   try {
     setError(false); // clear previous errors
     setLoading(true);
     const chargers = await searchLocation(queryLocation || "");
+    dispatch({
+      type: "setChargerList",
+      data: chargers,
+    });
     const { lat, lng } = await geocodeLocation(chargers[0].Address.city);
     setCoordinates({ lat, lng });
-    setChargers(chargers);
   } catch (err) {
     setError(err);
   } finally {

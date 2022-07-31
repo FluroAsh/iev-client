@@ -17,3 +17,12 @@ export async function signIn(data) {
     throw Error(err.response.data.error);
   }
 }
+
+export async function checkHost() {
+  try {
+    const response = await ievAPI.get("/user/check-host");
+    return response.data;
+  } catch (err) {
+    throw Error(err.response.data.error);
+  }
+}

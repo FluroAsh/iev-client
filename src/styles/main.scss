@@ -1,7 +1,7 @@
 @import "mixins";
 @import "variables";
-@import "cssLoader";
-@import "chargerCard";
+@import "css-loader";
+@import "charger-card";
 @import "nav";
 @import "dashboard";
 
@@ -43,7 +43,9 @@ footer {
   text-align: center;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  min-height: 100vh;
   form {
     display: flex;
     justify-content: center;
@@ -72,12 +74,6 @@ footer {
 }
 
 /* Charger Detail Classes */
-.flex-box {
-  display: flex;
-  // justify-content: space-between;
-  // align-items: center;
-  // flex-direction: row;
-}
 
 .flex-horizon {
   flex-direction: row;
@@ -89,7 +85,6 @@ footer {
 
 .detailImage {
   max-width: 450px;
-  margin-top: 25px;
 }
 
 .errorMessage {
@@ -98,20 +93,3 @@ footer {
   padding: 1em;
   max-width: 450px;
 }
-
-// #appbar {
-//   display: flex !important;
-//   justify-content: center;
-//   width: 100vw;
-// }
-/* Signup/Signin Form */
-// form {
-//   margin-left: 100px;
-// }
-
-/* Media Queries */
-// @media screen and (min-width: $tablet-width) {
-//   .mobile-nav {
-//     display: none !important;
-//   }
-// }

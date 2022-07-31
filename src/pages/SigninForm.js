@@ -3,7 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
-import { ErrorAlert } from "../components/ErrorAlert";
+import { AlertError } from "../components/AlertError";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const SigninForm = () => {
   const { dispatch } = useGlobalState();
@@ -64,35 +66,43 @@ const SigninForm = () => {
   };
   return (
     <>
-      {error && <ErrorAlert message={error.message} setError={setError} />}
+      {error && <AlertError message={error.message} setError={setError} />}
 
-      <div className="form-container">
-        <form onSubmit={handleSubmit}>
-          <Typography variant="h4">Sign in</Typography>
+      <AnimatePresence>
+        <motion.div
+          className="form-container"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <form onSubmit={handleSubmit}>
+            <Typography variant="h4">Sign in</Typography>
 
-          <InputLabel>Username / Email:</InputLabel>
-          <TextField
-            type="text"
-            name="username"
-            id="username"
-            value={formData.username}
-            onChange={handleFormData}
-          />
+            <InputLabel>Username / Email:</InputLabel>
+            <TextField
+              type="text"
+              name="username"
+              id="username"
+              autoComplete="off"
+              value={formData.username}
+              onChange={handleFormData}
+            />
 
-          <InputLabel htmlFor="password">Password:</InputLabel>
-          <TextField
-            type="password"
-            name="password"
-            id="password"
-            value={formData.password}
-            onChange={handleFormData}
-          />
+            <InputLabel htmlFor="password">Password:</InputLabel>
+            <TextField
+              type="password"
+              name="password"
+              id="password"
+              autoComplete="off"
+              value={formData.password}
+              onChange={handleFormData}
+            />
 
-          <Button variant="contained" type="submit">
-            Login
-          </Button>
-        </form>
-      </div>
+            <Button variant="contained" type="submit">
+              Login
+            </Button>
+          </form>
+        </motion.div>
+      </AnimatePresence>
     </>
   );
 };

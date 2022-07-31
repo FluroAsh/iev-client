@@ -3,7 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
-import { ErrorAlert } from "../components/ErrorAlert";
+import { AlertError } from "../components/AlertError";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const SignupForm = () => {
   const { dispatch } = useGlobalState();
@@ -61,70 +63,77 @@ const SignupForm = () => {
 
   return (
     <>
-      {error && <ErrorAlert message={error.message} setError={setError} />}
-      <div className="form-container">
-        <form onSubmit={handleSubmit}>
-          <Typography variant="h4">Register user</Typography>
+      {error && <AlertError message={error.message} setError={setError} />}
 
-          <InputLabel>First Name:</InputLabel>
-          <TextField
-            type="text"
-            name="firstName"
-            id="firstName"
-            value={formData.firstName}
-            onChange={handleFormData}
-          />
+      <AnimatePresence>
+        <motion.div
+          className="form-container"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: "100%" }}
+        >
+          <form onSubmit={handleSubmit}>
+            <Typography variant="h4">Sign Up</Typography>
 
-          <InputLabel>Last Name:</InputLabel>
-          <TextField
-            type="text"
-            name="lastName"
-            id="lastName"
-            value={formData.lastName}
-            onChange={handleFormData}
-          />
+            <InputLabel>First Name:</InputLabel>
+            <TextField
+              type="text"
+              name="firstName"
+              id="firstName"
+              value={formData.firstName}
+              onChange={handleFormData}
+            />
 
-          <InputLabel>Username:</InputLabel>
-          <TextField
-            type="text"
-            name="username"
-            id="username"
-            value={formData.username}
-            onChange={handleFormData}
-          />
+            <InputLabel>Last Name:</InputLabel>
+            <TextField
+              type="text"
+              name="lastName"
+              id="lastName"
+              value={formData.lastName}
+              onChange={handleFormData}
+            />
 
-          <InputLabel>Email:</InputLabel>
-          <TextField
-            type="text"
-            name="email"
-            id="email"
-            value={formData.email}
-            onChange={handleFormData}
-          />
+            <InputLabel>Username:</InputLabel>
+            <TextField
+              type="text"
+              name="username"
+              id="username"
+              value={formData.username}
+              onChange={handleFormData}
+            />
 
-          <InputLabel htmlFor="password">Password:</InputLabel>
-          <TextField
-            type="password"
-            name="password"
-            id="password"
-            value={formData.password}
-            onChange={handleFormData}
-          />
+            <InputLabel>Email:</InputLabel>
+            <TextField
+              type="text"
+              name="email"
+              id="email"
+              value={formData.email}
+              onChange={handleFormData}
+            />
 
-          <InputLabel htmlFor="password">Password confirmation:</InputLabel>
-          <TextField
-            type="password"
-            name="password_confirmation"
-            id="password_confirmation"
-            value={formData.password_confirmation}
-            onChange={handleFormData}
-          />
+            <InputLabel htmlFor="password">Password:</InputLabel>
+            <TextField
+              type="password"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleFormData}
+            />
 
-          <Button variant="contained" type="submit">
-            Sign up
-          </Button>
-        </form>
-      </div>
+            <InputLabel htmlFor="password">Password confirmation:</InputLabel>
+            <TextField
+              type="password"
+              name="password_confirmation"
+              id="password_confirmation"
+              value={formData.password_confirmation}
+              onChange={handleFormData}
+            />
+
+            <Button variant="contained" type="submit">
+              Sign up
+            </Button>
+          </form>
+        </motion.div>
+      </AnimatePresence>
     </>
   );
 };

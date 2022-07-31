@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useGlobalState, StateContext } from "../context/stateContext";
+import { useGlobalState } from "../context/stateContext";
 import { ChargerCalendar } from "./ChargerCalendar";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { displayAUD } from "../utils/helpers";
 import {
   Box,
@@ -23,13 +23,15 @@ import {
   deleteCharger,
   updateChargerStatus,
 } from "../services/chargerServices";
-import { ErrorAlert } from "./ErrorAlert";
 import { createUserBookingRequest } from "../services/bookingServices";
+import { AlertError } from "./AlertError";
+import { AlertSuccess } from "./AlertSuccess";
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, errorMessage, editFormData, chargerStatus } = store;
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
 
@@ -64,18 +66,9 @@ export const ChargerDetail = ({ charger }) => {
         setStatus("Disabled");
       }
 
-      await updateChargerStatus(data, charger.id);
-
-      // if (response.status === 500) {
-      //   dispatch({
-      //     type: "setErrorMessage",
-      //     data: response.data.message,
-      //   });
-      // }
-
-      // TODO: handle success message
+      const response = await updateChargerStatus(data, charger.id);
+      setSuccess(response);
       console.log("Update successful");
-      // console.log("charger after created", response);
       // navigate(`/chargers/mychargers`);
     } catch (err) {
       setError(err);
@@ -103,7 +96,8 @@ export const ChargerDetail = ({ charger }) => {
       if (bookings.length === 0) {
         throw Error("No dates selected!");
       }
-      await createUserBookingRequest(bookings);
+      const response = await createUserBookingRequest(bookings);
+      setSuccess(response);
     } catch (err) {
       setError(err);
     } finally {
@@ -136,8 +130,16 @@ export const ChargerDetail = ({ charger }) => {
 
   return (
     <>
-      {/* TODO: Add success alert */}
-      {error && <ErrorAlert message={error.message} setError={setError} />}
+      {success && (
+        <AlertSuccess message={success.message} setError={setError} />
+      )}
+      {error && (
+        <AlertError
+          message={error.message}
+          setError={setError}
+          setSuccess={setSuccess}
+        />
+      )}
       <div style={{ display: "flex", justifyContent: "center" }}>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       </div>
@@ -149,8 +151,9 @@ export const ChargerDetail = ({ charger }) => {
           flexWrap: "wrap",
         }}
       >
-        {/* TODO: This box is not display flex */}
-        <Box sx={{ display: "inline-flex", flexDirection: "column" }}>
+        <Box
+          sx={{ display: "inline-flex", flexDirection: "column", margin: 2 }}
+        >
           <img
             className="detailImage flex-box"
             src={charger.imageUrl}
@@ -176,52 +179,53 @@ export const ChargerDetail = ({ charger }) => {
           </Typography>
         </Box>
 
-        <Box>
-          <Typography variant="h6">Charger Status: {status}</Typography>
-
-          <Box style={{ marginBottom: "16px" }}>
-            <ChargerCalendar dates={dates} setDates={setDates} />
+        <div className="calendar">
+          <Box>
+            <Typography variant="h6">Charger Status: {status}</Typography>
+            <Box style={{ marginBottom: "16px" }}>
+              <ChargerCalendar dates={dates} setDates={setDates} />
+            </Box>
+            {charger.Host.username === loggedInUser ? (
+              <div className="flex-box">
+                <FormControlLabel
+                  control={<Switch checked={checked} onChange={handleSwitch} />}
+                  label="Activate"
+                />
+                <Button
+                  // type="submit"
+                  value="active"
+                  variant="contained"
+                  onClick={handleEdit}
+                  style={{ marginRight: "16px" }}
+                >
+                  Edit
+                </Button>
+                <DeleteButton
+                  key={charger.id}
+                  charger={charger}
+                  setError={setError}
+                />
+              </div>
+            ) : (
+              <div className="flexBox">
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  startIcon={
+                    <FontAwesomeIcon
+                      icon={faCalendarPlus}
+                      style={{ fontSize: "16px" }}
+                    />
+                  }
+                  onClick={handleBooking}
+                >
+                  Book
+                </Button>
+              </div>
+            )}
           </Box>
-          {charger.Host.username === loggedInUser ? (
-            <div className="flex-box">
-              <FormControlLabel
-                control={<Switch checked={checked} onChange={handleSwitch} />}
-                label="Activate"
-              />
-              <Button
-                // type="submit"
-                value="active"
-                variant="contained"
-                onClick={handleEdit}
-                style={{ marginRight: "16px" }}
-              >
-                Edit
-              </Button>
-              <DeleteButton
-                key={charger.id}
-                charger={charger}
-                setError={setError}
-              />
-            </div>
-          ) : (
-            <div className="flexBox">
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                startIcon={
-                  <FontAwesomeIcon
-                    icon={faCalendarPlus}
-                    style={{ fontSize: "16px" }}
-                  />
-                }
-                onClick={handleBooking}
-              >
-                Book
-              </Button>
-            </div>
-          )}
-        </Box>
+        </div>
       </Container>
     </>
   );

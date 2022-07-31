@@ -75,7 +75,6 @@ function App() {
               <Route path="charger">
                 <Route path=":chargerId" element={<ViewCharger />} />
                 <Route path=":chargerId/edit" element={<EditCharger />} />
-
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

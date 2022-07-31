@@ -9,7 +9,10 @@ import {
 import { CssLoader } from "../components/CssLoader";
 import { Button, Typography } from "@mui/material";
 import { useGlobalState } from "../context/stateContext";
-import { ErrorAlert } from "../components/ErrorAlert";
+import { AlertError } from "../components/AlertError";
+import { checkHost } from "../services/authServices";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export async function populateRequests(
   username,
@@ -20,17 +23,18 @@ export async function populateRequests(
 ) {
   try {
     setLoading(true);
-    let requests = await getUserBookingRequests(username);
-    console.log(requests);
+    const requests = await getUserBookingRequests(username);
+    // Backend checks if user has any current chargers (is a host)
+    const response = await checkHost();
+    console.log("Dashboard Response", response);
 
-    /** Found requests, so the user must be a host.
-     * Below assignment won't run if the API service throws an error */
-    if (requests.length > 0) {
+    if (response.message === "User is a host") {
       setHost(true);
     }
-
     setRequests(requests);
   } catch (err) {
+    // Only throw an error if it's unexpected
+    if (err.message === "User is not a host") return;
     setError(err);
   } finally {
     setLoading(false);
@@ -84,7 +88,7 @@ export const Dashboard = () => {
   const [requests, setRequests] = useState([]);
   const [host, setHost] = useState(false);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
 
   const { store } = useGlobalState();
   const { currentUser, loggedInUser } = store;
@@ -109,29 +113,36 @@ export const Dashboard = () => {
 
   return (
     <>
-      {error && <ErrorAlert message={error.message} setError={setError} />}
-      <div className="page-container" style={{ margin: "0 2em 2em" }}>
-        <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
-          Welcome Back {currentUser.firstName}!
-        </Typography>
+      {error && <AlertError message={error.message} setError={setError} />}
+      <AnimatePresence>
+        <motion.div
+          className="page-container"
+          style={{ margin: "0 2em 2em" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
+            Welcome Back {currentUser.firstName}!
+          </Typography>
 
-        {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
-        {host &&
-          (requests.length > 0 ? (
-            <UserRequests requests={requests} styles={styles} host={host} />
+          {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
+          {host &&
+            (requests.length > 0 ? (
+              <UserRequests requests={requests} styles={styles} host={host} />
+            ) : (
+              <NoResults message={"No requests... Yet! 🔌"} />
+            ))}
+
+          {/* NOTE: Not every host will have bookings */}
+          {bookings.length > 0 ? (
+            <UserBookings bookings={bookings} styles={styles} host={host} />
           ) : (
-            <NoResults message={"No requests... Yet!"} />
-          ))}
+            <NoResults message={"You haven't made any bookings... Yet 😉"} />
+          )}
 
-        {/* NOTE: Not every host will have bookings */}
-        {bookings.length > 0 ? (
-          <UserBookings bookings={bookings} styles={styles} host={host} />
-        ) : (
-          <NoResults message={"You haven't made any bookings... Yet 😉"} />
-        )}
-
-        {!host && <BecomeHost />}
-      </div>
+          {!host && <BecomeHost />}
+        </motion.div>
+      </AnimatePresence>
     </>
   );
 };

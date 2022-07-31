@@ -7,8 +7,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { Button, Toolbar, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 // import TableFooter from "@mui/material/TableFooter";
 // import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 // import TablePagination from "@mui/material/TablePagination";
@@ -20,8 +20,10 @@ function createData(id, city, stationName, price, date, status) {
 }
 
 export default function UserBookings({ bookings }) {
+  const [loading, setLoading] = React.useState({});
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   // console.log("bookings table", bookings);
+
   const rows = bookings.map((booking) => {
     const { bookingDate: date, status } = booking;
     const { name: stationName, price } = booking.Charger;
@@ -80,20 +82,24 @@ export default function UserBookings({ bookings }) {
               <TableCell align="center">
                 {row.status === "Pending" && (
                   // TODO: Render modals/dialog for confirming actions
-                  <ButtonGroup variant="contained" sx={{ zIndex: 999999 }}>
-                    <Button color="success" size="small">
-                      Pay
-                    </Button>
-                    <Button
-                      // loading
-                      // loadingPosition="start"
+                  <ButtonGroup variant="contained">
+                    <LoadingButton
+                      onClick={() => handlePayClick(setLoading, row.id)}
+                      loading={loading[row.id]}
+                      size="small"
+                      variant="contained"
+                      color="success"
+                    >
+                      {!loading[row.id] && "Pay"}
+                    </LoadingButton>
+                    <LoadingButton
+                      onClick={() => handleCancelClick(setLoading, row.id)}
+                      variant="contained"
                       color="error"
                       size="small"
-                      onClick={() => console.log("Cancelling...")}
-                      // disable={1 + 1 === 2 ? false : true}
                     >
                       Cancel
-                    </Button>
+                    </LoadingButton>
                   </ButtonGroup>
                 )}
               </TableCell>
@@ -104,3 +110,25 @@ export default function UserBookings({ bookings }) {
     </TableContainer>
   );
 }
+
+const handlePayClick = (setLoading, RowId) => {
+  try {
+    setLoading({ [RowId]: true });
+    // handle the API request here
+  } catch (err) {
+    // catch the error here
+  } finally {
+    // setLoading({ [RowId]: false });
+  }
+};
+
+const handleCancelClick = (setLoading, RowId) => {
+  try {
+    setLoading({ [RowId]: true });
+    // handle the API request here
+  } catch (err) {
+    // catch the error here
+  } finally {
+    // setloading(false)
+  }
+};
