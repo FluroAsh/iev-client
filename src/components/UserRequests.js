@@ -9,9 +9,10 @@ import Paper from "@mui/material/Paper";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { LoadingButton } from "@mui/lab";
 
 import { displayAUD, displayLocalTime } from "../utils/helpers";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 function createData(
   id,
@@ -26,6 +27,8 @@ function createData(
 }
 
 export default function UserRequests({ requests, styles, host }) {
+  const [loading, setLoading] = React.useState([]);
+
   const rows = requests.map((request, i) => {
     return createData(
       i,
@@ -37,6 +40,8 @@ export default function UserRequests({ requests, styles, host }) {
       request.Charger.name
     );
   });
+
+  console.log(loading);
 
   return (
     /**
@@ -78,12 +83,32 @@ export default function UserRequests({ requests, styles, host }) {
               <TableCell align="right">{row.stationName}</TableCell>
               <TableCell align="center">
                 <ButtonGroup variant="contained">
-                  <Button color="success" size="small" sx={{ width: "50%" }}>
+                  <LoadingButton
+                    onClick={() =>
+                      handleConfirmation(loading, setLoading, row.id)
+                    }
+                    loading={
+                      !!loading.find((element) => element[row.id]?.confirm)
+                    } // coerce to boolean
+                    variant="contained"
+                    color="success"
+                    size="small"
+                    sx={{ width: "50%" }}
+                  >
                     <FontAwesomeIcon icon={faCheck} size="xl" />
-                  </Button>
-                  <Button color="error" size="small" sx={{ width: "50%" }}>
+                  </LoadingButton>
+                  <LoadingButton
+                    onClick={() => handleRejection(loading, setLoading, row.id)}
+                    loading={
+                      !!loading.find((element) => element[row.id]?.reject)
+                    }
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    sx={{ width: "50%" }}
+                  >
                     <FontAwesomeIcon icon={faXmark} size="xl" />
-                  </Button>
+                  </LoadingButton>
                 </ButtonGroup>
               </TableCell>
             </TableRow>
@@ -93,3 +118,21 @@ export default function UserRequests({ requests, styles, host }) {
     </TableContainer>
   );
 }
+
+const handleConfirmation = (loading, setLoading, RowId) => {
+  try {
+    setLoading([...loading, { [RowId]: { confirm: true } }]);
+  } catch (err) {
+    console.log(err);
+  } finally {
+  }
+};
+
+const handleRejection = (loading, setLoading, RowId) => {
+  try {
+    setLoading([...loading, { [RowId]: { reject: true } }]);
+  } catch (err) {
+    console.log(err);
+  } finally {
+  }
+};

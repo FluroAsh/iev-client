@@ -26,7 +26,6 @@ export async function populateRequests(
     const requests = await getUserBookingRequests(username);
     // Backend checks if user has any current chargers (is a host)
     const response = await checkHost();
-    console.log("Dashboard Response", response);
 
     if (response.message === "User is a host") {
       setHost(true);
@@ -50,7 +49,6 @@ export async function populateBookings(
   try {
     setLoading(true);
     const bookings = await getUserBookings(username);
-    console.log("API Bookings", bookings);
     setBookings(bookings);
   } catch (err) {
     setError(err);
