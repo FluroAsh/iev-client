@@ -27,7 +27,6 @@ export const Navbar = () => {
     <>
       <AppBar position="sticky">
         <Toolbar
-          id
           sx={{
             display: "flex",
             justifyContent: "space-between",

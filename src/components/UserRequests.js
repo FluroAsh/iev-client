@@ -13,6 +13,10 @@ import { LoadingButton } from "@mui/lab";
 
 import { displayAUD, displayLocalTime } from "../utils/helpers";
 import { Typography } from "@mui/material";
+import {
+  rejectUserRequest,
+  approveUserRequest,
+} from "../services/bookingServices";
 
 function createData(
   id,
@@ -26,12 +30,12 @@ function createData(
   return { id, name, vehicle, price, bookingDate, sentDate, stationName };
 }
 
-export default function UserRequests({ requests, styles, host }) {
+export default function UserRequests({ requests, styles, hostStatus }) {
   const [loading, setLoading] = React.useState([]);
 
-  const rows = requests.map((request, i) => {
+  const rows = requests.map((request) => {
     return createData(
-      i,
+      request.id,
       request.User.firstName,
       request.User.UserVehicle.Vehicle.model,
       displayAUD(request.Charger.price),
@@ -41,7 +45,34 @@ export default function UserRequests({ requests, styles, host }) {
     );
   });
 
-  console.log(loading);
+  async function handleConfirmation(RowId) {
+    // row.id & request.id are the same id
+    try {
+      setLoading({ [RowId]: { confirm: true } });
+      await approveUserRequest({ BookingId: RowId });
+      // update requests
+    } catch (err) {
+      console.log(err);
+    } finally {
+      // BACKLOG/FUTURE ADDITION: Implement functionality to track multiple button states asynchronously
+      setTimeout(() => {
+        setLoading([{ RowId: { confirm: false } }]);
+      }, 1000);
+    }
+  }
+
+  async function handleRejection(RowId) {
+    try {
+      setLoading({ [RowId]: { reject: true } });
+      await rejectUserRequest({ BookingId: RowId });
+      // update requests
+      // TODO: setError/setSuccess
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading([{ [RowId]: { reject: false } }]);
+    }
+  }
 
   return (
     /**
@@ -84,12 +115,8 @@ export default function UserRequests({ requests, styles, host }) {
               <TableCell align="center">
                 <ButtonGroup variant="contained">
                   <LoadingButton
-                    onClick={() =>
-                      handleConfirmation(loading, setLoading, row.id)
-                    }
-                    loading={
-                      !!loading.find((element) => element[row.id]?.confirm)
-                    } // coerce to boolean
+                    onClick={() => handleConfirmation(row.id)}
+                    loading={loading[row.id]?.confirm}
                     variant="contained"
                     color="success"
                     size="small"
@@ -98,10 +125,10 @@ export default function UserRequests({ requests, styles, host }) {
                     <FontAwesomeIcon icon={faCheck} size="xl" />
                   </LoadingButton>
                   <LoadingButton
-                    onClick={() => handleRejection(loading, setLoading, row.id)}
-                    loading={
-                      !!loading.find((element) => element[row.id]?.reject)
-                    }
+                    onClick={() => {
+                      handleRejection(row.id);
+                    }}
+                    loading={loading[row.id]?.reject}
                     variant="contained"
                     color="error"
                     size="small"
@@ -118,21 +145,3 @@ export default function UserRequests({ requests, styles, host }) {
     </TableContainer>
   );
 }
-
-const handleConfirmation = (loading, setLoading, RowId) => {
-  try {
-    setLoading([...loading, { [RowId]: { confirm: true } }]);
-  } catch (err) {
-    console.log(err);
-  } finally {
-  }
-};
-
-const handleRejection = (loading, setLoading, RowId) => {
-  try {
-    setLoading([...loading, { [RowId]: { reject: true } }]);
-  } catch (err) {
-    console.log(err);
-  } finally {
-  }
-};

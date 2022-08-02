@@ -25,8 +25,11 @@ function App() {
   const initialState = {
     chargerList: [],
     bookingDates: [],
-    editFormData: {},
+    bookings: [],
+    bookingRequests: [],
+    hostStatus: false,
     chargerStatus: "",
+    editFormData: {},
     loggedInUser: sessionStorage.getItem("username") || "",
     currentUser: {
       firstName: sessionStorage.getItem("firstName") || "",
