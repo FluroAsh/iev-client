@@ -39,20 +39,18 @@ export async function createUserBookingRequest(bookings) {
 export async function rejectUserRequest(data) {
   try {
     await ievAPI.put("/booking/request?response=reject", data);
-    console.log("Successful Rejection");
     return { message: "Booking successfully rejected" };
   } catch (err) {
-    console.log(err);
+    throw Error(err.response.data.error);
   }
 }
 
 export async function approveUserRequest(data) {
   try {
     await ievAPI.put("/booking/request?response=approve", data);
-    console.log("Successful Approval");
     return { message: "Booking successfully approved" };
   } catch (err) {
-    console.log(err);
+    throw Error(err.response.data.error);
   }
 }
 

@@ -32,12 +32,20 @@ function createData(
   return { id, name, vehicle, price, bookingDate, sentDate, stationName };
 }
 
-export default function UserRequests({ requests, styles, hostStatus }) {
-  const { store, dispatch } = useGlobalState();
-  const { loggedInUser } = store;
+export default function UserRequests() {
   const [loading, setLoading] = React.useState([]);
+  const { store, dispatch } = useGlobalState();
+  const { loggedInUser, bookingRequests } = store;
 
-  const rows = requests.map((request) => {
+  async function refreshUserRequests() {
+    const updatedRequests = await getUserBookingRequests(loggedInUser);
+    dispatch({
+      type: "setUserRequests",
+      data: updatedRequests,
+    });
+  }
+
+  const rows = bookingRequests.map((request) => {
     return createData(
       request.id,
       request.User.firstName,
@@ -49,28 +57,17 @@ export default function UserRequests({ requests, styles, hostStatus }) {
     );
   });
 
-  async function refreshUserRequests() {
-    const updatedRequests = await getUserBookingRequests(loggedInUser);
-    dispatch({
-      type: "setUserRequets",
-      data: updatedRequests,
-    });
-  }
-
   async function handleConfirmation(RowId) {
     // row.id & request.id are the same id
     try {
       setLoading({ [RowId]: { confirm: true } });
       await approveUserRequest({ BookingId: RowId });
-      // Update bookingRequests state after successful request
-      await refreshUserRequests();
+      refreshUserRequests();
     } catch (err) {
       console.log(err);
     } finally {
       // BACKLOG/FUTURE ADDITION: Implement functionality to track multiple button states asynchronously
-      setTimeout(() => {
-        setLoading([{ RowId: { confirm: false } }]);
-      }, 1000);
+      setLoading([{ RowId: { confirm: false } }]);
     }
   }
 
@@ -78,15 +75,12 @@ export default function UserRequests({ requests, styles, hostStatus }) {
     try {
       setLoading({ [RowId]: { reject: true } });
       await rejectUserRequest({ BookingId: RowId });
-      // Update bookingRequests state after successful request
       await refreshUserRequests();
       // TODO: setError/setSuccess
     } catch (err) {
       console.log(err);
     } finally {
-      setTimeout(() => {
-        setLoading([{ [RowId]: { reject: false } }]);
-      }, 1000);
+      setLoading([{ [RowId]: { reject: false } }]);
     }
   }
 

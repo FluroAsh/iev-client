@@ -93,3 +93,8 @@ footer {
   padding: 1em;
   max-width: 450px;
 }
+
+/** MUI Overrides **/
+.MuiLoadingButton-root {
+  // min-width: 50%;
+}

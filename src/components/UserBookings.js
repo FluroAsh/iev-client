@@ -39,6 +39,28 @@ export default function UserBookings({ bookings }) {
     );
   });
 
+  const handlePayClick = (setLoading, RowId) => {
+    try {
+      setLoading({ [RowId]: true });
+      // handle the API request here
+    } catch (err) {
+      // catch the error here
+    } finally {
+      // setLoading({ [RowId]: false });
+    }
+  };
+
+  const handleCancelClick = (setLoading, RowId) => {
+    try {
+      setLoading({ [RowId]: true });
+      // handle the API request here
+    } catch (err) {
+      // catch the error here
+    } finally {
+      // setloading(false)
+    }
+  };
+
   return (
     /**
      * TODO:
@@ -81,20 +103,12 @@ export default function UserBookings({ bookings }) {
               <TableCell align="right">{row.date}</TableCell>
               <TableCell align="right">{row.status}</TableCell>
               <TableCell align="center">
-                {/* 
-                  Approved = Show 'PAY/CANCEL'
-                  Pending = SHOW 'CANCEL'
-
-                  Paid = Show NO BUTTONS
-                  Rejected = Show NO BUTTONS
-                */}
-                {console.log(row.status === "Approved")}
                 {(row.status === "Approved" || row.status === "Pending") && (
                   // TODO: Render modals/dialog for confirming actions
-
                   <ButtonGroup variant="contained">
                     {row.status === "Approved" && (
                       <LoadingButton
+                        sx={{ minWidth: "50%" }}
                         onClick={() => handlePayClick(setLoading, row.id)}
                         loading={loading[row.id]}
                         size="small"
@@ -123,25 +137,3 @@ export default function UserBookings({ bookings }) {
     </TableContainer>
   );
 }
-
-const handlePayClick = (setLoading, RowId) => {
-  try {
-    setLoading({ [RowId]: true });
-    // handle the API request here
-  } catch (err) {
-    // catch the error here
-  } finally {
-    // setLoading({ [RowId]: false });
-  }
-};
-
-const handleCancelClick = (setLoading, RowId) => {
-  try {
-    setLoading({ [RowId]: true });
-    // handle the API request here
-  } catch (err) {
-    // catch the error here
-  } finally {
-    // setloading(false)
-  }
-};

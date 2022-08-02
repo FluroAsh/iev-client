@@ -15,12 +15,7 @@ import { useGlobalState } from "../context/stateContext";
 import { AlertError } from "../components/AlertError";
 import { checkHost } from "../services/authServices";
 
-export async function populateRequests(
-  username,
-  dispatch,
-  setError,
-  setLoading
-) {
+export async function fetchRequests(username, dispatch, setError, setLoading) {
   try {
     setLoading(true);
     const requests = await getUserBookingRequests(username);
@@ -47,12 +42,7 @@ export async function populateRequests(
   }
 }
 
-export async function populateBookings(
-  username,
-  dispatch,
-  setError,
-  setLoading
-) {
+export async function fetchBookings(username, dispatch, setError, setLoading) {
   try {
     setLoading(true);
     const bookings = await getUserBookings(username);
@@ -104,8 +94,8 @@ export const Dashboard = () => {
   } = store;
 
   useEffect(() => {
-    populateBookings(loggedInUser, dispatch, setError, setLoading);
-    populateRequests(loggedInUser, dispatch, setError, setLoading);
+    fetchBookings(loggedInUser, dispatch, setError, setLoading);
+    fetchRequests(loggedInUser, dispatch, setError, setLoading);
   }, [loggedInUser]);
 
   // TODO: Pass styles as prop based on if user is a prop or not
@@ -139,7 +129,6 @@ export const Dashboard = () => {
           {hostStatus &&
             (bookingRequests.length > 0 ? (
               <UserRequests
-                requests={bookingRequests}
                 styles={styles}
                 hostStatus={hostStatus}
               />
