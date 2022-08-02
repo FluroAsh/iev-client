@@ -19,7 +19,6 @@ export async function fetchRequests(username, dispatch, setError, setLoading) {
   try {
     setLoading(true);
     const requests = await getUserBookingRequests(username);
-    // Backend checks if user has any current chargers (is a host)
     const response = await checkHost();
 
     if (response.message === "User is a host") {
@@ -128,10 +127,7 @@ export const Dashboard = () => {
           {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
           {hostStatus &&
             (bookingRequests.length > 0 ? (
-              <UserRequests
-                styles={styles}
-                hostStatus={hostStatus}
-              />
+              <UserRequests styles={styles} hostStatus={hostStatus} />
             ) : (
               <NoResults message={"No requests... Yet! 🔌"} />
             ))}
