@@ -16,7 +16,9 @@ import { Typography } from "@mui/material";
 import {
   rejectUserRequest,
   approveUserRequest,
+  getUserBookingRequests,
 } from "../services/bookingServices";
+import { useGlobalState } from "../context/stateContext";
 
 function createData(
   id,
@@ -31,6 +33,8 @@ function createData(
 }
 
 export default function UserRequests({ requests, styles, hostStatus }) {
+  const { store, dispatch } = useGlobalState();
+  const { loggedInUser } = store;
   const [loading, setLoading] = React.useState([]);
 
   const rows = requests.map((request) => {
@@ -45,12 +49,21 @@ export default function UserRequests({ requests, styles, hostStatus }) {
     );
   });
 
+  async function refreshUserRequests() {
+    const updatedRequests = await getUserBookingRequests(loggedInUser);
+    dispatch({
+      type: "setUserRequets",
+      data: updatedRequests,
+    });
+  }
+
   async function handleConfirmation(RowId) {
     // row.id & request.id are the same id
     try {
       setLoading({ [RowId]: { confirm: true } });
       await approveUserRequest({ BookingId: RowId });
-      // update requests
+      // Update bookingRequests state after successful request
+      await refreshUserRequests();
     } catch (err) {
       console.log(err);
     } finally {
@@ -65,12 +78,15 @@ export default function UserRequests({ requests, styles, hostStatus }) {
     try {
       setLoading({ [RowId]: { reject: true } });
       await rejectUserRequest({ BookingId: RowId });
-      // update requests
+      // Update bookingRequests state after successful request
+      await refreshUserRequests();
       // TODO: setError/setSuccess
     } catch (err) {
       console.log(err);
     } finally {
-      setLoading([{ [RowId]: { reject: false } }]);
+      setTimeout(() => {
+        setLoading([{ [RowId]: { reject: false } }]);
+      }, 1000);
     }
   }
 

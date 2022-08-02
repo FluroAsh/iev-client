@@ -23,6 +23,7 @@ export async function checkHost() {
     const response = await ievAPI.get("/user/check-host");
     return response.data;
   } catch (err) {
+    console.log(err.response);
     throw Error(err.response.data.error);
   }
 }

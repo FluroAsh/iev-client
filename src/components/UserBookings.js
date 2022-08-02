@@ -21,6 +21,7 @@ function createData(id, city, stationName, price, date, status) {
 
 export default function UserBookings({ bookings }) {
   const [loading, setLoading] = React.useState({});
+
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   // console.log("bookings table", bookings);
 
@@ -80,18 +81,30 @@ export default function UserBookings({ bookings }) {
               <TableCell align="right">{row.date}</TableCell>
               <TableCell align="right">{row.status}</TableCell>
               <TableCell align="center">
-                {row.status === "Pending" && (
+                {/* 
+                  Approved = Show 'PAY/CANCEL'
+                  Pending = SHOW 'CANCEL'
+
+                  Paid = Show NO BUTTONS
+                  Rejected = Show NO BUTTONS
+                */}
+                {console.log(row.status === "Approved")}
+                {(row.status === "Approved" || row.status === "Pending") && (
                   // TODO: Render modals/dialog for confirming actions
+
                   <ButtonGroup variant="contained">
-                    <LoadingButton
-                      onClick={() => handlePayClick(setLoading, row.id)}
-                      loading={loading[row.id]}
-                      size="small"
-                      variant="contained"
-                      color="success"
-                    >
-                      {!loading[row.id] && "Pay"}
-                    </LoadingButton>
+                    {row.status === "Approved" && (
+                      <LoadingButton
+                        onClick={() => handlePayClick(setLoading, row.id)}
+                        loading={loading[row.id]}
+                        size="small"
+                        variant="contained"
+                        color="success"
+                      >
+                        {!loading[row.id] && "Pay"}
+                      </LoadingButton>
+                    )}
+
                     <LoadingButton
                       onClick={() => handleCancelClick(setLoading, row.id)}
                       variant="contained"
