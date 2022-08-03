@@ -56,12 +56,10 @@ async function fetchData(location, dispatch) {
   if (location.pathname === "/chargers") {
     try {
       const chargers = await getChargers();
-      if (chargers) {
-        dispatch({
-          type: "setChargerList",
-          data: chargers,
-        });
-      }
+      dispatch({
+        type: "setChargerList",
+        data: chargers,
+      });
     } catch (err) {
       console.error(err.message);
     }
@@ -70,12 +68,10 @@ async function fetchData(location, dispatch) {
   if (location.pathname === "/chargers/mychargers") {
     try {
       const myChargers = await getMyChargers();
-      if (myChargers) {
-        dispatch({
-          type: "setChargerList",
-          data: myChargers,
-        });
-      }
+      dispatch({
+        type: "setChargerList",
+        data: myChargers,
+      });
     } catch (err) {
       console.error(err.message);
     }
