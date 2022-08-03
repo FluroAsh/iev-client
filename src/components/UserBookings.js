@@ -14,13 +14,16 @@ import { LoadingButton } from "@mui/lab";
 // import TablePagination from "@mui/material/TablePagination";
 
 import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
+import { useGlobalState } from "../context/stateContext";
 
 function createData(id, city, stationName, price, date, status) {
   return { id, city, stationName, price, date, status };
 }
 
-export default function UserBookings({ bookings }) {
+export default function UserBookings() {
   const [loading, setLoading] = React.useState({});
+  const { store, dispatch } = useGlobalState();
+  const { bookings } = store;
 
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   // console.log("bookings table", bookings);
