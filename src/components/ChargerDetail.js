@@ -38,9 +38,6 @@ export const ChargerDetail = ({ charger }) => {
   const [dates, setDates] = useState([]);
 
   useEffect(() => {
-    // Set charger status local state variables (status, checked)
-    console.log("--> Charger status:", charger.status);
-
     if (charger.status === "active") {
       setStatus("Active");
       setChecked(true);

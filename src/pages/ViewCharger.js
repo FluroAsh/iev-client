@@ -15,7 +15,6 @@ export const ViewCharger = () => {
 
   useEffect(() => {
     getChargerById(chargerId, setLoading).then((data) => {
-      // console.log("THIS IS DATA", data);
       setCharger(data);
     });
   }, [chargerId]);

@@ -13,6 +13,7 @@ import { LoadingButton } from "@mui/lab";
 // import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 // import TablePagination from "@mui/material/TablePagination";
 import { useNavigate } from "react-router-dom";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
 import { useGlobalState } from "../context/stateContext";
@@ -30,17 +31,17 @@ const statusColor = {
   Paid: "#2e7d32",
 };
 
-function createData(id, city, stationName, price, date, status) {
-  return { id, city, stationName, price, date, status };
+function createData(id, city, stationName, price, date, status, chargerId) {
+  return { id, city, stationName, price, date, status, chargerId };
 }
 
 export default function UserBookings({ setError, setSuccess }) {
   const [loading, setLoading] = React.useState([]);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, bookings } = store;
-
-  // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   // Populates table rows
   const rows = bookings.map((booking) => {
@@ -53,7 +54,8 @@ export default function UserBookings({ setError, setSuccess }) {
       stationName,
       displayAUD(price),
       displayLocalTime(date),
-      capitalize(status)
+      capitalize(status),
+      booking.Charger.id
     );
   });
 
@@ -97,8 +99,8 @@ export default function UserBookings({ setError, setSuccess }) {
     }
   }
 
-  const handleRowClick = (RowId) => {
-    navigate(`/charger/${RowId}`);
+  const handleRowClick = (chargerId) => {
+    navigate(`/charger/${chargerId}`);
   };
 
   return (
@@ -118,8 +120,10 @@ export default function UserBookings({ setError, setSuccess }) {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>City</TableCell>
-              <TableCell align="right">Station Name</TableCell>
+              {!isMobile && <TableCell>City</TableCell>}
+              <TableCell align={isMobile ? "left" : "right"}>
+                Station Name
+              </TableCell>
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Booking Date</TableCell>
               <TableCell align="right">Status</TableCell>
@@ -130,17 +134,21 @@ export default function UserBookings({ setError, setSuccess }) {
             {rows.map((row) => (
               <TableRow
                 key={row.id}
-                onClick={() => handleRowClick(row.id)}
+                onClick={() => handleRowClick(row.chargerId)}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   textDecoration: "none",
                 }}
                 hover
               >
-                <TableCell component="th" scope="row">
-                  {row.city}
+                {!isMobile && (
+                  <TableCell component="th" scope="row">
+                    {row.city}
+                  </TableCell>
+                )}
+                <TableCell align={isMobile ? "left" : "right"}>
+                  {row.stationName}
                 </TableCell>
-                <TableCell align="right">{row.stationName}</TableCell>
                 <TableCell align="right">{row.price}</TableCell>
                 <TableCell align="right">{row.date}</TableCell>
                 <TableCell
@@ -151,7 +159,7 @@ export default function UserBookings({ setError, setSuccess }) {
                 </TableCell>
                 <TableCell align="center">
                   {(row.status === "Approved" || row.status === "Pending") && (
-                    // TODO: Render modals/dialog for confirming actions
+                    // TODO: Add conditional buttons to render on a new row (2nd row) for mobile
                     <ButtonGroup variant="contained">
                       {row.status === "Approved" && (
                         <LoadingButton

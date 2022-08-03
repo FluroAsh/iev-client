@@ -12,7 +12,7 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { LoadingButton } from "@mui/lab";
 
 import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
-import { Typography } from "@mui/material";
+import { Typography, useTheme, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import {
   rejectUserRequest,
@@ -35,7 +35,8 @@ function createData(
   bookingDate,
   sentDate,
   stationName,
-  status
+  status,
+  chargerId
 ) {
   return {
     id,
@@ -46,14 +47,17 @@ function createData(
     sentDate,
     stationName,
     status,
+    chargerId,
   };
 }
 
 export default function UserRequests({ setError, setSuccess }) {
   const [loading, setLoading] = React.useState([]);
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, bookingRequests } = store;
-  const navigate = useNavigate();
 
   // Populates table rows
   const rows = bookingRequests.map((request) => {
@@ -65,7 +69,8 @@ export default function UserRequests({ setError, setSuccess }) {
       displayLocalTime(request.bookingDate),
       displayLocalTime(request.createdAt),
       request.Charger.name,
-      capitalize(request.status)
+      capitalize(request.status),
+      request.Charger.id
     );
   });
 
@@ -113,8 +118,8 @@ export default function UserRequests({ setError, setSuccess }) {
     }
   }
 
-  const handleRowClick = (RowId) => {
-    navigate(`/charger/${RowId}`);
+  const handleRowClick = (chargerId) => {
+    navigate(`/charger/${chargerId}`);
   };
 
   return (
@@ -135,10 +140,10 @@ export default function UserRequests({ setError, setSuccess }) {
             </TableRow>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell align="right">Vehicle</TableCell>
+              {!isMobile && <TableCell align="right">Vehicle</TableCell>}
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Booking Date</TableCell>
-              <TableCell align="right">Sent Date</TableCell>
+              {!isMobile && <TableCell align="right">Sent Date</TableCell>}
               <TableCell align="right">Station Name</TableCell>
               <TableCell></TableCell>
             </TableRow>
@@ -147,7 +152,7 @@ export default function UserRequests({ setError, setSuccess }) {
             {rows.map((row) => (
               <TableRow
                 key={row.id}
-                onClick={() => handleRowClick(row.id)}
+                onClick={() => handleRowClick(row.chargerId)}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   textDecoration: "none",
@@ -155,12 +160,17 @@ export default function UserRequests({ setError, setSuccess }) {
                 hover
               >
                 <TableCell component="th">{row.name}</TableCell>
-                <TableCell align="right">{row.vehicle}</TableCell>
+                {!isMobile && (
+                  <TableCell align="right">{row.vehicle}</TableCell>
+                )}
                 <TableCell align="right">{row.price}</TableCell>
                 <TableCell align="right">{row.bookingDate}</TableCell>
-                <TableCell align="right">{row.sentDate}</TableCell>
+                {!isMobile && (
+                  <TableCell align="right">{row.sentDate}</TableCell>
+                )}
                 <TableCell align="right">{row.stationName}</TableCell>
                 <TableCell className="extra-cell" align="center">
+                  {/* TODO: Add conditional buttons to render on a new row (2nd row) for mobile */}
                   <ButtonGroup variant="contained">
                     {row.status === "Pending" && (
                       <>
