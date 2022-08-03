@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+
 // import TableFooter from "@mui/material/TableFooter";
 // import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 // import TablePagination from "@mui/material/TablePagination";
@@ -16,13 +17,15 @@ import { LoadingButton } from "@mui/lab";
 import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
 import { useGlobalState } from "../context/stateContext";
 
+const { createStripeSession } = require("../services/paymentServices")
+
 function createData(id, city, stationName, price, date, status) {
   return { id, city, stationName, price, date, status };
 }
 
 export default function UserBookings() {
   const [loading, setLoading] = React.useState({});
-  const { store, dispatch } = useGlobalState();
+  const { store } = useGlobalState();
   const { bookings } = store;
 
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -42,14 +45,21 @@ export default function UserBookings() {
     );
   });
 
-  const handlePayClick = (setLoading, RowId) => {
+  const handlePayClick = async (setLoading, RowId, bookingDetail) => {
     try {
       setLoading({ [RowId]: true });
       // handle the API request here
+      const res = await createStripeSession(bookingDetail);
+      console.log("THIS IS RESULTS FROM STRIPE POST REQUEST", res)
+
+      const url = res.url
+      // window.location.href = url
+
     } catch (err) {
+      console.log("THIS IS STRIPE ERROR", err)
       // catch the error here
     } finally {
-      // setLoading({ [RowId]: false });
+      setLoading({ [RowId]: false });
     }
   };
 
@@ -112,11 +122,12 @@ export default function UserBookings() {
                     {row.status === "Approved" && (
                       <LoadingButton
                         sx={{ minWidth: "50%" }}
-                        onClick={() => handlePayClick(setLoading, row.id)}
+                        onClick={() => handlePayClick(setLoading, row.id, row)}
                         loading={loading[row.id]}
                         size="small"
                         variant="contained"
                         color="success"
+                  
                       >
                         {!loading[row.id] && "Pay"}
                       </LoadingButton>
