@@ -4,6 +4,7 @@
   &__cards {
     display: flex;
     flex-direction: column;
+    align-items: center;
     min-width: 50%;
   }
   &__map {
@@ -20,19 +21,31 @@
 }
 .chargers {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-rows: auto;
+  justify-content: center;
+  align-content: center;
+
   gap: 20px;
   padding: 20px;
   width: 100%;
 }
-// @media only screen and (min-width: @)
-.card {
-  /* !important used to override MUI styles */
-  position: relative;
+
+div.card {
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
   width: 100%;
-  background: #f4f5e5 !important;
+  justify-self: center;
+  background: #d8d8d190;
+  border: 1px solid #c4c4c4;
+  border-radius: 15px;
+  box-shadow: $box-shadow-mui;
+  max-width: 350px;
+  button {
+    border-radius: 10px;
+  }
 }
 
 @media only screen and (max-width: $tablet-width) {
@@ -42,4 +55,29 @@
       width: 100%;
     }
   }
+
+  .card {
+    max-width: 350px;
+  }
+
+  // .chargers {
+  //   display: grid;
+  //   grid-template-columns: repeat(auto-fit, minmax(1fr, 200px));
+  //   gap: 20px;
+  //   padding: 20px;
+  // }
 }
+
+// TODO: Fix grid for 1 charger, always taking up the entire width
+// -> Need to change this so when there's 1 charger a max-width of 300px is set,
+// and aligns the grid items horizontally
+
+// @media only screen and (max-width: $tablet-width) {
+//   .chargers {
+//     place-self: center;
+//     // justify-content: center;
+//   }
+//   .card {
+//     max-width: 350px;
+//   }
+// }

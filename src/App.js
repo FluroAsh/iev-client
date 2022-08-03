@@ -25,8 +25,11 @@ function App() {
   const initialState = {
     chargerList: [],
     bookingDates: [],
-    editFormData: {},
+    bookings: [],
+    bookingRequests: [],
+    hostStatus: false,
     chargerStatus: "",
+    editFormData: {},
     loggedInUser: sessionStorage.getItem("username") || "",
     currentUser: {
       firstName: sessionStorage.getItem("firstName") || "",
@@ -69,7 +72,16 @@ function App() {
                     )
                   }
                 />
-                <Route path="mychargers" element={<ViewChargers />} />
+                <Route
+                  path="mychargers"
+                  element={
+                    loggedInUser ? (
+                      <ViewChargers />
+                    ) : (
+                      <Navigate to="/auth/signin" />
+                    )
+                  }
+                />
                 {/* <Route path="user/:username" element={<Chargers />} /> */}
               </Route>
               <Route path="charger">
