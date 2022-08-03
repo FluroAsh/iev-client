@@ -6,6 +6,7 @@ import { useGlobalState } from "../context/stateContext";
 import { ErrorScreen } from "../components/ErrorScreen";
 import { GoogleMap } from "../components/GoogleMap";
 import { ViewChargers } from "./ViewChargers";
+import pluralize from "pluralize";
 
 export const SearchLocation = () => {
   const [loading, setLoading] = useState(false);
@@ -42,9 +43,11 @@ export const SearchLocation = () => {
               variant="h5"
               sx={{ width: "100%", textAlign: "center" }}
             >
-              {/* TODO: Pluralize the string with an NPM package */}
-              
-              {`${chargerList.length} Charger(s)`}
+              {`${chargerList.length} ${pluralize(
+                "Charger",
+                chargerList.length
+              )}`}{" "}
+              Found
             </Typography>
             <ViewChargers />
           </div>
