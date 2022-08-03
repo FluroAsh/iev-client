@@ -79,6 +79,9 @@ export default function UserRequests({ setError, setSuccess }) {
     // row.id & request.id are the same id
     try {
       setLoading({ [RowId]: { confirm: true } });
+      if (!window.confirm("Confirm this booking?")) {
+        return;
+      }
       const response = await approveUserRequest({ BookingId: RowId });
       refreshUserRequests();
       setSuccess(response);
@@ -93,6 +96,9 @@ export default function UserRequests({ setError, setSuccess }) {
   async function handleRejection(RowId) {
     try {
       setLoading({ [RowId]: { reject: true } });
+      if (!window.confirm("Are you sure you want to reject this booking?")) {
+        return;
+      }
       const response = await rejectUserRequest({ BookingId: RowId });
       refreshUserRequests();
       setSuccess(response);

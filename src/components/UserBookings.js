@@ -39,7 +39,6 @@ export default function UserBookings({ setError, setSuccess }) {
   const { loggedInUser, bookings } = store;
 
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  // console.log("bookings table", bookings);
 
   // Populates table rows
   const rows = bookings.map((booking) => {
@@ -81,6 +80,9 @@ export default function UserBookings({ setError, setSuccess }) {
   async function handleCancelClick(RowId) {
     try {
       setLoading({ [RowId]: { cancel: true } });
+      if (!window.confirm("Are you sure you want to cancel your booking?")) {
+        return;
+      }
       const response = await cancelBooking({ BookingId: RowId });
       refreshUserBookings();
       setSuccess(response);
