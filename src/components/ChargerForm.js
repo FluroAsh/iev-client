@@ -118,139 +118,130 @@ export const ChargerForm = ({ editFormData }) => {
 
   return (
     <AnimatePresence>
-      <Container
-        component={motion.div}
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+
+      <motion.div
+        className="form-container"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        sx={{
-          display: "inline-flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          flexWrap: "wrap",
-          margin: "16px",
-        }}
       >
-        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        <form onSubmit={handleSubmit}>
+          <Typography variant="h4">List Charger</Typography>
 
-        <div className="form-container">
-          <form onSubmit={handleSubmit}>
-            <Typography variant="h4">List Charger</Typography>
+          <InputLabel>Charger Name:</InputLabel>
+          <TextField
+            type="text"
+            name="name"
+            id="name"
+            value={formData.name}
+            onChange={handleFormData}
+          />
 
-            <InputLabel>Charger Name:</InputLabel>
-            <TextField
-              type="text"
-              name="name"
-              id="name"
-              value={formData.name}
+          <InputLabel>Instructions:</InputLabel>
+          <TextField
+            type="text"
+            multiline
+            rows={4}
+            name="instructions"
+            id="instructions"
+            value={formData.instructions}
+            onChange={handleFormData}
+          />
+
+          <InputLabel>Price:</InputLabel>
+          <TextField
+            type="number"
+            name="price"
+            id="price"
+            value={formData.price}
+            onChange={handleFormData}
+          />
+
+          <InputLabel id="demo-simple-select-label">Plug Name</InputLabel>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              marginBottom: "16px",
+            }}
+          >
+            <select
+              name="plugName"
+              id="plugName"
+              value={formData.plugName}
               onChange={handleFormData}
-            />
-
-            <InputLabel>Instructions:</InputLabel>
-            <TextField
-              type="text"
-              multiline
-              rows={4}
-              name="instructions"
-              id="instructions"
-              value={formData.instructions}
-              onChange={handleFormData}
-            />
-
-            <InputLabel>Price:</InputLabel>
-            <TextField
-              type="number"
-              name="price"
-              id="price"
-              value={formData.price}
-              onChange={handleFormData}
-            />
-
-            <InputLabel id="demo-simple-select-label">Plug Name</InputLabel>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                marginBottom: "16px",
-              }}
             >
-              <select
-                name="plugName"
-                id="plugName"
-                value={formData.plugName}
-                onChange={handleFormData}
-              >
-                <option defaultValue=""></option>
-                <option type="text" value="typeOne">
-                  Type 2 (Mennekes)
-                </option>
-                <option type="text" value="typeTwo">
-                  Combined Charging System (CCS)
-                </option>
-                <option type="text" value="typeThree">
-                  Charge de Move (CHAdeMO)
-                </option>
-              </select>
-            </Box>
+              <option defaultValue=""></option>
+              <option type="text" value="typeOne">
+                Type 2 (Mennekes)
+              </option>
+              <option type="text" value="typeTwo">
+                Combined Charging System (CCS)
+              </option>
+              <option type="text" value="typeThree">
+                Charge de Move (CHAdeMO)
+              </option>
+            </select>
+          </Box>
 
-            <input
-              style={{ display: "flex", justifyContent: "center" }}
-              name="image"
-              accept="image/*"
-              type="file"
-              onChange={(e) => handleFile(e.target.files[0])}
-            />
+          <input
+            style={{ display: "flex", justifyContent: "center" }}
+            name="image"
+            accept="image/*"
+            type="file"
+            onChange={(e) => handleFile(e.target.files[0])}
+          />
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "5px",
-              }}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "5px",
+            }}
+          >
+            <Button
+              sx={{ marginRight: "16px" }}
+              type="submit"
+              id="status"
+              value="pending"
+              variant="contained"
+              onClick={handleFormData}
             >
+              Save draft
+            </Button>
+            {editFormData ? (
               <Button
-                sx={{ marginRight: "16px" }}
                 type="submit"
                 id="status"
-                value="pending"
+                value="active"
                 variant="contained"
                 onClick={handleFormData}
               >
-                Save draft
+                Update charger
               </Button>
-              {editFormData ? (
-                <Button
-                  type="submit"
-                  id="status"
-                  value="active"
-                  variant="contained"
-                  onClick={handleFormData}
-                >
-                  Update charger
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  id="status"
-                  value="active"
-                  variant="contained"
-                  onClick={handleFormData}
-                >
-                  List charger
-                </Button>
-              )}
+            ) : (
               <Button
+                type="submit"
+                id="status"
+                value="active"
                 variant="contained"
-                sx={{ marginLeft: "16px" }}
-                onClick={handleCancel}
+                onClick={handleFormData}
               >
-                Cancel
+                List charger
               </Button>
-            </Box>
-          </form>
-        </div>
+            )}
+            <Button
+              variant="contained"
+              sx={{ marginLeft: "16px" }}
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+          </Box>
+        </form>
+      </motion.div>
 
-        {/* TODO: for updating, handle 'disabled' status */}
-      </Container>
+      {/* TODO: for updating, handle 'disabled' status */}
     </AnimatePresence>
   );
 };

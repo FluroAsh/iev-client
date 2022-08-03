@@ -45,7 +45,7 @@ footer {
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 56px);
   form {
     display: flex;
     justify-content: center;
