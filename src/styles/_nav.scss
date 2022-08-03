@@ -13,6 +13,7 @@ input[name="searchbar"] {
   width: 100%;
   max-width: 350px;
   float: right;
+  font-family: "Roboto", sans-serif;
   border-radius: 15px;
   padding: 8px 12px;
   transition: $transition-fast;
@@ -107,9 +108,9 @@ div.MuiAppBar-root {
 
 /* Logo Element */
 a.logo {
-  font-family: "Red Hat Display", sans-serif;
+  font-family: "Caveat", cursive;
   font-weight: 600;
-  font-size: 1.6em;
+  font-size: 1.8em;
   letter-spacing: 1px;
   left: calc(50% - 20px); // used for mobile nav
   padding: 5px;
