@@ -13,6 +13,7 @@ import { LoadingButton } from "@mui/lab";
 
 import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
 import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import {
   rejectUserRequest,
   approveUserRequest,
@@ -52,6 +53,7 @@ export default function UserRequests({ setError, setSuccess }) {
   const [loading, setLoading] = React.useState([]);
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, bookingRequests } = store;
+  const navigate = useNavigate();
 
   // Populates table rows
   const rows = bookingRequests.map((request) => {
@@ -75,9 +77,10 @@ export default function UserRequests({ setError, setSuccess }) {
     });
   }
 
-  async function handleConfirmation(RowId) {
+  async function handleConfirmation(e, RowId) {
     // row.id & request.id are the same id
     try {
+      e.stopPropagation();
       setLoading({ [RowId]: { confirm: true } });
       if (!window.confirm("Confirm this booking?")) {
         return;
@@ -93,8 +96,9 @@ export default function UserRequests({ setError, setSuccess }) {
     }
   }
 
-  async function handleRejection(RowId) {
+  async function handleRejection(e, RowId) {
     try {
+      e.stopPropagation();
       setLoading({ [RowId]: { reject: true } });
       if (!window.confirm("Are you sure you want to reject this booking?")) {
         return;
@@ -109,17 +113,20 @@ export default function UserRequests({ setError, setSuccess }) {
     }
   }
 
-  return (
-    <>
-      {/* /**
-       * TODO:
-       * 1. Add clickable row for popup actions
-       * 2. Add pagination
-       * 3. Add mobile conditionals (should not display some columns, change styling etc)
-       */}
+  const handleRowClick = (RowId) => {
+    navigate(`/charger/${RowId}`);
+  };
 
+  return (
+    // /**
+    //  * TODO:
+    //  * 1. Add clickable row for popup actions ✅
+    //  * 2. Add pagination
+    //  * 3. Add mobile conditionals (should not display some columns, change styling etc)
+    //  */
+    <>
       <TableContainer sx={{ mb: 2 }} component={Paper}>
-        <Table sx={{ minWidth: 600 }} aria-label="simple table">
+        <Table sx={{ minWidth: 600 }} aria-label="requests table">
           <TableHead>
             <TableRow>
               <TableCell sx={{ p: 2, background: "#e0e0e0" }} colSpan={7}>
@@ -140,7 +147,11 @@ export default function UserRequests({ setError, setSuccess }) {
             {rows.map((row) => (
               <TableRow
                 key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                onClick={() => handleRowClick(row.id)}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  textDecoration: "none",
+                }}
                 hover
               >
                 <TableCell component="th">{row.name}</TableCell>
@@ -154,7 +165,7 @@ export default function UserRequests({ setError, setSuccess }) {
                     {row.status === "Pending" && (
                       <>
                         <LoadingButton
-                          onClick={() => handleConfirmation(row.id)}
+                          onClick={(e) => handleConfirmation(e, row.id)}
                           loading={loading[row.id]?.confirm}
                           variant="contained"
                           color="success"
@@ -164,9 +175,7 @@ export default function UserRequests({ setError, setSuccess }) {
                           <FontAwesomeIcon icon={faCheck} size="xl" />
                         </LoadingButton>
                         <LoadingButton
-                          onClick={() => {
-                            handleRejection(row.id);
-                          }}
+                          onClick={(e) => handleRejection(e, row.id)}
                           loading={loading[row.id]?.reject}
                           variant="contained"
                           color="error"

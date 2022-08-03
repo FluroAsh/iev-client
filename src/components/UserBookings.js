@@ -12,6 +12,7 @@ import { LoadingButton } from "@mui/lab";
 // import TableFooter from "@mui/material/TableFooter";
 // import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 // import TablePagination from "@mui/material/TablePagination";
+import { useNavigate } from "react-router-dom";
 
 import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
 import { useGlobalState } from "../context/stateContext";
@@ -35,6 +36,7 @@ function createData(id, city, stationName, price, date, status) {
 
 export default function UserBookings({ setError, setSuccess }) {
   const [loading, setLoading] = React.useState([]);
+  const navigate = useNavigate();
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, bookings } = store;
 
@@ -63,8 +65,9 @@ export default function UserBookings({ setError, setSuccess }) {
     });
   }
 
-  async function handlePayClick(RowId) {
+  async function handlePayClick(e, RowId) {
     try {
+      e.stopPropagation();
       setLoading({ [RowId]: { pay: true } });
       const response = await confirmBooking({ BookingId: RowId });
       refreshUserBookings();
@@ -77,8 +80,9 @@ export default function UserBookings({ setError, setSuccess }) {
     }
   }
 
-  async function handleCancelClick(RowId) {
+  async function handleCancelClick(e, RowId) {
     try {
+      e.stopPropagation();
       setLoading({ [RowId]: { cancel: true } });
       if (!window.confirm("Are you sure you want to cancel your booking?")) {
         return;
@@ -93,16 +97,20 @@ export default function UserBookings({ setError, setSuccess }) {
     }
   }
 
+  const handleRowClick = (RowId) => {
+    navigate(`/charger/${RowId}`);
+  };
+
   return (
     // /**
     //  * TODO:
-    //  * 1. Add clickable row for popup actions
+    //  * 1. Add clickable row for popup actions ✅
     //  * 2. Add pagination
     //  * 3. Add mobile conditionals (should not display some columns, change styling etc)
     //  */
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 600 }} aria-label="simple table">
+        <Table sx={{ minWidth: 600 }} aria-label="bookings table">
           <TableHead>
             <TableRow>
               <TableCell sx={{ p: 2, background: "#e0e0e0" }} colSpan={7}>
@@ -122,6 +130,7 @@ export default function UserBookings({ setError, setSuccess }) {
             {rows.map((row) => (
               <TableRow
                 key={row.id}
+                onClick={() => handleRowClick(row.id)}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   textDecoration: "none",
@@ -147,7 +156,7 @@ export default function UserBookings({ setError, setSuccess }) {
                       {row.status === "Approved" && (
                         <LoadingButton
                           sx={{ minWidth: "50%" }}
-                          onClick={() => handlePayClick(row.id)}
+                          onClick={(e) => handlePayClick(e, row.id)}
                           loading={loading[row.id]?.pay}
                           size="small"
                           variant="contained"
@@ -158,7 +167,7 @@ export default function UserBookings({ setError, setSuccess }) {
                       )}
 
                       <LoadingButton
-                        onClick={() => handleCancelClick(row.id)}
+                        onClick={(e) => handleCancelClick(e, row.id)}
                         loading={loading[row.id]?.cancel}
                         variant="contained"
                         color="error"
