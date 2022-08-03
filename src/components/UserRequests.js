@@ -21,6 +21,7 @@ import {
 import { useGlobalState } from "../context/stateContext";
 import { AlertSuccess } from "./AlertSuccess";
 import { AlertError } from "./AlertError";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 
 function createData(
   id,
@@ -64,7 +65,7 @@ export default function UserRequests() {
   async function handleConfirmation(RowId) {
     // row.id & request.id are the same id
     try {
-      setLoading({ [RowId]: { confirm: true } });
+      setLoading([{ [RowId]: { confirm: true } }]);
       const response = await approveUserRequest({ BookingId: RowId });
       refreshUserRequests();
       setSuccess(response.message);
@@ -78,7 +79,7 @@ export default function UserRequests() {
 
   async function handleRejection(RowId) {
     try {
-      setLoading({ [RowId]: { reject: true } });
+      setLoading([{ [RowId]: { reject: true } }]);
       const response = await rejectUserRequest({ BookingId: RowId });
       refreshUserRequests();
       setSuccess(response.message);

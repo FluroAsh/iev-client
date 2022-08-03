@@ -95,7 +95,7 @@ footer {
   max-width: 450px;
 }
 
-/** MUI Overrides **/
-.MuiLoadingButton-root {
-  // min-width: 50%;
+div.MuiAlert-root {
+  margin: 0;
+  width: 100%;
 }

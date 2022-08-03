@@ -15,13 +15,14 @@ import { LoadingButton } from "@mui/lab";
 
 import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
 import { useGlobalState } from "../context/stateContext";
+import { cancelBooking, confirmBooking } from "../services/bookingServices";
 
 function createData(id, city, stationName, price, date, status) {
   return { id, city, stationName, price, date, status };
 }
 
 export default function UserBookings() {
-  const [loading, setLoading] = React.useState({});
+  const [loading, setLoading] = React.useState([]);
   const { store, dispatch } = useGlobalState();
   const { bookings } = store;
 
@@ -42,27 +43,32 @@ export default function UserBookings() {
     );
   });
 
-  const handlePayClick = (setLoading, RowId) => {
+  async function handlePayClick(setLoading, RowId) {
     try {
-      setLoading({ [RowId]: true });
-      // handle the API request here
+      setLoading([{ [RowId]: { pay: true } }]);
+      const response = await confirmBooking({ BookingId: RowId });
+      console.log(response);
+      // must wait for stripe checkout to complete before continuing
     } catch (err) {
       // catch the error here
     } finally {
-      // setLoading({ [RowId]: false });
+      setLoading([{ [RowId]: { pay: false } }]);
     }
-  };
+  }
 
-  const handleCancelClick = (setLoading, RowId) => {
+  async function handleCancelClick(setLoading, RowId) {
     try {
-      setLoading({ [RowId]: true });
-      // handle the API request here
+      setLoading([{ [RowId]: { cancel: true } }]);
+      const response = await cancelBooking({ BookingId: RowId });
+      console.log(response);
+      // tbc
     } catch (err) {
       // catch the error here
     } finally {
       // setloading(false)
+      setLoading([{ [RowId]: { cancel: false } }]);
     }
-  };
+  }
 
   return (
     /**
@@ -113,17 +119,18 @@ export default function UserBookings() {
                       <LoadingButton
                         sx={{ minWidth: "50%" }}
                         onClick={() => handlePayClick(setLoading, row.id)}
-                        loading={loading[row.id]}
+                        loading={loading[row.id]?.pay}
                         size="small"
                         variant="contained"
                         color="success"
                       >
-                        {!loading[row.id] && "Pay"}
+                        {!loading[row.id]?.pay && "Pay"}
                       </LoadingButton>
                     )}
 
                     <LoadingButton
                       onClick={() => handleCancelClick(setLoading, row.id)}
+                      loading={loading[row.id]?.cancel}
                       variant="contained"
                       color="error"
                       size="small"
