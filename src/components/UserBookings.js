@@ -15,20 +15,33 @@ import { LoadingButton } from "@mui/lab";
 
 import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
 import { useGlobalState } from "../context/stateContext";
-import { cancelBooking, confirmBooking } from "../services/bookingServices";
+import {
+  cancelBooking,
+  confirmBooking,
+  getUserBookings,
+} from "../services/bookingServices";
+
+const statusColor = {
+  Pending: "#f57c00",
+  Rejected: "#d32f2f",
+  Cancelled: "#d32f2f",
+  Approved: "#2e7d32",
+  Paid: "#2e7d32",
+};
 
 function createData(id, city, stationName, price, date, status) {
   return { id, city, stationName, price, date, status };
 }
 
-export default function UserBookings() {
+export default function UserBookings({ setError, setSuccess }) {
   const [loading, setLoading] = React.useState([]);
   const { store, dispatch } = useGlobalState();
-  const { bookings } = store;
+  const { loggedInUser, bookings } = store;
 
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   // console.log("bookings table", bookings);
 
+  // Populates table rows
   const rows = bookings.map((booking) => {
     const { bookingDate: date, status } = booking;
     const { name: stationName, price } = booking.Charger;
@@ -43,107 +56,122 @@ export default function UserBookings() {
     );
   });
 
-  async function handlePayClick(setLoading, RowId) {
+  async function refreshUserBookings() {
+    const updatedBookings = await getUserBookings(loggedInUser);
+    dispatch({
+      type: "setUserBookings",
+      data: updatedBookings,
+    });
+  }
+
+  async function handlePayClick(RowId) {
     try {
-      setLoading([{ [RowId]: { pay: true } }]);
+      setLoading({ [RowId]: { pay: true } });
       const response = await confirmBooking({ BookingId: RowId });
-      console.log(response);
-      // must wait for stripe checkout to complete before continuing
+      refreshUserBookings();
+      setSuccess(response);
+      // --> must wait for stripe checkout to complete before continuing
     } catch (err) {
-      // catch the error here
+      setError(err);
     } finally {
-      setLoading([{ [RowId]: { pay: false } }]);
+      setLoading({ [RowId]: { pay: false } });
     }
   }
 
-  async function handleCancelClick(setLoading, RowId) {
+  async function handleCancelClick(RowId) {
     try {
-      setLoading([{ [RowId]: { cancel: true } }]);
+      setLoading({ [RowId]: { cancel: true } });
       const response = await cancelBooking({ BookingId: RowId });
-      console.log(response);
-      // tbc
+      refreshUserBookings();
+      setSuccess(response);
     } catch (err) {
-      // catch the error here
+      setError(err);
     } finally {
-      // setloading(false)
-      setLoading([{ [RowId]: { cancel: false } }]);
+      setLoading({ [RowId]: { cancel: false } });
     }
   }
 
   return (
-    /**
-     * TODO:
-     * 1. Add clickable row for popup actions
-     * 2. Add pagination
-     * 3. Add mobile conditionals (should not display some columns, change styling etc)
-     */
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 600 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ p: 2, background: "#e0e0e0" }} colSpan={7}>
-              <Typography variant="h5">Bookings</Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>City</TableCell>
-            <TableCell align="right">Station Name</TableCell>
-            <TableCell align="right">Price</TableCell>
-            <TableCell align="right">Booking Date</TableCell>
-            <TableCell align="right">Status</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{
-                "&:last-child td, &:last-child th": { border: 0 },
-                textDecoration: "none",
-              }}
-              hover
-            >
-              <TableCell component="th" scope="row">
-                {row.city}
-              </TableCell>
-              <TableCell align="right">{row.stationName}</TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.date}</TableCell>
-              <TableCell align="right">{row.status}</TableCell>
-              <TableCell align="center">
-                {(row.status === "Approved" || row.status === "Pending") && (
-                  // TODO: Render modals/dialog for confirming actions
-                  <ButtonGroup variant="contained">
-                    {row.status === "Approved" && (
-                      <LoadingButton
-                        sx={{ minWidth: "50%" }}
-                        onClick={() => handlePayClick(setLoading, row.id)}
-                        loading={loading[row.id]?.pay}
-                        size="small"
-                        variant="contained"
-                        color="success"
-                      >
-                        {!loading[row.id]?.pay && "Pay"}
-                      </LoadingButton>
-                    )}
-
-                    <LoadingButton
-                      onClick={() => handleCancelClick(setLoading, row.id)}
-                      loading={loading[row.id]?.cancel}
-                      variant="contained"
-                      color="error"
-                      size="small"
-                    >
-                      Cancel
-                    </LoadingButton>
-                  </ButtonGroup>
-                )}
+    // /**
+    //  * TODO:
+    //  * 1. Add clickable row for popup actions
+    //  * 2. Add pagination
+    //  * 3. Add mobile conditionals (should not display some columns, change styling etc)
+    //  */
+    <>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 600 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ p: 2, background: "#e0e0e0" }} colSpan={7}>
+                <Typography variant="h5">Bookings</Typography>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            <TableRow>
+              <TableCell>City</TableCell>
+              <TableCell align="right">Station Name</TableCell>
+              <TableCell align="right">Price</TableCell>
+              <TableCell align="right">Booking Date</TableCell>
+              <TableCell align="right">Status</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  textDecoration: "none",
+                }}
+                hover
+              >
+                <TableCell component="th" scope="row">
+                  {row.city}
+                </TableCell>
+                <TableCell align="right">{row.stationName}</TableCell>
+                <TableCell align="right">{row.price}</TableCell>
+                <TableCell align="right">{row.date}</TableCell>
+                <TableCell
+                  sx={{ color: statusColor[row.status], fontWeight: 600 }}
+                  align="right"
+                >
+                  {row.status}
+                </TableCell>
+                <TableCell align="center">
+                  {(row.status === "Approved" || row.status === "Pending") && (
+                    // TODO: Render modals/dialog for confirming actions
+                    <ButtonGroup variant="contained">
+                      {row.status === "Approved" && (
+                        <LoadingButton
+                          sx={{ minWidth: "50%" }}
+                          onClick={() => handlePayClick(row.id)}
+                          loading={loading[row.id]?.pay}
+                          size="small"
+                          variant="contained"
+                          color="success"
+                        >
+                          {!loading[row.id]?.pay && "Pay"}
+                        </LoadingButton>
+                      )}
+
+                      <LoadingButton
+                        onClick={() => handleCancelClick(row.id)}
+                        loading={loading[row.id]?.cancel}
+                        variant="contained"
+                        color="error"
+                        size="small"
+                      >
+                        Cancel
+                      </LoadingButton>
+                    </ButtonGroup>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }

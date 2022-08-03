@@ -25,10 +25,8 @@ export async function getUserBookingRequests(username) {
 export async function createUserBookingRequest(bookings) {
   try {
     await ievAPI.post("/booking/new", bookings);
-    console.log("bookings", bookings);
     return { message: "Booking request successfully sent" };
   } catch (err) {
-    console.log(err.message);
     throw Error(err.response.data.error);
   }
 }
@@ -36,8 +34,8 @@ export async function createUserBookingRequest(bookings) {
 // Host response
 export async function rejectUserRequest(data) {
   try {
-    await ievAPI.put("/booking/request?response=reject", data);
-    return { message: `Booking ${data.BookingId} successfully rejected` };
+    const response = await ievAPI.put("/booking/request?response=reject", data);
+    return response.data;
   } catch (err) {
     throw Error(err.response.data.error);
   }
@@ -45,8 +43,11 @@ export async function rejectUserRequest(data) {
 
 export async function approveUserRequest(data) {
   try {
-    await ievAPI.put("/booking/request?response=approve", data);
-    return { message: `Booking ${data.BookingId} successfully approved` };
+    const response = await ievAPI.put(
+      "/booking/request?response=approve",
+      data
+    );
+    return response.data;
   } catch (err) {
     throw Error(err.response.data.error);
   }
@@ -55,8 +56,9 @@ export async function approveUserRequest(data) {
 // User response
 export async function confirmBooking(data) {
   try {
-    await ievAPI.put("/booking/request?response=pay", data);
-    return { message: `Booking ${data.BookingId} successfully confirmed` };
+    const response = await ievAPI.put("/booking/request?response=pay", data);
+    console.log(response.data);
+    return response.data;
   } catch (err) {
     throw Error(err.response.data.error);
   }
@@ -64,8 +66,8 @@ export async function confirmBooking(data) {
 
 export async function cancelBooking(data) {
   try {
-    await ievAPI.put("/booking/request?response=cancel", data);
-    return { message: `Booking ${data.BookingId} successfully cancelled` };
+    const response = await ievAPI.put("/booking/request?response=cancel", data);
+    return response.data;
   } catch (err) {
     throw Error(err.response.data.error);
   }

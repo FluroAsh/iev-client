@@ -14,10 +14,10 @@ import { CssLoader } from "../components/CssLoader";
 import { useGlobalState } from "../context/stateContext";
 import { AlertError } from "../components/AlertError";
 import { checkHost } from "../services/authServices";
+import { AlertSuccess } from "../components/AlertSuccess";
 
 export async function fetchRequests(username, dispatch, setError, setLoading) {
   try {
-    setLoading(true);
     const requests = await getUserBookingRequests(username);
     const response = await checkHost();
 
@@ -43,7 +43,6 @@ export async function fetchRequests(username, dispatch, setError, setLoading) {
 
 export async function fetchBookings(username, dispatch, setError, setLoading) {
   try {
-    setLoading(true);
     const bookings = await getUserBookings(username);
     dispatch({
       type: "setUserBookings",
@@ -82,6 +81,7 @@ const BecomeHost = () => {
 
 export const Dashboard = () => {
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(true);
   const { store, dispatch } = useGlobalState();
   const {
@@ -97,15 +97,6 @@ export const Dashboard = () => {
     fetchRequests(loggedInUser, dispatch, setError, setLoading);
   }, [loggedInUser]);
 
-  // TODO: Pass styles as prop based on if user is a prop or not
-  // this is to resize the tables to the correct height & ??? etc.
-  const styles = {
-    // user.host && styles.host.tableheight ()
-    host: {
-      tableMinHeight: "40vw",
-    },
-  };
-
   if (loading) {
     return <CssLoader />;
   }
@@ -113,6 +104,9 @@ export const Dashboard = () => {
   return (
     <>
       {error && <AlertError message={error.message} setError={setError} />}
+      {success && (
+        <AlertSuccess message={success.message} setSuccess={setSuccess} />
+      )}
       <AnimatePresence>
         <motion.div
           className="page-container"
@@ -127,7 +121,12 @@ export const Dashboard = () => {
           {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
           {hostStatus &&
             (bookingRequests.length > 0 ? (
-              <UserRequests styles={styles} hostStatus={hostStatus} />
+              <UserRequests
+                // styles={styles}
+                // hostStatus={hostStatus}
+                setError={setError}
+                setSuccess={setSuccess}
+              />
             ) : (
               <NoResults message={"No requests... Yet! 🔌"} />
             ))}
@@ -135,9 +134,10 @@ export const Dashboard = () => {
           {/* NOTE: Not every host will have bookings */}
           {bookings.length > 0 ? (
             <UserBookings
-              bookings={bookings}
-              styles={styles}
-              hostStatus={hostStatus}
+              setError={setError}
+              setSuccess={setSuccess}
+              // styles={styles}
+              // hostStatus={hostStatus}
             />
           ) : (
             <NoResults message={"You haven't made any bookings... Yet 😉"} />

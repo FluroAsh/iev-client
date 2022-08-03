@@ -28,3 +28,12 @@
   border-radius: 5px;
   margin-bottom: 2em;
 }
+
+td.extra-cell {
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+tr.MuiTableRow-root {
+  height: 52px;
+}

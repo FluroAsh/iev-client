@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { LoadingButton } from "@mui/lab";
 
-import { displayAUD, displayLocalTime } from "../utils/helpers";
+import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
 import { Typography } from "@mui/material";
 import {
   rejectUserRequest,
@@ -19,9 +19,12 @@ import {
   getUserBookingRequests,
 } from "../services/bookingServices";
 import { useGlobalState } from "../context/stateContext";
-import { AlertSuccess } from "./AlertSuccess";
-import { AlertError } from "./AlertError";
-import { Navigate, NavLink, useNavigate } from "react-router-dom";
+
+const statusColor = {
+  Approved: "#f57c00",
+  Cancelled: "#d32f2f",
+  Paid: "#2e7d32",
+};
 
 function createData(
   id,
@@ -30,17 +33,39 @@ function createData(
   price,
   bookingDate,
   sentDate,
-  stationName
+  stationName,
+  status
 ) {
-  return { id, name, vehicle, price, bookingDate, sentDate, stationName };
+  return {
+    id,
+    name,
+    vehicle,
+    price,
+    bookingDate,
+    sentDate,
+    stationName,
+    status,
+  };
 }
 
-export default function UserRequests() {
+export default function UserRequests({ setError, setSuccess }) {
   const [loading, setLoading] = React.useState([]);
-  const [success, setSuccess] = React.useState("");
-  const [error, setError] = React.useState("");
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, bookingRequests } = store;
+
+  // Populates table rows
+  const rows = bookingRequests.map((request) => {
+    return createData(
+      request.id,
+      request.User.firstName,
+      request.User.UserVehicle.Vehicle.model,
+      displayAUD(request.Charger.price),
+      displayLocalTime(request.bookingDate),
+      displayLocalTime(request.createdAt),
+      request.Charger.name,
+      capitalize(request.status)
+    );
+  });
 
   async function refreshUserRequests() {
     const updatedRequests = await getUserBookingRequests(loggedInUser);
@@ -50,44 +75,31 @@ export default function UserRequests() {
     });
   }
 
-  const rows = bookingRequests.map((request) => {
-    return createData(
-      request.id,
-      request.User.firstName,
-      request.User.UserVehicle.Vehicle.model,
-      displayAUD(request.Charger.price),
-      displayLocalTime(request.bookingDate),
-      displayLocalTime(request.createdAt),
-      request.Charger.name
-    );
-  });
-
   async function handleConfirmation(RowId) {
     // row.id & request.id are the same id
     try {
-      setLoading([{ [RowId]: { confirm: true } }]);
+      setLoading({ [RowId]: { confirm: true } });
       const response = await approveUserRequest({ BookingId: RowId });
       refreshUserRequests();
-      setSuccess(response.message);
+      setSuccess(response);
     } catch (err) {
       setError(err.message);
     } finally {
       // BACKLOG/FUTURE ADDITION: Implement functionality to track multiple button states asynchronously
-      setLoading([{ RowId: { confirm: false } }]);
+      setLoading({ RowId: { confirm: false } });
     }
   }
 
   async function handleRejection(RowId) {
     try {
-      setLoading([{ [RowId]: { reject: true } }]);
+      setLoading({ [RowId]: { reject: true } });
       const response = await rejectUserRequest({ BookingId: RowId });
       refreshUserRequests();
-      setSuccess(response.message);
-      // TODO: setError/setSuccess
+      setSuccess(response);
     } catch (err) {
-      setError(err.message);
+      setError(err);
     } finally {
-      setLoading([{ [RowId]: { reject: false } }]);
+      setLoading({ [RowId]: { reject: false } });
     }
   }
 
@@ -99,8 +111,7 @@ export default function UserRequests() {
        * 2. Add pagination
        * 3. Add mobile conditionals (should not display some columns, change styling etc)
        */}
-      {success && <AlertSuccess message={success.message} />}
-      {error && <AlertError message={error.message} />}
+
       <TableContainer sx={{ mb: 2 }} component={Paper}>
         <Table sx={{ minWidth: 600 }} aria-label="simple table">
           <TableHead>
@@ -132,31 +143,50 @@ export default function UserRequests() {
                 <TableCell align="right">{row.bookingDate}</TableCell>
                 <TableCell align="right">{row.sentDate}</TableCell>
                 <TableCell align="right">{row.stationName}</TableCell>
-                <TableCell align="center">
+                <TableCell className="extra-cell" align="center">
                   <ButtonGroup variant="contained">
-                    <LoadingButton
-                      onClick={() => handleConfirmation(row.id)}
-                      loading={loading[row.id]?.confirm}
-                      variant="contained"
-                      color="success"
-                      size="small"
-                      sx={{ width: "50%" }}
-                    >
-                      <FontAwesomeIcon icon={faCheck} size="xl" />
-                    </LoadingButton>
-                    <LoadingButton
-                      onClick={() => {
-                        handleRejection(row.id);
-                      }}
-                      loading={loading[row.id]?.reject}
-                      variant="contained"
-                      color="error"
-                      size="small"
-                      sx={{ width: "50%" }}
-                    >
-                      <FontAwesomeIcon icon={faXmark} size="xl" />
-                    </LoadingButton>
+                    {row.status === "Pending" && (
+                      <>
+                        <LoadingButton
+                          onClick={() => handleConfirmation(row.id)}
+                          loading={loading[row.id]?.confirm}
+                          variant="contained"
+                          color="success"
+                          size="small"
+                          sx={{ width: "50%" }}
+                        >
+                          <FontAwesomeIcon icon={faCheck} size="xl" />
+                        </LoadingButton>
+                        <LoadingButton
+                          onClick={() => {
+                            handleRejection(row.id);
+                          }}
+                          loading={loading[row.id]?.reject}
+                          variant="contained"
+                          color="error"
+                          size="small"
+                          sx={{ width: "50%" }}
+                        >
+                          <FontAwesomeIcon icon={faXmark} size="xl" />
+                        </LoadingButton>
+                      </>
+                    )}
                   </ButtonGroup>
+                  {row.status === "Approved" && (
+                    <span style={{ color: statusColor[row.status] }}>
+                      Awaiting payment...
+                    </span>
+                  )}
+                  {row.status === "Paid" && (
+                    <span style={{ color: statusColor[row.status] }}>
+                      Confirmed
+                    </span>
+                  )}
+                  {row.status === "Cancelled" && (
+                    <span style={{ color: statusColor[row.status] }}>
+                      Confirmed
+                    </span>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
