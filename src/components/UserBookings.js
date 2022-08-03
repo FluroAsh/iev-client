@@ -115,7 +115,11 @@ export default function UserBookings({ setError, setSuccess }) {
         <Table sx={{ minWidth: 600 }} aria-label="bookings table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{ p: 2, background: "#e0e0e0" }} colSpan={7}>
+              <TableCell
+                className="table-header"
+                sx={{ p: 2, background: "#e0e0e0" }}
+                colSpan={7}
+              >
                 <Typography variant="h5">Bookings</Typography>
               </TableCell>
             </TableRow>
