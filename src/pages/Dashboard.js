@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Button, Typography } from "@mui/material";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+
 import UserBookings from "../components/UserBookings";
 import UserRequests from "../components/UserRequests";
 import {
@@ -7,33 +11,29 @@ import {
   getUserBookings,
 } from "../services/bookingServices";
 import { CssLoader } from "../components/CssLoader";
-import { Button, Typography } from "@mui/material";
 import { useGlobalState } from "../context/stateContext";
 import { AlertError } from "../components/AlertError";
 import { checkHost } from "../services/authServices";
-import { AnimatePresence } from "framer-motion";
-import { motion } from "framer-motion";
 
-export async function populateRequests(
-  username,
-  setRequests,
-  setHost,
-  setError,
-  setLoading
-) {
+export async function fetchRequests(username, dispatch, setError, setLoading) {
   try {
     setLoading(true);
     const requests = await getUserBookingRequests(username);
-    // Backend checks if user has any current chargers (is a host)
     const response = await checkHost();
-    console.log("Dashboard Response", response);
 
     if (response.message === "User is a host") {
-      setHost(true);
+      dispatch({
+        type: "setHostStatus",
+        data: true,
+      });
     }
-    setRequests(requests);
+
+    dispatch({
+      type: "setUserRequests",
+      data: requests,
+    });
   } catch (err) {
-    // Only throw an error if it's unexpected
+    // Only throw an error if it's an unhandled exception
     if (err.message === "User is not a host") return;
     setError(err);
   } finally {
@@ -41,17 +41,14 @@ export async function populateRequests(
   }
 }
 
-export async function populateBookings(
-  username,
-  setBookings,
-  setError,
-  setLoading
-) {
+export async function fetchBookings(username, dispatch, setError, setLoading) {
   try {
     setLoading(true);
     const bookings = await getUserBookings(username);
-    console.log("API Bookings", bookings);
-    setBookings(bookings);
+    dispatch({
+      type: "setUserBookings",
+      data: bookings,
+    });
   } catch (err) {
     setError(err);
   } finally {
@@ -84,18 +81,20 @@ const BecomeHost = () => {
 };
 
 export const Dashboard = () => {
-  const [bookings, setBookings] = useState([]);
-  const [requests, setRequests] = useState([]);
-  const [host, setHost] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const { store } = useGlobalState();
-  const { currentUser, loggedInUser } = store;
+  const { store, dispatch } = useGlobalState();
+  const {
+    currentUser,
+    loggedInUser,
+    bookings,
+    bookingRequests,
+    hostStatus,
+  } = store;
 
   useEffect(() => {
-    populateBookings(loggedInUser, setBookings, setError, setLoading);
-    populateRequests(loggedInUser, setRequests, setHost, setError, setLoading);
+    fetchBookings(loggedInUser, dispatch, setError, setLoading);
+    fetchRequests(loggedInUser, dispatch, setError, setLoading);
   }, [loggedInUser]);
 
   // TODO: Pass styles as prop based on if user is a prop or not
@@ -126,21 +125,25 @@ export const Dashboard = () => {
           </Typography>
 
           {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
-          {host &&
-            (requests.length > 0 ? (
-              <UserRequests requests={requests} styles={styles} host={host} />
+          {hostStatus &&
+            (bookingRequests.length > 0 ? (
+              <UserRequests styles={styles} hostStatus={hostStatus} />
             ) : (
               <NoResults message={"No requests... Yet! 🔌"} />
             ))}
 
           {/* NOTE: Not every host will have bookings */}
           {bookings.length > 0 ? (
-            <UserBookings bookings={bookings} styles={styles} host={host} />
+            <UserBookings
+              bookings={bookings}
+              styles={styles}
+              hostStatus={hostStatus}
+            />
           ) : (
             <NoResults message={"You haven't made any bookings... Yet 😉"} />
           )}
 
-          {!host && <BecomeHost />}
+          {!hostStatus && <BecomeHost />}
         </motion.div>
       </AnimatePresence>
     </>

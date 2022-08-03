@@ -14,13 +14,17 @@ import { LoadingButton } from "@mui/lab";
 // import TablePagination from "@mui/material/TablePagination";
 
 import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
+import { useGlobalState } from "../context/stateContext";
 
 function createData(id, city, stationName, price, date, status) {
   return { id, city, stationName, price, date, status };
 }
 
-export default function UserBookings({ bookings }) {
+export default function UserBookings() {
   const [loading, setLoading] = React.useState({});
+  const { store, dispatch } = useGlobalState();
+  const { bookings } = store;
+
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   // console.log("bookings table", bookings);
 
@@ -37,6 +41,28 @@ export default function UserBookings({ bookings }) {
       capitalize(status)
     );
   });
+
+  const handlePayClick = (setLoading, RowId) => {
+    try {
+      setLoading({ [RowId]: true });
+      // handle the API request here
+    } catch (err) {
+      // catch the error here
+    } finally {
+      // setLoading({ [RowId]: false });
+    }
+  };
+
+  const handleCancelClick = (setLoading, RowId) => {
+    try {
+      setLoading({ [RowId]: true });
+      // handle the API request here
+    } catch (err) {
+      // catch the error here
+    } finally {
+      // setloading(false)
+    }
+  };
 
   return (
     /**
@@ -80,18 +106,22 @@ export default function UserBookings({ bookings }) {
               <TableCell align="right">{row.date}</TableCell>
               <TableCell align="right">{row.status}</TableCell>
               <TableCell align="center">
-                {row.status === "Pending" && (
+                {(row.status === "Approved" || row.status === "Pending") && (
                   // TODO: Render modals/dialog for confirming actions
                   <ButtonGroup variant="contained">
-                    <LoadingButton
-                      onClick={() => handlePayClick(setLoading, row.id)}
-                      loading={loading[row.id]}
-                      size="small"
-                      variant="contained"
-                      color="success"
-                    >
-                      {!loading[row.id] && "Pay"}
-                    </LoadingButton>
+                    {row.status === "Approved" && (
+                      <LoadingButton
+                        sx={{ minWidth: "50%" }}
+                        onClick={() => handlePayClick(setLoading, row.id)}
+                        loading={loading[row.id]}
+                        size="small"
+                        variant="contained"
+                        color="success"
+                      >
+                        {!loading[row.id] && "Pay"}
+                      </LoadingButton>
+                    )}
+
                     <LoadingButton
                       onClick={() => handleCancelClick(setLoading, row.id)}
                       variant="contained"
@@ -110,25 +140,3 @@ export default function UserBookings({ bookings }) {
     </TableContainer>
   );
 }
-
-const handlePayClick = (setLoading, RowId) => {
-  try {
-    setLoading({ [RowId]: true });
-    // handle the API request here
-  } catch (err) {
-    // catch the error here
-  } finally {
-    // setLoading({ [RowId]: false });
-  }
-};
-
-const handleCancelClick = (setLoading, RowId) => {
-  try {
-    setLoading({ [RowId]: true });
-    // handle the API request here
-  } catch (err) {
-    // catch the error here
-  } finally {
-    // setloading(false)
-  }
-};
