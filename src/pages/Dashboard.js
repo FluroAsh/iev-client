@@ -115,7 +115,7 @@ export const Dashboard = () => {
           animate={{ opacity: 1 }}
         >
           <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
-            Welcome Back {currentUser.firstName}!
+            Welcome Back {currentUser.firstName}! 👋
           </Typography>
 
           {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
