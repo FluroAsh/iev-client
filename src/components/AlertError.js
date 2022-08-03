@@ -7,6 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { capitalize } from "../utils/helpers";
 
 export const AlertError = ({ message, setError, setSuccess }) => {
+  console.log("message", message);
   const [open, setOpen] = useState(true);
   setSuccess && setSuccess(false);
 

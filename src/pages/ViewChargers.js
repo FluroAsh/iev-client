@@ -3,10 +3,14 @@ import { getChargers, getMyChargers } from "../services/chargerServices";
 import { useGlobalState } from "../context/stateContext";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { AlertError } from "../components/AlertError";
+import { CssLoader } from "../components/CssLoader";
 
 export const ViewChargers = () => {
   const { store, dispatch } = useGlobalState();
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { location, chargerList } = store;
 
   const container = {
@@ -25,11 +29,16 @@ export const ViewChargers = () => {
   };
 
   useEffect(() => {
-    fetchData(location, dispatch);
+    fetchData(location, dispatch, setError, setLoading);
   }, [location]);
+
+  if (loading) {
+    return <CssLoader />;
+  }
 
   return (
     <>
+      {error && <AlertError message={error.message} setError={setError} />}
       {chargerList.length ? (
         <>
           <AnimatePresence>
@@ -52,7 +61,7 @@ export const ViewChargers = () => {
   );
 };
 
-async function fetchData(location, dispatch) {
+async function fetchData(location, dispatch, setError, setLoading) {
   if (location.pathname === "/chargers") {
     try {
       const chargers = await getChargers();
@@ -61,7 +70,9 @@ async function fetchData(location, dispatch) {
         data: chargers,
       });
     } catch (err) {
-      console.error(err.message);
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -73,7 +84,9 @@ async function fetchData(location, dispatch) {
         data: myChargers,
       });
     } catch (err) {
-      console.error(err.message);
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 }
