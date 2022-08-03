@@ -40,10 +40,11 @@ export const SearchLocation = () => {
           <div className="search__cards">
             <Typography
               variant="h5"
-              sx={{ px: 1, py: 2, width: "100%", textAlign: "center" }}
+              sx={{ width: "100%", textAlign: "center" }}
             >
               {/* TODO: Pluralize the string with an NPM package */}
-              {`${chargerList.length} charger(s) found`}
+              
+              {`${chargerList.length} Charger(s)`}
             </Typography>
             <ViewChargers />
           </div>
