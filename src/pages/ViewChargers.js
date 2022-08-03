@@ -1,11 +1,13 @@
 import { Charger } from "../components/Charger";
+import { getChargers, getMyChargers } from "../services/chargerServices";
 import { useGlobalState } from "../context/stateContext";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 export const ViewChargers = () => {
-  const { store } = useGlobalState();
-  const { chargerList } = store;
+  const { store, dispatch } = useGlobalState();
+  const { location, chargerList } = store;
 
   const container = {
     hidden: { opacity: 0 },
@@ -22,6 +24,10 @@ export const ViewChargers = () => {
     show: { opacity: 1, x: 0 },
   };
 
+  useEffect(() => {
+    fetchData(location, dispatch);
+  }, [location]);
+
   return (
     <>
       {chargerList.length ? (
@@ -33,7 +39,7 @@ export const ViewChargers = () => {
               initial="hidden"
               animate="show"
             >
-              {chargerList.map((charger) => (
+              {chargerList.slice(0, 9).map((charger) => (
                 <Charger key={charger.id} charger={charger} item={item} />
               ))}
             </motion.div>
@@ -45,3 +51,33 @@ export const ViewChargers = () => {
     </>
   );
 };
+
+async function fetchData(location, dispatch) {
+  if (location.pathname === "/chargers") {
+    try {
+      const chargers = await getChargers();
+      if (chargers) {
+        dispatch({
+          type: "setChargerList",
+          data: chargers,
+        });
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
+  if (location.pathname === "/chargers/mychargers") {
+    try {
+      const myChargers = await getMyChargers();
+      if (myChargers) {
+        dispatch({
+          type: "setChargerList",
+          data: myChargers,
+        });
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+}

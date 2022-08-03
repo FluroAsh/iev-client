@@ -19,6 +19,8 @@ import {
   getUserBookingRequests,
 } from "../services/bookingServices";
 import { useGlobalState } from "../context/stateContext";
+import { AlertSuccess } from "./AlertSuccess";
+import { AlertError } from "./AlertError";
 
 function createData(
   id,
@@ -34,6 +36,8 @@ function createData(
 
 export default function UserRequests() {
   const [loading, setLoading] = React.useState([]);
+  const [success, setSuccess] = React.useState("");
+  const [error, setError] = React.useState("");
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, bookingRequests } = store;
 
@@ -61,10 +65,11 @@ export default function UserRequests() {
     // row.id & request.id are the same id
     try {
       setLoading({ [RowId]: { confirm: true } });
-      await approveUserRequest({ BookingId: RowId });
+      const response = await approveUserRequest({ BookingId: RowId });
       refreshUserRequests();
+      setSuccess(response.message);
     } catch (err) {
-      console.log(err);
+      setError(err.message);
     } finally {
       // BACKLOG/FUTURE ADDITION: Implement functionality to track multiple button states asynchronously
       setLoading([{ RowId: { confirm: false } }]);
@@ -74,84 +79,89 @@ export default function UserRequests() {
   async function handleRejection(RowId) {
     try {
       setLoading({ [RowId]: { reject: true } });
-      await rejectUserRequest({ BookingId: RowId });
-      await refreshUserRequests();
+      const response = await rejectUserRequest({ BookingId: RowId });
+      refreshUserRequests();
+      setSuccess(response.message);
       // TODO: setError/setSuccess
     } catch (err) {
-      console.log(err);
+      setError(err.message);
     } finally {
       setLoading([{ [RowId]: { reject: false } }]);
     }
   }
 
   return (
-    /**
-     * TODO:
-     * 1. Add clickable row for popup actions
-     * 2. Add pagination
-     * 3. Add mobile conditionals (should not display some columns, change styling etc)
-     */
-    <TableContainer sx={{ mb: 2 }} component={Paper}>
-      <Table sx={{ minWidth: 600 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ p: 2, background: "#e0e0e0" }} colSpan={7}>
-              <Typography variant="h5">Requests</Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Vehicle</TableCell>
-            <TableCell align="right">Price</TableCell>
-            <TableCell align="right">Booking Date</TableCell>
-            <TableCell align="right">Sent Date</TableCell>
-            <TableCell align="right">Station Name</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              hover
-            >
-              <TableCell component="th">{row.name}</TableCell>
-              <TableCell align="right">{row.vehicle}</TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.bookingDate}</TableCell>
-              <TableCell align="right">{row.sentDate}</TableCell>
-              <TableCell align="right">{row.stationName}</TableCell>
-              <TableCell align="center">
-                <ButtonGroup variant="contained">
-                  <LoadingButton
-                    onClick={() => handleConfirmation(row.id)}
-                    loading={loading[row.id]?.confirm}
-                    variant="contained"
-                    color="success"
-                    size="small"
-                    sx={{ width: "50%" }}
-                  >
-                    <FontAwesomeIcon icon={faCheck} size="xl" />
-                  </LoadingButton>
-                  <LoadingButton
-                    onClick={() => {
-                      handleRejection(row.id);
-                    }}
-                    loading={loading[row.id]?.reject}
-                    variant="contained"
-                    color="error"
-                    size="small"
-                    sx={{ width: "50%" }}
-                  >
-                    <FontAwesomeIcon icon={faXmark} size="xl" />
-                  </LoadingButton>
-                </ButtonGroup>
+    <>
+      {/* /**
+       * TODO:
+       * 1. Add clickable row for popup actions
+       * 2. Add pagination
+       * 3. Add mobile conditionals (should not display some columns, change styling etc)
+       */}
+      {success && <AlertSuccess message={success.message} />}
+      {error && <AlertError message={error.message} />}
+      <TableContainer sx={{ mb: 2 }} component={Paper}>
+        <Table sx={{ minWidth: 600 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ p: 2, background: "#e0e0e0" }} colSpan={7}>
+                <Typography variant="h5">Requests</Typography>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell align="right">Vehicle</TableCell>
+              <TableCell align="right">Price</TableCell>
+              <TableCell align="right">Booking Date</TableCell>
+              <TableCell align="right">Sent Date</TableCell>
+              <TableCell align="right">Station Name</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                hover
+              >
+                <TableCell component="th">{row.name}</TableCell>
+                <TableCell align="right">{row.vehicle}</TableCell>
+                <TableCell align="right">{row.price}</TableCell>
+                <TableCell align="right">{row.bookingDate}</TableCell>
+                <TableCell align="right">{row.sentDate}</TableCell>
+                <TableCell align="right">{row.stationName}</TableCell>
+                <TableCell align="center">
+                  <ButtonGroup variant="contained">
+                    <LoadingButton
+                      onClick={() => handleConfirmation(row.id)}
+                      loading={loading[row.id]?.confirm}
+                      variant="contained"
+                      color="success"
+                      size="small"
+                      sx={{ width: "50%" }}
+                    >
+                      <FontAwesomeIcon icon={faCheck} size="xl" />
+                    </LoadingButton>
+                    <LoadingButton
+                      onClick={() => {
+                        handleRejection(row.id);
+                      }}
+                      loading={loading[row.id]?.reject}
+                      variant="contained"
+                      color="error"
+                      size="small"
+                      sx={{ width: "50%" }}
+                    >
+                      <FontAwesomeIcon icon={faXmark} size="xl" />
+                    </LoadingButton>
+                  </ButtonGroup>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
