@@ -37,6 +37,7 @@ export const ChargerDetail = ({ charger }) => {
 
   const [status, setStatus] = useState("");
   const [dates, setDates] = useState([]);
+  
 
   useEffect(() => {
     // Set charger status local state variables (status, checked)
