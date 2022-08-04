@@ -39,7 +39,7 @@ export const ViewChargers = () => {
   return (
     <>
       {error && <AlertError message={error.message} setError={setError} />}
-      {chargerList.length ? (
+      {chargerList.length > 0 && (
         <>
           <AnimatePresence>
             <motion.div
@@ -54,8 +54,6 @@ export const ViewChargers = () => {
             </motion.div>
           </AnimatePresence>
         </>
-      ) : (
-        <p>List of chargers is empty</p>
       )}
     </>
   );
@@ -71,7 +69,8 @@ async function fetchData(location, dispatch, setError, setLoading) {
         data: chargers,
       });
     } catch (err) {
-      setError(err.message);
+      console.log("message", err.message);
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -86,7 +85,7 @@ async function fetchData(location, dispatch, setError, setLoading) {
         data: myChargers,
       });
     } catch (err) {
-      setError(err.message);
+      setError(err);
     } finally {
       setLoading(false);
     }

@@ -38,7 +38,7 @@ export async function updateChargerStatus(data, id) {
 
 export async function deleteCharger(id) {
   try {
-    const response = await ievAPI.delete(`/charger/${id}`);
+    await ievAPI.delete(`/charger/${id}`);
     return { message: `Charger ${id} successfully deleted` };
   } catch (err) {
     // console.log("Axios ERROR----");
@@ -65,6 +65,7 @@ export async function getChargers() {
     // TODO: Check what comes back from the data to handle messages
     return response.data;
   } catch (err) {
+    console.log(err.response.data.error);
     throw Error(err.response.data.error);
   }
 }
