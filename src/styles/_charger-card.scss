@@ -12,9 +12,11 @@
   }
   &__map {
     min-width: 50%;
-    height: calc(100vh - 56px);
+    min-height: calc(100vh - 56px);
     position: sticky;
-    top: 56px;
+    border-left: 3px solid #e0e0e0;
+    border-right: 3px solid #e0e0e0;
+    box-shadow: $box-shadow-mui;
   }
 }
 .map-loading {

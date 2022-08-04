@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 
 export const ViewCharger = () => {
   const { chargerId } = useParams();
-  // console.log("CHARGERID", chargerId);
   const [charger, setCharger] = useState();
   const [loading, setLoading] = useState(true);
   // TODO: Add error state

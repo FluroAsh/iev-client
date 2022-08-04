@@ -27,22 +27,17 @@ export const GoogleMap = ({ coordinates }) => {
   };
 
   return (
-    <div
-      className="search__map"
-      style={{
-        background: "#e0e0e0",
-      }}
-    >
+    <>
       {isLoaded ? (
         <GoogleMapContainer
           mapContainerStyle={containerStyle}
-          center={center}
+          center={center || { lat: 0, lng: 0 }}
           zoom={13}
           options={mapOptions}
         ></GoogleMapContainer>
       ) : (
         <div className="map-loading">Loading...</div>
       )}
-    </div>
+    </>
   );
 };
