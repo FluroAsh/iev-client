@@ -164,8 +164,7 @@ export default function UserBookings({ setError, setSuccess }) {
                   </TableCell>
                   {/* Laptop/Desktop View */}
                   {!isTablet &&
-                    (row.status !== "Rejected" ||
-                      row.status !== "Cancelled") && (
+                    (row.status === "Approved" || row.status === "Pending") && (
                       <TableCell
                         align="center"
                         style={{ background: "#f1f1f1" }}
@@ -202,11 +201,19 @@ export default function UserBookings({ setError, setSuccess }) {
                         </ButtonGroup>
                       </TableCell>
                     )}
+                  {!isTablet &&
+                    (row.status === "Rejected" ||
+                      row.status === "Cancelled") && (
+                      <TableCell
+                        align="center"
+                        style={{ background: "#f1f1f1" }}
+                      ></TableCell>
+                    )}
                 </TableRow>
                 {/* Mobile/Tablet View */}
                 {isTablet &&
                   (row.status === "Approved" || row.status === "Pending") && (
-                    <TableRow key={row.id}>
+                    <TableRow key={row.id + row.chargerId}>
                       <TableCell
                         className="extra-cell"
                         colSpan={isTablet ? 5 : 4}
