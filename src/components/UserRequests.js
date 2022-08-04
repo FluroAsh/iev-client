@@ -234,7 +234,7 @@ export default function UserRequests({ setError, setSuccess }) {
                               color: statusColor[row.status],
                             }}
                           >
-                            Confirmed
+                            Paid
                           </span>
                         )}
                         {row.status === "Cancelled" && (
@@ -243,7 +243,7 @@ export default function UserRequests({ setError, setSuccess }) {
                               color: statusColor[row.status],
                             }}
                           >
-                            Confirmed
+                            Cancelled
                           </span>
                         )}
                       </ButtonGroup>
