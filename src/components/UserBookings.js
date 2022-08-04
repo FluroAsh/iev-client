@@ -11,9 +11,9 @@ import { Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useNavigate } from "react-router-dom";
 import { useTheme, useMediaQuery } from "@mui/material";
-// import TableFooter from "@mui/material/TableFooter";
-// import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
-// import TablePagination from "@mui/material/TablePagination";
+import { useGlobalState } from "../context/stateContext";
+import { loadStripe } from "@stripe/stripe-js";
+
 
 import {
   displayAUD,
@@ -21,12 +21,16 @@ import {
   capitalize,
   createUUID,
 } from "../utils/helpers";
-import { useGlobalState } from "../context/stateContext";
 import {
   cancelBooking,
   confirmBooking,
   getUserBookings,
 } from "../services/bookingServices";
+
+const { createStripeSession } = require("../services/paymentServices");
+const stripePromise = loadStripe(
+  "pk_test_51LSoj4KET1RwVGwUk9pp97jPW5HE0LOu0bpxtKqCfsgtb2WfRChRKOQTnkhfcVMfFjngjEDlBWkCgYgRVulTScwe00oRX9gUl9"
+);
 
 const statusColor = {
   Pending: "#f57c00",
@@ -59,12 +63,13 @@ export default function UserBookings({ setError, setSuccess }) {
       booking.id,
       city,
       stationName,
-      displayAUD(price),
+      price,
       displayLocalTime(date),
       capitalize(status),
       booking.Charger.id
     );
   });
+
 
   async function refreshUserBookings() {
     const updatedBookings = await getUserBookings(loggedInUser);
@@ -74,15 +79,31 @@ export default function UserBookings({ setError, setSuccess }) {
     });
   }
 
-  async function handlePayClick(e, RowId) {
+  const handlePayClick = async (e, RowId, bookingDetail) => {
+
+  // const handlePayClick = async (setLoading, RowId, bookingDetail) => {
     try {
       e.stopPropagation();
       setLoading({ [RowId]: { pay: true } });
+
+      const res = await createStripeSession(bookingDetail);
+
+
+      console.log("THIS IS RESULTS FROM STRIPE POST REQUEST", res);
+
+      // Redirect to strip check out session form
+      window.location.href = res.url
+      //TODO: handle success and cancelled response from stripe
+      // handle the API request here
       const response = await confirmBooking({ BookingId: RowId });
+
       refreshUserBookings();
       setSuccess(response);
+
       // --> must wait for stripe checkout to complete before continuing
     } catch (err) {
+
+      console.log("THIS IS STRIPE ERROR", err);
       setError(err);
     } finally {
       setLoading({ [RowId]: { pay: false } });
@@ -161,7 +182,7 @@ export default function UserBookings({ setError, setSuccess }) {
                     {row.stationName}
                   </TableCell>
                   {!isMobileXS && (
-                    <TableCell align="right">{row.price}</TableCell>
+                    <TableCell align="right">{displayAUD(row.price)}</TableCell>
                   )}
                   <TableCell align="right">{row.date}</TableCell>
                   <TableCell
@@ -189,7 +210,7 @@ export default function UserBookings({ setError, setSuccess }) {
                           {row.status === "Approved" && (
                             <LoadingButton
                               sx={{ width: "100%" }}
-                              onClick={(e) => handlePayClick(e, row.id)}
+                              onClick={(e) => handlePayClick(e, row.id, row)}
                               loading={loading[row.id]?.pay}
                               variant="contained"
                               color="success"
@@ -242,7 +263,7 @@ export default function UserBookings({ setError, setSuccess }) {
                           >
                             {row.status === "Approved" && (
                               <LoadingButton
-                                onClick={(e) => handlePayClick(e, row.id)}
+                                onClick={(e) => handlePayClick(e, row.id, )}
                                 loading={loading[row.id]?.pay}
                                 variant="contained"
                                 color="success"

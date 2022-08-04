@@ -19,7 +19,7 @@ export const AlertSuccess = ({ message, setSuccess }) => {
               color="inherit"
               size="small"
               onClick={() => {
-                setSuccess(false);
+                setSuccess(undefined);
                 setOpen(false);
               }}
             >

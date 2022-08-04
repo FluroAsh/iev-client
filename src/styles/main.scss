@@ -72,7 +72,8 @@ footer {
 }
 
 .detailImage {
-  max-width: 450px;
+  max-width: 430px;
+  max-height: 500px;
 }
 
 .errorMessage {
@@ -88,12 +89,12 @@ div.MuiAlert-root {
   width: 100%;
 }
 div.alert-error {
-  position: absolute;
+  position: relative;
   top: 0;
   width: 100%;
 }
 div.alert-success {
-  position: absolute;
+  position: relative;
   top: 0;
   width: 100%;
 }

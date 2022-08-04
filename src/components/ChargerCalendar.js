@@ -9,11 +9,6 @@ export function ChargerCalendar({ dates, setDates }) {
 
   const handleCalendar = (date) => {
     setDates(...bookingDates, date);
-
-    // dispatch({
-    //   type: "setBookingDates",
-    //   data: dates,
-    // });
   };
 
   console.log(dates);
