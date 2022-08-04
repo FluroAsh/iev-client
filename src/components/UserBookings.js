@@ -105,7 +105,10 @@ export default function UserBookings({ setError, setSuccess }) {
     navigate(`/charger/${chargerId}`);
   };
 
-  console.log("tablet?", isTablet);
+  // Checks if the user/host has any active bookings (not rejected/cancelled)
+  const activeBookings = bookings
+    .map((booking) => booking.status)
+    .includes("approved", "pending");
 
   return (
     <>
@@ -129,7 +132,7 @@ export default function UserBookings({ setError, setSuccess }) {
               {!isMobileXS && <TableCell align="right">Price</TableCell>}
               <TableCell align="right">Booking Date</TableCell>
               <TableCell align="right">Status</TableCell>
-              {!isTablet && <TableCell></TableCell>}
+              {!isTablet && activeBookings && <TableCell></TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -202,6 +205,7 @@ export default function UserBookings({ setError, setSuccess }) {
                       </TableCell>
                     )}
                   {!isTablet &&
+                    activeBookings &&
                     (row.status === "Rejected" ||
                       row.status === "Cancelled") && (
                       <TableCell
