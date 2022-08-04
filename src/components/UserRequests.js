@@ -184,7 +184,7 @@ export default function UserRequests({ setError, setSuccess }) {
                     <TableCell
                       className="extra-cell"
                       align="center"
-                      style={{ background: "#f1f1f1" }}
+                      style={{ background: "#f1f1f180" }}
                     >
                       <ButtonGroup
                         variant="contained"

@@ -167,7 +167,7 @@ export default function UserBookings({ setError, setSuccess }) {
                     (row.status === "Approved" || row.status === "Pending") && (
                       <TableCell
                         align="center"
-                        style={{ background: "#f1f1f1" }}
+                        style={{ background: "#f1f1f180" }}
                       >
                         <ButtonGroup
                           variant="contained"
@@ -206,7 +206,7 @@ export default function UserBookings({ setError, setSuccess }) {
                       row.status === "Cancelled") && (
                       <TableCell
                         align="center"
-                        style={{ background: "#f1f1f1" }}
+                        style={{ background: "#f1f1f180" }}
                       ></TableCell>
                     )}
                 </TableRow>
