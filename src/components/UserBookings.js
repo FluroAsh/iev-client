@@ -39,7 +39,9 @@ export default function UserBookings({ setError, setSuccess }) {
   const [loading, setLoading] = React.useState([]);
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobileXS = useMediaQuery(theme.breakpoints.down("xs"));
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, bookings } = store;
 
@@ -103,16 +105,12 @@ export default function UserBookings({ setError, setSuccess }) {
     navigate(`/charger/${chargerId}`);
   };
 
+  console.log("tablet?", isTablet);
+
   return (
-    // /**
-    //  * TODO:
-    //  * 1. Add clickable row for popup actions ✅
-    //  * 2. Add pagination
-    //  * 3. Add mobile conditionals (should not display some columns, change styling etc)
-    //  */
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 600 }} aria-label="bookings table">
+        <Table sx={{ minWidth: 350 }} aria-label="bookings table">
           <TableHead>
             <TableRow>
               <TableCell
@@ -125,72 +123,133 @@ export default function UserBookings({ setError, setSuccess }) {
             </TableRow>
             <TableRow>
               {!isMobile && <TableCell>City</TableCell>}
-              <TableCell align={isMobile ? "left" : "right"}>
+              <TableCell align={isTablet ? "left" : "right"}>
                 Station Name
               </TableCell>
-              <TableCell align="right">Price</TableCell>
+              {!isMobileXS && <TableCell align="right">Price</TableCell>}
               <TableCell align="right">Booking Date</TableCell>
               <TableCell align="right">Status</TableCell>
-              <TableCell></TableCell>
+              {!isTablet && <TableCell></TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <TableRow
-                key={row.id}
-                onClick={() => handleRowClick(row.chargerId)}
-                sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                  textDecoration: "none",
-                }}
-                hover
-              >
-                {!isMobile && (
-                  <TableCell component="th" scope="row">
-                    {row.city}
-                  </TableCell>
-                )}
-                <TableCell align={isMobile ? "left" : "right"}>
-                  {row.stationName}
-                </TableCell>
-                <TableCell align="right">{row.price}</TableCell>
-                <TableCell align="right">{row.date}</TableCell>
-                <TableCell
-                  sx={{ color: statusColor[row.status], fontWeight: 600 }}
-                  align="right"
+              <>
+                <TableRow
+                  key={row.id}
+                  onClick={() => handleRowClick(row.chargerId)}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    textDecoration: "none",
+                  }}
+                  hover
                 >
-                  {row.status}
-                </TableCell>
-                <TableCell align="center">
-                  {(row.status === "Approved" || row.status === "Pending") && (
-                    // TODO: Add conditional buttons to render on a new row (2nd row) for mobile
-                    <ButtonGroup variant="contained">
-                      {row.status === "Approved" && (
-                        <LoadingButton
-                          sx={{ minWidth: "50%" }}
-                          onClick={(e) => handlePayClick(e, row.id)}
-                          loading={loading[row.id]?.pay}
-                          size="small"
-                          variant="contained"
-                          color="success"
-                        >
-                          {!loading[row.id]?.pay && "Pay"}
-                        </LoadingButton>
-                      )}
-
-                      <LoadingButton
-                        onClick={(e) => handleCancelClick(e, row.id)}
-                        loading={loading[row.id]?.cancel}
-                        variant="contained"
-                        color="error"
-                        size="small"
-                      >
-                        Cancel
-                      </LoadingButton>
-                    </ButtonGroup>
+                  {!isMobile && (
+                    <TableCell component="th" scope="row">
+                      {row.city}
+                    </TableCell>
                   )}
-                </TableCell>
-              </TableRow>
+                  <TableCell align={!isMobile ? "left" : "right"}>
+                    {row.stationName}
+                  </TableCell>
+                  {!isMobileXS && (
+                    <TableCell align="right">{row.price}</TableCell>
+                  )}
+                  <TableCell align="right">{row.date}</TableCell>
+                  <TableCell
+                    sx={{ color: statusColor[row.status], fontWeight: 600 }}
+                    align="right"
+                  >
+                    {row.status}
+                  </TableCell>
+                  {/* Laptop/Desktop View */}
+                  {!isTablet &&
+                    (row.status !== "Rejected" ||
+                      row.status !== "Cancelled") && (
+                      <TableCell
+                        align="center"
+                        style={{ background: "#f1f1f1" }}
+                      >
+                        <ButtonGroup
+                          variant="contained"
+                          sx={{
+                            width: "100%",
+                            height: 35,
+                            boxShadow: "none",
+                          }}
+                        >
+                          {row.status === "Approved" && (
+                            <LoadingButton
+                              sx={{ minWidth: "50%", width: "50%" }}
+                              onClick={(e) => handlePayClick(e, row.id)}
+                              loading={loading[row.id]?.pay}
+                              variant="contained"
+                              color="success"
+                            >
+                              {!loading[row.id]?.pay && "Pay"}
+                            </LoadingButton>
+                          )}
+
+                          <LoadingButton
+                            onClick={(e) => handleCancelClick(e, row.id)}
+                            loading={loading[row.id]?.cancel}
+                            variant="contained"
+                            color="error"
+                            sx={{ width: "50%" }}
+                          >
+                            Cancel
+                          </LoadingButton>
+                        </ButtonGroup>
+                      </TableCell>
+                    )}
+                </TableRow>
+                {/* Mobile/Tablet View */}
+                {isTablet &&
+                  (row.status === "Approved" || row.status === "Pending") && (
+                    <TableRow key={row.id}>
+                      <TableCell
+                        className="extra-cell"
+                        colSpan={isTablet ? 5 : 4}
+                        sx={{ padding: 1 }}
+                      >
+                        {(row.status === "Approved" ||
+                          row.status === "Pending") && (
+                          <ButtonGroup
+                            variant="contained"
+                            sx={{
+                              width: "100%",
+                              height: 35,
+                              boxShadow: "none",
+                              textAlign: "center",
+                            }}
+                          >
+                            {row.status === "Approved" && (
+                              <LoadingButton
+                                onClick={(e) => handlePayClick(e, row.id)}
+                                loading={loading[row.id]?.pay}
+                                variant="contained"
+                                color="success"
+                                sx={{ width: "50%" }}
+                              >
+                                {!loading[row.id]?.pay && "Pay"}
+                              </LoadingButton>
+                            )}
+
+                            <LoadingButton
+                              onClick={(e) => handleCancelClick(e, row.id)}
+                              loading={loading[row.id]?.cancel}
+                              variant="contained"
+                              color="error"
+                              sx={{ width: "50%" }}
+                            >
+                              Cancel
+                            </LoadingButton>
+                          </ButtonGroup>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  )}
+              </>
             ))}
           </TableBody>
         </Table>

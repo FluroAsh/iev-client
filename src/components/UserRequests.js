@@ -60,6 +60,7 @@ export default function UserRequests({ setError, setSuccess }) {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobileXS = useMediaQuery(theme.breakpoints.down("xs"));
   const { store, dispatch } = useGlobalState();
   const { loggedInUser, bookingRequests } = store;
 
@@ -130,7 +131,7 @@ export default function UserRequests({ setError, setSuccess }) {
     // /**
     //  * TODO:
     //  * 1. Add clickable row for popup actions ✅
-    //  * 2. Add pagination
+    //  * 2. Add pagination for Tablet -> Desktop Screens
     //  * 3. Add mobile conditionals (should not display some columns, change styling etc) ✅
     //  */
     <>
@@ -145,7 +146,7 @@ export default function UserRequests({ setError, setSuccess }) {
             <TableRow>
               <TableCell>Name</TableCell>
               {!isMobile && <TableCell align="right">Vehicle</TableCell>}
-              <TableCell align="right">Price</TableCell>
+              {!isMobileXS && <TableCell align="right">Price</TableCell>}
               <TableCell align="right">Booking Date</TableCell>
               {!isTablet && <TableCell align="right">Sent Date</TableCell>}
               <TableCell align="right">Station Name</TableCell>
@@ -156,7 +157,7 @@ export default function UserRequests({ setError, setSuccess }) {
             {rows.map((row) => (
               <>
                 <TableRow
-                  key={row.id}
+                  key={row.id + row.name}
                   onClick={() => handleRowClick(row.chargerId)}
                   sx={{
                     "&:last-child td, &:last-child th": { border: 0 },
@@ -170,17 +171,20 @@ export default function UserRequests({ setError, setSuccess }) {
                     <TableCell align="right">{row.vehicle}</TableCell>
                   )}
 
-                  <TableCell align="right">{row.price}</TableCell>
+                  {!isMobileXS && (
+                    <TableCell align="right">{row.price}</TableCell>
+                  )}
                   <TableCell align="right">{row.bookingDate}</TableCell>
                   {!isTablet && (
                     <TableCell align="right">{row.sentDate}</TableCell>
                   )}
                   <TableCell align="right">{row.stationName}</TableCell>
+                  {/* Laptop/Desktop View */}
                   {!isTablet && (
                     <TableCell
                       className="extra-cell"
                       align="center"
-                      style={{ background: "#eee" }}
+                      style={{ background: "#f1f1f1" }}
                     >
                       <ButtonGroup
                         variant="contained"
@@ -241,9 +245,9 @@ export default function UserRequests({ setError, setSuccess }) {
                     </TableCell>
                   )}
                 </TableRow>
-                {/* Mobile & Tablet Responsive (2nd Row) */}
-                {(isMobile || isTablet) && (
-                  <TableRow>
+                {/* Mobile/Tablet View */}
+                {isTablet && (
+                  <TableRow key={row.id + row.name}>
                     <TableCell
                       className="extra-cell"
                       colSpan={isMobile ? 4 : 5}
@@ -255,7 +259,6 @@ export default function UserRequests({ setError, setSuccess }) {
                           width: "100%",
                           height: 35,
                           boxShadow: "none",
-                          textAlign: "center",
                         }}
                       >
                         {row.status === "Pending" && (
@@ -265,7 +268,6 @@ export default function UserRequests({ setError, setSuccess }) {
                               loading={loading[row.id]?.confirm}
                               variant="contained"
                               color="success"
-                              size="small"
                               sx={{ width: "50%" }}
                             >
                               <FontAwesomeIcon icon={faCheck} size="xl" />
@@ -275,7 +277,6 @@ export default function UserRequests({ setError, setSuccess }) {
                               loading={loading[row.id]?.reject}
                               variant="contained"
                               color="error"
-                              size="small"
                               sx={{ width: "50%" }}
                             >
                               <FontAwesomeIcon icon={faXmark} size="xl" />

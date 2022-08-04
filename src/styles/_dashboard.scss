@@ -36,20 +36,21 @@ td.extra-cell {
 }
 
 tr.MuiTableRow-hover {
+  cursor: pointer;
   &:hover {
     background: #2e7d3225 !important;
   }
 }
 
 // mobile & tablet text content
+div.MuiButtonGroup-root {
+  display: inline-flex;
+  justify-content: center;
+}
 div.MuiButtonGroup-root span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
-}
-
-tr.MuiTableRow-hover {
-  cursor: pointer;
 }
