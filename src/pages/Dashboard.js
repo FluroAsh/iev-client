@@ -103,17 +103,17 @@ export const Dashboard = () => {
 
   return (
     <>
-      {error && <AlertError message={error.message} setError={setError} />}
-      {success && (
-        <AlertSuccess message={success.message} setSuccess={setSuccess} />
-      )}
       <AnimatePresence>
         <motion.div
           className="page-container"
-          style={{ margin: "0 2em 2em" }}
+          style={{ margin: "0 1em 2em" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
+          {error && <AlertError message={error.message} setError={setError} />}
+          {success && (
+            <AlertSuccess message={success.message} setSuccess={setSuccess} />
+          )}
           <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
             Welcome Back {currentUser.firstName}! 👋
           </Typography>
