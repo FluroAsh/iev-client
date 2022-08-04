@@ -10,7 +10,7 @@ import { CssLoader } from "../components/CssLoader";
 export const ViewChargers = () => {
   const { store, dispatch } = useGlobalState();
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { location, chargerList } = store;
 
   const container = {
@@ -64,6 +64,7 @@ export const ViewChargers = () => {
 async function fetchData(location, dispatch, setError, setLoading) {
   if (location.pathname === "/chargers") {
     try {
+      setLoading(true);
       const chargers = await getChargers();
       dispatch({
         type: "setChargerList",
@@ -78,6 +79,7 @@ async function fetchData(location, dispatch, setError, setLoading) {
 
   if (location.pathname === "/chargers/mychargers") {
     try {
+      setLoading(true);
       const myChargers = await getMyChargers();
       dispatch({
         type: "setChargerList",

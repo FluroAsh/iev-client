@@ -15,13 +15,17 @@
     height: calc(100vh - 56px);
     position: sticky;
     top: 56px;
-    #map {
-      height: 100%;
-      width: 100%;
-      background: yellow;
-    }
   }
 }
+.map-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  width: 100%;
+  height: 100%;
+}
+
 .chargers {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -33,7 +37,6 @@
   padding: 20px;
   width: 100%;
 }
-
 div.card {
   display: flex;
   flex-direction: column;

@@ -32,9 +32,12 @@ export const SearchLocation = () => {
     );
   }, [location]);
 
+  if (loading) {
+    return <CssLoader />;
+  }
+
   return (
     <>
-      {loading && <CssLoader />}
       {error && <ErrorScreen error={error} />}
       {chargerList && (
         <div className="search">
@@ -46,8 +49,7 @@ export const SearchLocation = () => {
               {`${chargerList.length} ${pluralize(
                 "Charger",
                 chargerList.length
-              )}`}{" "}
-              Found
+              )}`}
             </Typography>
             <ViewChargers />
           </div>
@@ -66,8 +68,8 @@ export async function populateSearch(
   dispatch
 ) {
   try {
-    setError(false); // clear previous errors
     setLoading(true);
+    setError(false); // clear previous errors
     const chargers = await searchLocation(queryLocation || "");
     dispatch({
       type: "setChargerList",
