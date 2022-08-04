@@ -9,13 +9,18 @@ import Paper from "@mui/material/Paper";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { useNavigate } from "react-router-dom";
+import { useTheme, useMediaQuery } from "@mui/material";
 // import TableFooter from "@mui/material/TableFooter";
 // import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 // import TablePagination from "@mui/material/TablePagination";
-import { useNavigate } from "react-router-dom";
-import { useTheme, useMediaQuery } from "@mui/material";
 
-import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
+import {
+  displayAUD,
+  displayLocalTime,
+  capitalize,
+  createUUID,
+} from "../utils/helpers";
 import { useGlobalState } from "../context/stateContext";
 import {
   cancelBooking,
@@ -112,10 +117,10 @@ export default function UserBookings({ setError, setSuccess }) {
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} key={createUUID()}>
         <Table sx={{ minWidth: 350 }} aria-label="bookings table">
-          <TableHead>
-            <TableRow>
+          <TableHead key={createUUID()}>
+            <TableRow key={createUUID()}>
               <TableCell
                 className="table-header"
                 sx={{ p: 2, background: "#e0e0e0" }}
@@ -124,7 +129,7 @@ export default function UserBookings({ setError, setSuccess }) {
                 <Typography variant="h5">Bookings</Typography>
               </TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow key={createUUID()}>
               {!isMobile && <TableCell>City</TableCell>}
               <TableCell align={isTablet ? "left" : "right"}>
                 Station Name
@@ -137,9 +142,9 @@ export default function UserBookings({ setError, setSuccess }) {
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <>
+              <React.Fragment key={createUUID()}>
                 <TableRow
-                  key={row.id}
+                  key={createUUID()}
                   onClick={() => handleRowClick(row.chargerId)}
                   sx={{
                     "&:last-child td, &:last-child th": { border: 0 },
@@ -169,6 +174,7 @@ export default function UserBookings({ setError, setSuccess }) {
                   {!isTablet &&
                     (row.status === "Approved" || row.status === "Pending") && (
                       <TableCell
+                        className="extra-cell"
                         align="center"
                         style={{ background: "#f1f1f180" }}
                       >
@@ -182,7 +188,7 @@ export default function UserBookings({ setError, setSuccess }) {
                         >
                           {row.status === "Approved" && (
                             <LoadingButton
-                              sx={{ minWidth: "50%", width: "50%" }}
+                              sx={{ width: "100%" }}
                               onClick={(e) => handlePayClick(e, row.id)}
                               loading={loading[row.id]?.pay}
                               variant="contained"
@@ -197,7 +203,7 @@ export default function UserBookings({ setError, setSuccess }) {
                             loading={loading[row.id]?.cancel}
                             variant="contained"
                             color="error"
-                            sx={{ width: "50%" }}
+                            sx={{ width: "100%" }}
                           >
                             Cancel
                           </LoadingButton>
@@ -217,7 +223,7 @@ export default function UserBookings({ setError, setSuccess }) {
                 {/* Mobile/Tablet View */}
                 {isTablet &&
                   (row.status === "Approved" || row.status === "Pending") && (
-                    <TableRow key={row.id + row.chargerId}>
+                    <TableRow key={createUUID()}>
                       <TableCell
                         className="extra-cell"
                         colSpan={isTablet ? 5 : 4}
@@ -240,7 +246,7 @@ export default function UserBookings({ setError, setSuccess }) {
                                 loading={loading[row.id]?.pay}
                                 variant="contained"
                                 color="success"
-                                sx={{ width: "50%" }}
+                                sx={{ width: "100%" }}
                               >
                                 {!loading[row.id]?.pay && "Pay"}
                               </LoadingButton>
@@ -251,7 +257,7 @@ export default function UserBookings({ setError, setSuccess }) {
                               loading={loading[row.id]?.cancel}
                               variant="contained"
                               color="error"
-                              sx={{ width: "50%" }}
+                              sx={{ width: "100%" }}
                             >
                               Cancel
                             </LoadingButton>
@@ -260,7 +266,7 @@ export default function UserBookings({ setError, setSuccess }) {
                       </TableCell>
                     </TableRow>
                   )}
-              </>
+              </React.Fragment>
             ))}
           </TableBody>
         </Table>

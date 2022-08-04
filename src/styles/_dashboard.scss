@@ -5,6 +5,10 @@
   margin: 0 1em 2em;
 }
 
+div.MuiTableContainer-root {
+  border: none;
+}
+
 .host-container {
   display: flex;
   justify-content: center;
@@ -56,6 +60,21 @@ div.MuiButtonGroup-root span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: 35px;
   width: 100%;
+}
+
+@media only screen and (max-width: $tablet-width) {
+  td.extra-cell {
+    padding: 0px;
+    & button {
+      border-radius: 4px;
+    }
+  }
+}
+
+@media only screen and (min-width: $tablet-width) {
+  td.extra-cell {
+    padding: 8px;
+  }
 }

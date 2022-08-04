@@ -11,7 +11,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { LoadingButton } from "@mui/lab";
 
-import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
+import {
+  displayAUD,
+  displayLocalTime,
+  capitalize,
+  createUUID,
+} from "../utils/helpers";
 import { Typography, useTheme, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import {
@@ -155,9 +160,9 @@ export default function UserRequests({ setError, setSuccess }) {
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <>
+              <React.Fragment key={createUUID()}>
                 <TableRow
-                  key={row.id + row.name}
+                  key={createUUID()}
                   onClick={() => handleRowClick(row.chargerId)}
                   sx={{
                     "&:last-child td, &:last-child th": { border: 0 },
@@ -198,7 +203,7 @@ export default function UserRequests({ setError, setSuccess }) {
                               variant="contained"
                               color="success"
                               size="small"
-                              sx={{ width: "50%" }}
+                              sx={{ width: "100%", height: 35 }}
                             >
                               <FontAwesomeIcon icon={faCheck} size="xl" />
                             </LoadingButton>
@@ -208,7 +213,7 @@ export default function UserRequests({ setError, setSuccess }) {
                               variant="contained"
                               color="error"
                               size="small"
-                              sx={{ width: "50%" }}
+                              sx={{ width: "100%", height: 35 }}
                             >
                               <FontAwesomeIcon icon={faXmark} size="xl" />
                             </LoadingButton>
@@ -247,7 +252,7 @@ export default function UserRequests({ setError, setSuccess }) {
                 </TableRow>
                 {/* Mobile/Tablet View */}
                 {isTablet && (
-                  <TableRow key={row.id + row.name}>
+                  <TableRow key={createUUID()}>
                     <TableCell
                       className="extra-cell"
                       colSpan={isMobile ? 4 : 5}
@@ -268,7 +273,7 @@ export default function UserRequests({ setError, setSuccess }) {
                               loading={loading[row.id]?.confirm}
                               variant="contained"
                               color="success"
-                              sx={{ width: "50%" }}
+                              sx={{ width: "100%" }}
                             >
                               <FontAwesomeIcon icon={faCheck} size="xl" />
                             </LoadingButton>
@@ -277,7 +282,7 @@ export default function UserRequests({ setError, setSuccess }) {
                               loading={loading[row.id]?.reject}
                               variant="contained"
                               color="error"
-                              sx={{ width: "50%" }}
+                              sx={{ width: "100%" }}
                             >
                               <FontAwesomeIcon icon={faXmark} size="xl" />
                             </LoadingButton>
@@ -314,7 +319,7 @@ export default function UserRequests({ setError, setSuccess }) {
                     </TableCell>
                   </TableRow>
                 )}
-              </>
+              </React.Fragment>
             ))}
           </TableBody>
         </Table>

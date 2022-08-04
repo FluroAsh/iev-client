@@ -9,10 +9,10 @@ import { capitalize } from "../utils/helpers";
 export const AlertError = ({ message, setError, styles }) => {
   const [open, setOpen] = useState(true);
 
-  // setTimeout(() => {
-  //   setError(false);
-  //   setOpen(false);
-  // }, 10000);
+  setTimeout(() => {
+    setError(false);
+    setOpen(false);
+  }, 10000);
 
   return (
     <Box className="alert-error" style={styles && styles.errorAlert}>

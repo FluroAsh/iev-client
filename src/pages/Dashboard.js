@@ -117,7 +117,6 @@ export const Dashboard = () => {
             Welcome Back {currentUser.firstName}! 👋
           </Typography>
 
-          {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
           {hostStatus &&
             (bookingRequests.length > 0 ? (
               <UserRequests setError={setError} setSuccess={setSuccess} />
