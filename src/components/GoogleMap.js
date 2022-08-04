@@ -1,7 +1,7 @@
 import React from "react";
 import {
   GoogleMap as GoogleMapContainer,
-  LoadScript,
+  useLoadScript,
 } from "@react-google-maps/api";
 
 export const GoogleMap = ({ coordinates }) => {
@@ -10,6 +10,10 @@ export const GoogleMap = ({ coordinates }) => {
     width: "100%",
     height: "100%",
   };
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+  });
 
   // coordinates to center the map on
   const center = {
@@ -23,20 +27,17 @@ export const GoogleMap = ({ coordinates }) => {
   };
 
   return (
-    <div
-      className="search__map"
-      style={{
-        background: "#e0e0e0",
-      }}
-    >
-      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
+    <>
+      {isLoaded ? (
         <GoogleMapContainer
           mapContainerStyle={containerStyle}
           center={center}
           zoom={13}
           options={mapOptions}
         ></GoogleMapContainer>
-      </LoadScript>
-    </div>
+      ) : (
+        <div className="map-loading">Loading...</div>
+      )}
+    </>
   );
 };

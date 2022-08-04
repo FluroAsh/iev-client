@@ -10,14 +10,12 @@ export const theme = createTheme({
     secondary: {
       main: green[100],
     },
-    background: {
-      // paper: green[200],
-    },
   },
   breakpoints: {
     // https://mui.com/material-ui/customization/breakpoints/
     values: {
-      xs: 375,
+      xs: 400,
+      sm: 600,
       md: 800,
       lg: 1366,
       xl: 1920,
