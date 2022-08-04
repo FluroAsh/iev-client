@@ -26,7 +26,7 @@ export const Charger = ({ charger, item }) => {
             component="img"
             image={charger.imageUrl}
             alt={charger.name}
-            style={{ maxHeight: "400px" }}
+            style={{ height: "400px"}}
           />
           <div className="card__plug-pill">
             <span>{charger.Plug.plugName}</span>

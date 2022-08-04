@@ -132,7 +132,7 @@ export const ChargerDetail = ({ charger }) => {
           flexWrap: "wrap",
         }}
       >
-        <Box sx={{ display: "block", width: "100vw"}}>
+        <Box sx={{ display: "block", width: "100vw" }}>
           {success !== undefined && (
             <AlertSuccess message={success} setSuccess={setSuccess} />
           )}
@@ -167,32 +167,35 @@ export const ChargerDetail = ({ charger }) => {
         </Box>
 
         <div className="calendar">
-          <Box>
+          <Box sx={{ display: "inline-flex", flexDirection: "column" }}>
             <Typography variant="h6">Charger Status: {status}</Typography>
-            <Box style={{ marginBottom: "16px" }}>
+            <Box style={{ marginBottom: "16px", marginTop: "16px" }}>
               <ChargerCalendar dates={dates} setDates={setDates} />
             </Box>
             {charger.Host.username === loggedInUser ? (
-              <div className="flex-box">
+              <Box sx={{ display: "inline-flex", flexDirection: "column" }}>
+                {" "}
                 <FormControlLabel
                   control={<Switch checked={checked} onChange={handleSwitch} />}
                   label="Activate"
                 />
-                <Button
-                  // type="submit"
-                  value="active"
-                  variant="contained"
-                  onClick={handleEdit}
-                  style={{ marginRight: "16px" }}
-                >
-                  Edit
-                </Button>
-                <DeleteButton
-                  key={charger.id}
-                  charger={charger}
-                  setError={setError}
-                />
-              </div>
+                <Box sx={{ display: "inline-flex", flexDirection: "row" }}>
+                  <Button
+                    // type="submit"
+                    value="active"
+                    variant="contained"
+                    onClick={handleEdit}
+                    style={{ marginRight: "16px" }}
+                  >
+                    Edit
+                  </Button>
+                  <DeleteButton
+                    key={charger.id}
+                    charger={charger}
+                    setError={setError}
+                  />
+                </Box>
+              </Box>
             ) : (
               <div className="flexBox">
                 <Button
