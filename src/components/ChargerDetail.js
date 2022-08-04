@@ -30,7 +30,7 @@ export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
   const { loggedInUser } = store;
   const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(undefined);
   const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ export const ChargerDetail = ({ charger }) => {
       setStatus("Disabled");
       setChecked(false);
     }
-  }, []);
+  }, [charger.status]);
 
   const updateStatus = async (e) => {
     let data = {};
@@ -63,7 +63,7 @@ export const ChargerDetail = ({ charger }) => {
       }
 
       const response = await updateChargerStatus(data, charger.id);
-      setSuccess(response);
+      setSuccess(response.message);
       console.log("Update successful");
       // navigate(`/chargers/mychargers`);
     } catch (err) {
@@ -93,7 +93,9 @@ export const ChargerDetail = ({ charger }) => {
         throw Error("No dates selected!");
       }
       const response = await createUserBookingRequest(bookings);
-      setSuccess(response);
+
+      console.log("THIS IS RESPONSE AFTER CREATE POST REQUEST SENT", response);
+      setSuccess(response.message);
     } catch (err) {
       setError(err);
     } finally {
@@ -102,15 +104,11 @@ export const ChargerDetail = ({ charger }) => {
   };
 
   const handleEdit = (e) => {
-    // setEditFormData(charger)
     dispatch({
       type: "setEditFormData",
       data: charger,
     });
-    // console.log("THIS IS FORM DATA WITH CHARGER DETAIL", editFormData);
-    // return (
-    //   <ChargerForm key={charger.id} editFormData={editFormData}/>
-    // )
+
     navigate(`/charger/${charger.id}/edit`);
   };
 
@@ -126,10 +124,6 @@ export const ChargerDetail = ({ charger }) => {
 
   return (
     <>
-      {success && (
-        <AlertSuccess message={success.message} setSuccess={setSuccess} />
-      )}
-      {error && <AlertError message={error.message} setError={setError} />}
       <Container
         sx={{
           display: "inline-flex",
@@ -138,6 +132,12 @@ export const ChargerDetail = ({ charger }) => {
           flexWrap: "wrap",
         }}
       >
+        <Box sx={{ display: "block", width: "100vw" }}>
+          {success !== undefined && (
+            <AlertSuccess message={success} setSuccess={setSuccess} />
+          )}
+          {error && <AlertError message={error.message} setError={setError} />}
+        </Box>
         <Box
           sx={{ display: "inline-flex", flexDirection: "column", margin: 2 }}
         >
@@ -167,32 +167,35 @@ export const ChargerDetail = ({ charger }) => {
         </Box>
 
         <div className="calendar">
-          <Box>
+          <Box sx={{ display: "inline-flex", flexDirection: "column" }}>
             <Typography variant="h6">Charger Status: {status}</Typography>
-            <Box style={{ marginBottom: "16px" }}>
+            <Box style={{ marginBottom: "16px", marginTop: "16px" }}>
               <ChargerCalendar dates={dates} setDates={setDates} />
             </Box>
             {charger.Host.username === loggedInUser ? (
-              <div className="flex-box">
+              <Box sx={{ display: "inline-flex", flexDirection: "column" }}>
+                {" "}
                 <FormControlLabel
                   control={<Switch checked={checked} onChange={handleSwitch} />}
                   label="Activate"
                 />
-                <Button
-                  // type="submit"
-                  value="active"
-                  variant="contained"
-                  onClick={handleEdit}
-                  style={{ marginRight: "16px" }}
-                >
-                  Edit
-                </Button>
-                <DeleteButton
-                  key={charger.id}
-                  charger={charger}
-                  setError={setError}
-                />
-              </div>
+                <Box sx={{ display: "inline-flex", flexDirection: "row" }}>
+                  <Button
+                    // type="submit"
+                    value="active"
+                    variant="contained"
+                    onClick={handleEdit}
+                    style={{ marginRight: "16px" }}
+                  >
+                    Edit
+                  </Button>
+                  <DeleteButton
+                    key={charger.id}
+                    charger={charger}
+                    setError={setError}
+                  />
+                </Box>
+              </Box>
             ) : (
               <div className="flexBox">
                 <Button

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Typography, useMediaQuery, useTheme } from "@mui/material";
-import pluralize from "pluralize";
 
 import { geocodeLocation, searchLocation } from "../services/searchServices";
 import { CssLoader } from "../components/CssLoader";
@@ -8,6 +7,8 @@ import { useGlobalState } from "../context/stateContext";
 import { GoogleMap } from "../components/GoogleMap";
 import { ViewChargers } from "./ViewChargers";
 import { AlertError } from "../components/AlertError";
+const pluralize = require("pluralize");
+
 
 export const SearchLocation = () => {
   const [loading, setLoading] = useState(false);

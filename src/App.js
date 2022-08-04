@@ -22,6 +22,7 @@ import { SearchLocation } from "./pages/SearchLocation";
 import { Dashboard } from "./pages/Dashboard";
 
 function App() {
+
   const initialState = {
     chargerList: [],
     bookingDates: [],
@@ -55,6 +56,9 @@ function App() {
           >
             <Routes>
               <Route path="/" element={<Navigate to="chargers" replace />} />
+              <Route path="/success" element={<Navigate to="chargers" replace />} />
+              <Route path="/canceled" element={<Navigate to="/bookings/:username" replace />} />
+
               <Route path="/search" element={<SearchLocation />} />
               <Route path="/auth/signup" element={<SignupForm />} />
               <Route path="/auth/signin" element={<SigninForm />} />
