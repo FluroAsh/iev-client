@@ -151,6 +151,12 @@ a.logo {
   list-style: none;
   margin-right: 20px;
 }
+div.nav-toolbar.MuiToolbar-root {
+  min-height: 56px;
+}
+a.MuiMenuItem-root {
+  min-height: 40px;
+}
 
 @media only screen and (max-width: $tablet-width) {
   #searchbar-form {
