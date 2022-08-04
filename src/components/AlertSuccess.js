@@ -5,12 +5,11 @@ import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 
-export const AlertSuccess = ({ message, setError }) => {
+export const AlertSuccess = ({ message, setSuccess }) => {
   const [open, setOpen] = useState(true);
-  setError && setError(false);
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box>
       <Collapse in={open}>
         <Alert
           severity="success"
@@ -20,6 +19,7 @@ export const AlertSuccess = ({ message, setError }) => {
               color="inherit"
               size="small"
               onClick={() => {
+                setSuccess(false);
                 setOpen(false);
               }}
             >

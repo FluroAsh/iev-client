@@ -28,3 +28,29 @@
   border-radius: 5px;
   margin-bottom: 2em;
 }
+
+td.extra-cell {
+  vertical-align: middle;
+  font-weight: 600;
+  background: #f1f1f1;
+}
+
+tr.MuiTableRow-hover {
+  cursor: pointer;
+  &:hover {
+    background: #2e7d3225 !important;
+  }
+}
+
+// mobile & tablet text content
+div.MuiButtonGroup-root {
+  display: inline-flex;
+  justify-content: center;
+}
+div.MuiButtonGroup-root span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}

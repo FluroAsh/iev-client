@@ -13,7 +13,6 @@ import {
   DialogContentText,
   DialogTitle,
   Typography,
-  Alert,
   Switch,
   FormControlLabel,
 } from "@mui/material";
@@ -29,7 +28,7 @@ import { AlertSuccess } from "./AlertSuccess";
 
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
-  const { loggedInUser, errorMessage, editFormData, chargerStatus } = store;
+  const { loggedInUser } = store;
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -39,9 +38,6 @@ export const ChargerDetail = ({ charger }) => {
   const [dates, setDates] = useState([]);
 
   useEffect(() => {
-    // Set charger status local state variables (status, checked)
-    console.log("--> Charger status:", charger.status);
-
     if (charger.status === "active") {
       setStatus("Active");
       setChecked(true);
@@ -131,18 +127,9 @@ export const ChargerDetail = ({ charger }) => {
   return (
     <>
       {success && (
-        <AlertSuccess message={success.message} setError={setError} />
+        <AlertSuccess message={success.message} setSuccess={setSuccess} />
       )}
-      {error && (
-        <AlertError
-          message={error.message}
-          setError={setError}
-          setSuccess={setSuccess}
-        />
-      )}
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-      </div>
+      {error && <AlertError message={error.message} setError={setError} />}
       <Container
         sx={{
           display: "inline-flex",

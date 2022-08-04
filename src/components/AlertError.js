@@ -6,14 +6,19 @@ import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import { capitalize } from "../utils/helpers";
 
-export const AlertError = ({ message, setError, setSuccess }) => {
+export const AlertError = ({ message, setError, styles }) => {
   const [open, setOpen] = useState(true);
-  setSuccess && setSuccess(false);
+
+  // setTimeout(() => {
+  //   setError(false);
+  //   setOpen(false);
+  // }, 10000);
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box style={styles && styles.errorAlert}>
       <Collapse in={open}>
         <Alert
+          style={styles && styles.errorAlert.borderRadius}
           severity="error"
           action={
             <IconButton
@@ -21,8 +26,8 @@ export const AlertError = ({ message, setError, setSuccess }) => {
               color="inherit"
               size="small"
               onClick={() => {
-                setOpen(false);
                 setError(false);
+                setOpen(false);
               }}
             >
               <CloseIcon fontSize="inherit" />
