@@ -18,6 +18,7 @@ export const theme = createTheme({
     // https://mui.com/material-ui/customization/breakpoints/
     values: {
       xs: 375,
+      sm: 600,
       md: 800,
       lg: 1366,
       xl: 1920,
