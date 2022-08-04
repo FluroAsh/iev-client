@@ -3,10 +3,10 @@ import { Typography, useMediaQuery, useTheme } from "@mui/material";
 import { geocodeLocation, searchLocation } from "../services/searchServices";
 import { CssLoader } from "../components/CssLoader";
 import { useGlobalState } from "../context/stateContext";
-import { ErrorScreen } from "../components/ErrorScreen";
 import { GoogleMap } from "../components/GoogleMap";
 import { ViewChargers } from "./ViewChargers";
 import pluralize from "pluralize";
+import { AlertError } from "../components/AlertError";
 
 export const SearchLocation = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ export const SearchLocation = () => {
   const [coordinates, setCoordinates] = useState({});
   const { location, chargerList } = store;
 
-  /** Load initial data for charger locations */
+  // Load initial data for charger locations
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const queryLocation = searchParams.get("location");
@@ -30,6 +30,7 @@ export const SearchLocation = () => {
       setError,
       dispatch
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   if (loading) {
@@ -38,7 +39,7 @@ export const SearchLocation = () => {
 
   return (
     <>
-      {error && <ErrorScreen error={error} />}
+      {error && <AlertError message={error.message} setError={setError} />}
       {chargerList && (
         <div className="search">
           <div className="search__cards">
@@ -69,7 +70,7 @@ export async function populateSearch(
 ) {
   try {
     setLoading(true);
-    setError(false); // clear previous errors
+    setError(false); // clear previous search errors
     const chargers = await searchLocation(queryLocation || "");
     dispatch({
       type: "setChargerList",

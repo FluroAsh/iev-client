@@ -3,7 +3,6 @@ import {
   GoogleMap as GoogleMapContainer,
   useLoadScript,
 } from "@react-google-maps/api";
-import { motion, AnimatePresence } from "framer-motion";
 
 export const GoogleMap = ({ coordinates }) => {
   // defines styles for the map container
@@ -28,27 +27,22 @@ export const GoogleMap = ({ coordinates }) => {
   };
 
   return (
-    <AnimatePresence>
-      <div
-        className="search__map"
-        style={{
-          background: "#e0e0e0",
-        }}
-      >
-        {isLoaded ? (
-          <GoogleMapContainer
-            component={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, duration: 0.5 }}
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={13}
-            options={mapOptions}
-          ></GoogleMapContainer>
-        ) : (
-          <div className="map-loading">Loading...</div>
-        )}
-      </div>
-    </AnimatePresence>
+    <div
+      className="search__map"
+      style={{
+        background: "#e0e0e0",
+      }}
+    >
+      {isLoaded ? (
+        <GoogleMapContainer
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={13}
+          options={mapOptions}
+        ></GoogleMapContainer>
+      ) : (
+        <div className="map-loading">Loading...</div>
+      )}
+    </div>
   );
 };
