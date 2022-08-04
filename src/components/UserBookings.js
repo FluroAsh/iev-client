@@ -29,7 +29,7 @@ import {
 
 const { createStripeSession } = require("../services/paymentServices");
 const stripePromise = loadStripe(
-  "pk_test_51LSoj4KET1RwVGwUk9pp97jPW5HE0LOu0bpxtKqCfsgtb2WfRChRKOQTnkhfcVMfFjngjEDlBWkCgYgRVulTScwe00oRX9gUl9"
+  process.env.STRIPE_PUBLISH_KEY
 );
 
 const statusColor = {
