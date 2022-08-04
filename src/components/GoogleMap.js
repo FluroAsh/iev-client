@@ -31,7 +31,7 @@ export const GoogleMap = ({ coordinates }) => {
       {isLoaded ? (
         <GoogleMapContainer
           mapContainerStyle={containerStyle}
-          center={center || { lat: 0, lng: 0 }}
+          center={center}
           zoom={13}
           options={mapOptions}
         ></GoogleMapContainer>

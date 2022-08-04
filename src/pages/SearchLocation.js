@@ -52,6 +52,9 @@ export const SearchLocation = () => {
 
   return (
     <>
+      {isMobile && error && (
+        <AlertError message={error.message} setError={setError} />
+      )}
       <div className="search">
         <div className="search__cards">
           <Typography variant="h5" sx={{ width: "100%", textAlign: "center" }}>
@@ -62,22 +65,24 @@ export const SearchLocation = () => {
           </Typography>
           <ViewChargers />
         </div>
-        <div
-          className="search__map"
-          style={{
-            position: "relative",
-            background: "#e0e0e0",
-          }}
-        >
-          {error && (
-            <AlertError
-              message={error.message}
-              setError={setError}
-              styles={styles}
-            />
-          )}
-          {!isMobile && <GoogleMap coordinates={coordinates} />}
-        </div>
+
+        {!isMobile && (
+          <div
+            className="search__map"
+            style={{
+              background: "#e0e0e0",
+            }}
+          >
+            {error && (
+              <AlertError
+                message={error.message}
+                setError={setError}
+                styles={styles}
+              />
+            )}
+            <GoogleMap coordinates={coordinates} />
+          </div>
+        )}
       </div>
     </>
   );
@@ -94,7 +99,6 @@ export async function populateSearch(
     setLoading(true);
     setError(false); // clear previous search errors
     const chargers = await searchLocation(queryLocation || "");
-    console.log(chargers);
     dispatch({
       type: "setChargerList",
       data: chargers,
@@ -107,6 +111,7 @@ export async function populateSearch(
       type: "setChargerList",
       data: [],
     });
+    setCoordinates({ lat: 0, lng: 0 });
   } finally {
     setLoading(false);
   }

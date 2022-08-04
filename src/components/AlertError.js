@@ -18,7 +18,7 @@ export const AlertError = ({ message, setError, styles }) => {
     <Box style={styles && styles.errorAlert}>
       <Collapse in={open}>
         <Alert
-          style={styles.errorAlert && styles.errorAlert.borderRadius}
+          style={styles && styles.errorAlert.borderRadius}
           severity="error"
           action={
             <IconButton
