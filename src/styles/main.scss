@@ -82,14 +82,19 @@ footer {
   max-width: 450px;
 }
 
+// Alerts
 div.MuiAlert-root {
   margin: 0;
   width: 100%;
 }
-
-th.table-header {
-  color: #fff;
-  background: linear-gradient(#5da361, $mui-primary);
-  border: 1px solid $mui-primary;
-  padding: 1em 1.5em;
+div.alert-error {
+  position: absolute;
+  top: 0;
 }
+div.alert-success {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+

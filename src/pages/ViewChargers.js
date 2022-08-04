@@ -48,7 +48,7 @@ export const ViewChargers = () => {
               initial="hidden"
               animate="show"
             >
-              {chargerList.slice(0, 9).map((charger) => (
+              {chargerList.map((charger) => (
                 <Charger key={charger.id} charger={charger} item={item} />
               ))}
             </motion.div>

@@ -10,7 +10,7 @@ export const AlertSuccess = ({ message, setSuccess }) => {
 
   return (
     <Box>
-      <Collapse in={open}>
+      <Collapse className="alert-success" in={open}>
         <Alert
           severity="success"
           action={

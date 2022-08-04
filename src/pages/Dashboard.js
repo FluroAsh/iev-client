@@ -106,7 +106,6 @@ export const Dashboard = () => {
       <AnimatePresence>
         <motion.div
           className="page-container"
-          style={{ margin: "0 1em 2em" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
@@ -118,27 +117,16 @@ export const Dashboard = () => {
             Welcome Back {currentUser.firstName}! 👋
           </Typography>
 
-          {/* Is Host? Render Requests, otherwise render 'Become a Host' */}
           {hostStatus &&
             (bookingRequests.length > 0 ? (
-              <UserRequests
-                // styles={styles}
-                // hostStatus={hostStatus}
-                setError={setError}
-                setSuccess={setSuccess}
-              />
+              <UserRequests setError={setError} setSuccess={setSuccess} />
             ) : (
               <NoResults message={"No requests... Yet! 🔌"} />
             ))}
 
           {/* NOTE: Not every host will have bookings */}
           {bookings.length > 0 ? (
-            <UserBookings
-              setError={setError}
-              setSuccess={setSuccess}
-              // styles={styles}
-              // hostStatus={hostStatus}
-            />
+            <UserBookings setError={setError} setSuccess={setSuccess} />
           ) : (
             <NoResults message={"You haven't made any bookings... Yet 😉"} />
           )}
