@@ -11,12 +11,18 @@ import { Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useEffect, useState } from "react";
 
+import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
+import { useGlobalState } from "../context/stateContext";
+
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(
+  "pk_test_51LSoj4KET1RwVGwUk9pp97jPW5HE0LOu0bpxtKqCfsgtb2WfRChRKOQTnkhfcVMfFjngjEDlBWkCgYgRVulTScwe00oRX9gUl9"
+);
+
 // import TableFooter from "@mui/material/TableFooter";
 // import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 // import TablePagination from "@mui/material/TablePagination";
-
-import { displayAUD, displayLocalTime, capitalize } from "../utils/helpers";
-import { useGlobalState } from "../context/stateContext";
 
 const { createStripeSession } = require("../services/paymentServices");
 
@@ -24,36 +30,10 @@ function createData(id, city, stationName, price, date, status) {
   return { id, city, stationName, price, date, status };
 }
 
-const Message = ({ message }) => (
-  <section>
-    <p>{message}</p>
-  </section>
-);
-
 export default function UserBookings() {
   const [loading, setLoading] = React.useState({});
   const { store } = useGlobalState();
   const { bookings } = store;
-
-  // const [message, setMessage] = useState("");
-
-  // useEffect(() => {
-  //   // Check to see if this is a redirect back from Checkout
-  //   const query = new URLSearchParams(window.location.search);
-
-  //   if (query.get("success")) {
-  //     setMessage("Order placed! You will receive an email confirmation.");
-  //   }
-
-  //   if (query.get("canceled")) {
-  //     setMessage(
-  //       "Order canceled -- continue to shop around and checkout when you're ready."
-  //     );
-  //   }
-  // }, []);
-
-  // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  // console.log("bookings table", bookings);
 
   const rows = bookings.map((booking) => {
     const { bookingDate: date, status } = booking;
@@ -63,7 +43,6 @@ export default function UserBookings() {
       booking.id,
       city,
       stationName,
-      // displayAUD(price),
       price,
       displayLocalTime(date),
       capitalize(status)
@@ -74,14 +53,12 @@ export default function UserBookings() {
     try {
       setLoading({ [RowId]: true });
 
-      bookingDetail.price = parseInt(bookingDetail.price);
-      // handle the API request here
       const res = await createStripeSession(bookingDetail);
       console.log("THIS IS RESULTS FROM STRIPE POST REQUEST", res);
 
+      // Redirect to strip check out session form
+      window.location.href = res.url
       //TODO: handle success and cancelled response from stripe
-      // const url = res.url;
-      // window.location.href = url
     } catch (err) {
       console.log("THIS IS STRIPE ERROR", err);
       // catch the error here
