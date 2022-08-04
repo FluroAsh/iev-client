@@ -21,11 +21,17 @@ export const Charger = ({ charger, item }) => {
   return (
     <Card className="card" component={motion.div} variants={item}>
       <CardActionArea onClick={handleClickView}>
-        <CardMedia
-          component="img"
-          image={charger.imageUrl}
-          alt={charger.name}
-        />
+        <div className="card__img-plug">
+          <CardMedia
+            component="img"
+            image={charger.imageUrl}
+            alt={charger.name}
+          />
+          <div className="card__plug-pill">
+            <span>{charger.Plug.plugName}</span>
+          </div>
+        </div>
+
         <CardContent>
           <div>
             <Typography gutterBottom variant="h5" component="div">

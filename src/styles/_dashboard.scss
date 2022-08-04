@@ -38,6 +38,13 @@ div.MuiTableContainer-root {
   margin-bottom: 2em;
 }
 
+th.table-header {
+  color: #fff;
+  background: linear-gradient(#5da361, $mui-primary);
+  border: 1px solid $mui-primary;
+  padding: 1em 1.5em;
+}
+
 td.extra-cell {
   vertical-align: middle;
   font-weight: 600;
