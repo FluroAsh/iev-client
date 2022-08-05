@@ -8,13 +8,11 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useTheme, useMediaQuery, ButtonGroup } from "@mui/material";
+import { useTheme, useMediaQuery } from "@mui/material";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { useGlobalState } from "../context/stateContext";
 import { bookingStatusColor } from "../styles/statusColor";
-
-import { LoadingButton } from "@mui/lab";
 
 import {
   displayAUD,
