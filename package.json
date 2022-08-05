@@ -28,7 +28,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --verbose --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -47,9 +47,11 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/dom": "^8.16.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.2.1",
+    "react-test-renderer": "^18.2.0",
     "sass": "^1.53.0"
   }
 }

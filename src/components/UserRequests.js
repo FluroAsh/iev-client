@@ -6,6 +6,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Typography, useTheme, useMediaQuery } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import {
   displayAUD,
@@ -13,8 +15,6 @@ import {
   capitalize,
   createUUID,
 } from "../utils/helpers";
-import { Typography, useTheme, useMediaQuery } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import {
   rejectUserRequest,
   approveUserRequest,
