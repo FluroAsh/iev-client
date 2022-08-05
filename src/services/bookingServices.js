@@ -24,22 +24,18 @@ export async function getUserBookingRequests(username) {
 
 export async function createUserBookingRequest(bookings) {
   try {
-    await ievAPI.post("/booking/new", bookings);
-    console.log("Sent!");
-    return { message: "Booking request successfully sent" };
+    const res = await ievAPI.post("/booking/new", bookings);
+    return res.data;
   } catch (err) {
     throw Error(err.response.data.error);
   }
 }
 
-// host
-// send confirm request
-
-// send reject request
+// Host response
 export async function rejectUserRequest(data) {
   try {
-    await ievAPI.put("/booking/request?response=reject", data);
-    return { message: `Booking ${data.BookingId} successfully rejected` };
+    const response = await ievAPI.put("/booking/request?response=reject", data);
+    return response.data;
   } catch (err) {
     throw Error(err.response.data.error);
   }
@@ -47,14 +43,32 @@ export async function rejectUserRequest(data) {
 
 export async function approveUserRequest(data) {
   try {
-    await ievAPI.put("/booking/request?response=approve", data);
-    return { message: `Booking ${data.BookingId} successfully approved` };
+    const response = await ievAPI.put(
+      "/booking/request?response=approve",
+      data
+    );
+    return response.data;
   } catch (err) {
     throw Error(err.response.data.error);
   }
 }
 
-// user/booker
-// send pay request
+// User response
+export async function confirmBooking(data) {
+  try {
+    const response = await ievAPI.put("/booking/request?response=pay", data);
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    throw Error(err.response.data.error);
+  }
+}
 
-// send cancel request
+export async function cancelBooking(data) {
+  try {
+    const response = await ievAPI.put("/booking/request?response=cancel", data);
+    return response.data;
+  } catch (err) {
+    throw Error(err.response.data.error);
+  }
+}

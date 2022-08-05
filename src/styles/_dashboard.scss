@@ -1,5 +1,14 @@
 @import "variables";
 
+.page-container {
+  position: relative;
+  margin: 0 1em 2em;
+}
+
+div.MuiTableContainer-root {
+  border: none;
+}
+
 .host-container {
   display: flex;
   justify-content: center;
@@ -27,4 +36,52 @@
   border: 2px solid black;
   border-radius: 5px;
   margin-bottom: 2em;
+}
+
+th.table-header {
+  color: #fff;
+  background: linear-gradient(#5da361, $mui-primary);
+  border: 1px solid $mui-primary;
+  padding: 1em 1.5em;
+}
+
+td.extra-cell {
+  vertical-align: middle;
+  font-weight: 600;
+  background: #f1f1f1;
+}
+
+tr.MuiTableRow-hover {
+  cursor: pointer;
+  &:hover {
+    background: #2e7d3225 !important;
+  }
+}
+
+// mobile & tablet text content
+div.MuiButtonGroup-root {
+  display: inline-flex;
+  justify-content: center;
+}
+div.MuiButtonGroup-root span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  width: 100%;
+}
+
+@media only screen and (max-width: $tablet-width) {
+  td.extra-cell {
+    padding: 0px;
+    & button {
+      border-radius: 4px;
+    }
+  }
+}
+
+@media only screen and (min-width: $tablet-width) {
+  td.extra-cell {
+    padding: 8px;
+  }
 }

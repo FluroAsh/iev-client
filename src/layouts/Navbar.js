@@ -23,10 +23,10 @@ export const Navbar = () => {
     <>
       <AppBar position="sticky">
         <Toolbar
+          className="nav-toolbar"
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            height: 56,
             maxWidth: 1366,
             width: "100%",
           }}

@@ -76,7 +76,7 @@ export const DesktopMenu = () => {
               {/* TODO; Update 'AT' with 'user.firstName.charAt[0] + user.lastName.charAt[0]' */}
 
               {loggedInUser ? (
-                <span style={{ fontSize: "0.8em" }}>
+                <span style={{ fontSize: "0.9em" }}>
                   {returnInitials(currentUser.firstName, currentUser.lastName)}
                 </span>
               ) : (

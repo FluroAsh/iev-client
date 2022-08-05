@@ -22,6 +22,7 @@ import { SearchLocation } from "./pages/SearchLocation";
 import { Dashboard } from "./pages/Dashboard";
 
 function App() {
+
   const initialState = {
     chargerList: [],
     bookingDates: [],
@@ -48,9 +49,16 @@ function App() {
       <StateContext.Provider value={{ store, dispatch }}>
         <Router>
           <Navbar />
-          <Container className="inner-container" disableGutters>
+          <Container
+            className="inner-container"
+            disableGutters
+            sx={{ positon: "relative" }}
+          >
             <Routes>
               <Route path="/" element={<Navigate to="chargers" replace />} />
+              <Route path="/success" element={<Navigate to="chargers" replace />} />
+              <Route path="/canceled" element={<Navigate to="/bookings/:username" replace />} />
+
               <Route path="/search" element={<SearchLocation />} />
               <Route path="/auth/signup" element={<SignupForm />} />
               <Route path="/auth/signin" element={<SigninForm />} />
