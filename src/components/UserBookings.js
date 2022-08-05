@@ -121,6 +121,7 @@ export default function UserBookings({ setError, setSuccess }) {
   };
 
   // Checks if the user/host has any active bookings (not rejected/cancelled)
+
   const activeBookings = bookings
     .map((booking) => booking.status)
     .includes("approved", "pending");
@@ -193,11 +194,12 @@ export default function UserBookings({ setError, setSuccess }) {
                         handleCancelClick={handleCancelClick}
                       />
                     )}
-                  {/* Render 'empty' cell if status = Rejected/Cancelled */}
-                  {!isTablet &&
-                    activeBookings &&
-                    (row.status === "Rejected" ||
-                      row.status === "Cancelled") && (
+                  {/* Renders empty cell for Rejected/Cancelled if there are active bookings */}
+                  {activeBookings &&
+                    !isTablet &&
+                    !isMobile &&
+                    (row.status === "Cancelled" ||
+                      row.status === "Rejected") && (
                       <TableCell
                         align="center"
                         style={{ background: "#f1f1f180" }}
@@ -213,6 +215,7 @@ export default function UserBookings({ setError, setSuccess }) {
                         loading={loading}
                         handlePayClick={handlePayClick}
                         handleCancelClick={handleCancelClick}
+                        activeBookings={activeBookings}
                       />
                     </TableRow>
                   )}
