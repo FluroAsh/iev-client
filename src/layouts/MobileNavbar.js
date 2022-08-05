@@ -14,6 +14,10 @@ export const MobileNavbar = () => {
     if (e.key === "Enter") {
       setMenuOpen((prevMenuOpen) => !prevMenuOpen);
     }
+
+    if (e.key === "Escape") {
+      setMenuOpen(false);
+    }
   };
 
   return (

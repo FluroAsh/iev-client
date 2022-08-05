@@ -95,6 +95,7 @@ export const Dashboard = () => {
   useEffect(() => {
     fetchBookings(loggedInUser, dispatch, setError, setLoading);
     fetchRequests(loggedInUser, dispatch, setError, setLoading);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedInUser]);
 
   if (loading) {
