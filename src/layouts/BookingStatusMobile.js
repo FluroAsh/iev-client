@@ -7,14 +7,9 @@ export const BookingStatusMobile = ({
   loading,
   handlePayClick,
   handleCancelClick,
-  isTablet,
 }) => {
   return (
-    <TableCell
-      className="extra-cell"
-      colSpan={isTablet ? 5 : 4}
-      sx={{ padding: 1 }}
-    >
+    <TableCell className="extra-cell" colSpan={5} sx={{ padding: 1 }}>
       {(row.status === "Approved" || row.status === "Pending") && (
         <ButtonGroup
           variant="contained"

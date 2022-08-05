@@ -30,6 +30,7 @@ export const ViewChargers = () => {
 
   useEffect(() => {
     fetchData(location, dispatch, setError, setLoading);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   if (loading) {

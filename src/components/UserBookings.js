@@ -6,13 +6,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import { Typography } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import { useNavigate } from "react-router-dom";
-import { useTheme, useMediaQuery } from "@mui/material";
-import { useGlobalState } from "../context/stateContext";
+import { useTheme, useMediaQuery, ButtonGroup } from "@mui/material";
 import { loadStripe } from "@stripe/stripe-js";
+
+import { useGlobalState } from "../context/stateContext";
+import { bookingStatusColor } from "../styles/statusColor";
+
+import { LoadingButton } from "@mui/lab";
 
 import {
   displayAUD,
@@ -32,14 +34,6 @@ const { createStripeSession } = require("../services/paymentServices");
 const stripePromise = loadStripe(
   "pk_test_51LSoj4KET1RwVGwUk9pp97jPW5HE0LOu0bpxtKqCfsgtb2WfRChRKOQTnkhfcVMfFjngjEDlBWkCgYgRVulTScwe00oRX9gUl9"
 );
-
-const statusColor = {
-  Pending: "#f57c00",
-  Rejected: "#d32f2f",
-  Cancelled: "#d32f2f",
-  Approved: "#2e7d32",
-  Paid: "#2e7d32",
-};
 
 function createData(id, city, stationName, price, date, status, chargerId) {
   return { id, city, stationName, price, date, status, chargerId };
@@ -175,7 +169,7 @@ export default function UserBookings({ setError, setSuccess }) {
                       {row.city}
                     </TableCell>
                   )}
-                  <TableCell align={!isMobile ? "left" : "right"}>
+                  <TableCell align={isTablet ? "left" : "right"}>
                     {row.stationName}
                   </TableCell>
                   {!isMobileXS && (
@@ -183,7 +177,10 @@ export default function UserBookings({ setError, setSuccess }) {
                   )}
                   <TableCell align="right">{row.date}</TableCell>
                   <TableCell
-                    sx={{ color: statusColor[row.status], fontWeight: 600 }}
+                    sx={{
+                      color: bookingStatusColor[row.status],
+                      fontWeight: 600,
+                    }}
                     align="right"
                   >
                     {row.status}
@@ -200,6 +197,7 @@ export default function UserBookings({ setError, setSuccess }) {
                     )}
                   {/* Render 'empty' cell if status = Rejected/Cancelled */}
                   {!isTablet &&
+                    activeBookings &&
                     (row.status === "Rejected" ||
                       row.status === "Cancelled") && (
                       <TableCell
@@ -217,7 +215,6 @@ export default function UserBookings({ setError, setSuccess }) {
                         loading={loading}
                         handlePayClick={handlePayClick}
                         handleCancelClick={handleCancelClick}
-                        isTablet={isTablet} // must be passed as a prop to get PAGE width
                       />
                     </TableRow>
                   )}
