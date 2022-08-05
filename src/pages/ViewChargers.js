@@ -29,7 +29,7 @@ export const ViewChargers = () => {
   };
 
   useEffect(() => {
-    fetchData(location, dispatch, setError, setLoading);
+    fetchData(location.pathname, dispatch, setError, setLoading);
   }, [location]);
 
   if (loading) {
@@ -61,8 +61,8 @@ export const ViewChargers = () => {
   );
 };
 
-async function fetchData(location, dispatch, setError, setLoading) {
-  if (location.pathname === "/chargers") {
+export async function fetchData(pathname, dispatch, setError, setLoading) {
+  if (pathname === "/chargers") {
     try {
       setLoading(true);
       const chargers = await getChargers();

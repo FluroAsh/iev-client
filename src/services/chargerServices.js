@@ -63,6 +63,7 @@ export async function getChargers() {
   try {
     const response = await ievAPI.get("/chargers");
     // TODO: Check what comes back from the data to handle messages
+    console.log("THIS IS GETCHARGERS RESPONSE", response)
     return response.data;
   } catch (err) {
     throw Error(err.response.data.error);
