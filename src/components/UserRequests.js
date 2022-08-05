@@ -186,6 +186,7 @@ export default function UserRequests({ setError, setSuccess }) {
                       loading={loading}
                       handleConfirmation={handleConfirmation}
                       handleRejection={handleRejection}
+                      isTablet={isTablet} // must be passed as a prop to get PAGE width
                     />
                   </TableRow>
                 )}

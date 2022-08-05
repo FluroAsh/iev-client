@@ -1,5 +1,5 @@
 import React from "react";
-import { TableCell, ButtonGroup, useMediaQuery, useTheme } from "@mui/material";
+import { TableCell, ButtonGroup } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { LoadingButton } from "@mui/lab";
@@ -11,15 +11,13 @@ export const RequestStatusMobile = ({
   loading,
   handleConfirmation,
   handleRejection,
+  isTablet,
 }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   return (
     <>
       <TableCell
         className="extra-cell"
-        colSpan={isMobile ? 4 : 5}
+        colSpan={isTablet ? 5 : 4}
         sx={{ padding: 1 }}
       >
         <ButtonGroup
