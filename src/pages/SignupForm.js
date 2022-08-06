@@ -45,19 +45,25 @@ export const SignupForm = () => {
       }
 
       const response = await signUp(formData);
+      sessionStorage.setItem("username", response.username);
+      sessionStorage.setItem("token", response.jwt);
+      sessionStorage.setItem("firstName", response.firstName);
+      sessionStorage.setItem("lastName", response.lastName);
       console.log(response);
-
-      sessionStorage.setItem("username", formData.user.username);
-      sessionStorage.setItem("token", formData.jwt);
 
       dispatch({
         type: "setLoggedInUser",
-        data: formData.user.username,
+        data: formData.username,
       });
 
       dispatch({
         type: "setToken",
         data: formData.jwt,
+      });
+
+      dispatch({
+        type: "setUserDetails",
+        data: { firstName: response.firstName, lastName: response.lastName },
       });
 
       setFormData(initialFormData);
