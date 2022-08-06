@@ -6,13 +6,13 @@ import {
   Routes,
 } from "react-router-dom";
 import { Container } from "@mui/material";
+
 import { reducer } from "./utils/reducer";
 import { StateContext } from "./context/stateContext";
 import "./styles/main.scss";
-
 import { Navbar } from "./layouts/Navbar.js";
-import SignupForm from "./pages/SignupForm";
-import SigninForm from "./pages/SigninForm";
+import { SignupForm } from "./pages/SignupForm";
+import { SigninForm } from "./pages/SigninForm";
 import { ChargerForm } from "./components/ChargerForm";
 import { NotFound } from "./pages/NotFound";
 import { ViewCharger } from "./pages/ViewCharger";
@@ -22,7 +22,6 @@ import { SearchLocation } from "./pages/SearchLocation";
 import { Dashboard } from "./pages/Dashboard";
 
 function App() {
-
   const initialState = {
     chargerList: [],
     bookingDates: [],
@@ -38,7 +37,9 @@ function App() {
     },
     token: sessionStorage.getItem("token") || null,
     location: {},
+    // TODO: handle these in the global context
     errorMessage: "",
+    // successMessage: "",
   };
 
   const [store, dispatch] = useReducer(reducer, initialState);
@@ -56,8 +57,14 @@ function App() {
           >
             <Routes>
               <Route path="/" element={<Navigate to="chargers" replace />} />
-              <Route path="/success" element={<Navigate to="chargers" replace />} />
-              <Route path="/canceled" element={<Navigate to="/bookings/:username" replace />} />
+              <Route
+                path="/success"
+                element={<Navigate to="chargers" replace />}
+              />
+              <Route
+                path="/canceled"
+                element={<Navigate to="/bookings/:username" replace />}
+              />
 
               <Route path="/search" element={<SearchLocation />} />
               <Route path="/auth/signup" element={<SignupForm />} />
@@ -90,7 +97,6 @@ function App() {
                     )
                   }
                 />
-                {/* <Route path="user/:username" element={<Chargers />} /> */}
               </Route>
               <Route path="charger">
                 <Route path=":chargerId" element={<ViewCharger />} />

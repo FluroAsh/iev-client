@@ -3,11 +3,10 @@ import {
   InputLabel,
   TextField,
   Typography,
-  Container,
   Box,
   Alert,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
@@ -20,17 +19,6 @@ export const ChargerForm = ({ editFormData }) => {
   const navigate = useNavigate();
   const { loggedInUser, errorMessage } = store;
 
-  console.log("THIS IS STORE", store);
-
-  useEffect(
-    () => () =>
-      dispatch({
-        type: "setErrorMessage",
-        data: "",
-      }),
-    [dispatch]
-  );
-
   let initialFormData;
 
   if (editFormData) {
@@ -38,13 +26,9 @@ export const ChargerForm = ({ editFormData }) => {
       name: editFormData.name,
       instructions: editFormData.instructions,
       price: editFormData.price,
-
       // TODO: handle status(handle submit)
       status: editFormData.status,
       plugName: editFormData.plugName,
-      // TODO: need to handle if user not logged in
-      // if not logged in, they shouldnt see the form but need to handle
-      // incase they use direct link
       username: loggedInUser,
     };
   } else {
@@ -52,20 +36,14 @@ export const ChargerForm = ({ editFormData }) => {
       name: "",
       instructions: "",
       price: "",
-
       // TODO: handle status(handle submit)
       status: "",
       plugName: "",
-      // TODO: need to handle if user not logged in
-      // if not logged in, they shouldnt see the form but need to handle
-      // incase they use direct link
       username: loggedInUser,
     };
   }
 
   const [formData, setFormData] = useState(initialFormData);
-
-  console.log("THIS IS EDIT FORM DATA", editFormData);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -96,7 +74,6 @@ export const ChargerForm = ({ editFormData }) => {
   }
 
   const handleFile = (file) => {
-    console.log("THIS IS FILE DETAIL", file);
     setFormData({
       ...formData,
       image: file,
@@ -113,8 +90,6 @@ export const ChargerForm = ({ editFormData }) => {
   const handleCancel = (e) => {
     navigate("/chargers/mychargers");
   };
-
-  console.log("FORM DATA ---", formData);
 
   return (
     <AnimatePresence>
@@ -240,8 +215,6 @@ export const ChargerForm = ({ editFormData }) => {
           </Box>
         </form>
       </motion.div>
-
-      {/* TODO: for updating, handle 'disabled' status */}
     </AnimatePresence>
   );
 };

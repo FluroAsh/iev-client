@@ -40,6 +40,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   width: 100%;
   min-height: calc(100vh - 56px);
   form {
@@ -60,6 +61,10 @@ footer {
     text-align: left;
     margin-top: 10px;
   }
+}
+
+h4.form-heading {
+  margin: 0.2em 0;
 }
 
 /* Charger Detail Classes */
@@ -89,12 +94,13 @@ div.MuiAlert-root {
   width: 100%;
 }
 div.alert-error {
-  position: relative;
+  position: sticky;
   top: 0;
   width: 100%;
 }
 div.alert-success {
-  position: relative;
-  top: 0;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 56px;
   width: 100%;
 }

@@ -7,7 +7,7 @@ import { MemoryRouter } from "react-router-dom";
 
 import { reducer } from "../utils/reducer";
 
-const { fetchData, ViewChargers } = require("./ViewChargers");
+const { fetchData, ViewChargers } = require("../pages/ViewChargers");
 
 // chargerList when at location.pathname / or /chargers (getChargers API called)
 const allChargers = [

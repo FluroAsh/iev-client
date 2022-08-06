@@ -1,5 +1,5 @@
 const ievAPI = require("../config/api");
-const { getUserBookings, getUserBookingRequests, createUserBookingRequest, rejectUserRequest, approveUserRequest, confirmBooking, cancelBooking} = require("./bookingServices");
+const { getUserBookings, getUserBookingRequests, createUserBookingRequest, rejectUserRequest, approveUserRequest, confirmBooking, cancelBooking} = require("../services/bookingServices");
 
 // jest.mock("../config/api", () => ({
 //   get: jest.fn(),

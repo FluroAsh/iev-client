@@ -8,8 +8,9 @@ import {
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { displayAUD } from "../utils/helpers";
 import { motion } from "framer-motion";
+
+import { displayAUD } from "../utils/helpers";
 
 export const Charger = ({ charger, item }) => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export const Charger = ({ charger, item }) => {
             component="img"
             image={charger.imageUrl}
             alt={charger.name}
-            style={{ height: "400px"}}
+            style={{ height: "400px" }}
           />
           <div className="card__plug-pill">
             <span>{charger.Plug.plugName}</span>
@@ -40,7 +41,7 @@ export const Charger = ({ charger, item }) => {
             </Typography>
 
             <Typography variant="h6" color="text.primary">
-              {Object.values(charger.Address.city)}
+              {charger.Address.city}
             </Typography>
 
             <Typography variant="body1" color="text.primary">
@@ -58,7 +59,6 @@ export const Charger = ({ charger, item }) => {
         >
           View
         </Button>
-        {/* <ButtonGroup key={charger.id} charger={charger} /> */}
       </CardActions>
     </Card>
   );

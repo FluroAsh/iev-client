@@ -5,23 +5,24 @@ import {
 } from "@react-google-maps/api";
 
 export const GoogleMap = ({ coordinates }) => {
-  // defines styles for the map container
+  // Style definition for GoogleMap component
   const containerStyle = {
     width: "100%",
     height: "100%",
   };
 
+  // Load the Google Map JavaScript given .env Google API KEY
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
   });
 
-  // coordinates to center the map on
+  // Center map on given coordinates
   const center = {
     lat: coordinates.lat,
     lng: coordinates.lng,
   };
 
-  // disable default UI for minimal style
+  // Disable default UI for minimal styling
   const mapOptions = {
     disableDefaultUI: true,
   };
