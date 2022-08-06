@@ -82,7 +82,6 @@ export const SignupForm = () => {
         {error && <AlertError message={error.message} setError={setError} />}
         {step === 1 ? (
           <UserDetails
-            handleSubmit={handleSubmit}
             handleFormData={handleFormData}
             formData={formData}
             handleNext={handleNext}
@@ -100,12 +99,7 @@ export const SignupForm = () => {
   );
 };
 
-const UserDetails = ({
-  handleSubmit,
-  handleFormData,
-  formData,
-  handleNext,
-}) => {
+const UserDetails = ({ handleFormData, formData, handleNext }) => {
   return (
     <form
       onSubmit={(e) => {
