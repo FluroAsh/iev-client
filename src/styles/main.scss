@@ -1,0 +1,105 @@
+@import "mixins";
+@import "variables";
+@import "css-loader";
+@import "charger-card";
+@import "nav";
+@import "dashboard";
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+
+header {
+  z-index: 999;
+}
+
+footer {
+  color: #000;
+}
+
+.inner-container {
+  min-height: calc(100vh - 56px);
+}
+
+.form-container {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  min-height: calc(100vh - 56px);
+  form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    min-width: 400px;
+    padding: 15px;
+    margin: 1em;
+    border-radius: 5px;
+    border: 2px solid #c4c4c4;
+    box-shadow: $box-shadow-mui;
+  }
+  button {
+    margin-top: 1em;
+  }
+  label {
+    text-align: left;
+    margin-top: 10px;
+  }
+}
+
+h4.form-heading {
+  margin: 0.2em 0;
+}
+
+/* Charger Detail Classes */
+.flex-horizon {
+  flex-direction: row;
+}
+
+.flex-vert {
+  flex-direction: column;
+}
+
+.detailImage {
+  max-width: 430px;
+  max-height: 500px;
+}
+
+.errorMessage {
+  background-color: bisque;
+  margin: auto;
+  padding: 1em;
+  max-width: 450px;
+}
+
+// Alerts
+div.MuiAlert-root {
+  margin: 0;
+  width: 100%;
+}
+div.alert-error {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+div.alert-success {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}

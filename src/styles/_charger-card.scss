@@ -1,0 +1,96 @@
+.search {
+  display: flex;
+  justify-content: center;
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 50%;
+    h5 {
+      padding: 15px 0px 0;
+    }
+  }
+  &__map {
+    min-width: 50%;
+    height: calc(100vh - 56px);
+    position: sticky;
+    top: 56px;
+    border-left: 2px solid #e9e9e5;
+    border-right: 2px solid #e9e9e5;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
+      rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+      rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+  }
+}
+.map-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  width: 100%;
+  height: 100%;
+}
+
+.chargers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-rows: auto;
+  justify-content: center;
+  align-content: center;
+
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+}
+div.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  justify-self: center;
+  background: #d8d8d190;
+  border: 1px solid #c4c4c4;
+  border-radius: 15px;
+  box-shadow: $box-shadow-mui;
+  max-width: 350px;
+  button {
+    border-radius: 10px;
+  }
+  &__img-plug {
+    position: relative;
+  }
+  &__plug-pill {
+    display: inline-flex;
+    align-items: center;
+    position: absolute;
+    height: 2.2em;
+    min-width: 7.5em;
+    top: 0;
+    left: 0;
+    color: #fff;
+    border-radius: 6px;
+    border-top-left-radius: 10px;
+    background: linear-gradient(#5da361, $mui-primary);
+    border: 1px solid $mui-primary;
+    padding: 1em 1.5em;
+    margin: 0.6em;
+    span {
+      width: 100%;
+      font-size: 1.2em;
+    }
+  }
+}
+
+@media only screen and (max-width: $tablet-width) {
+  .search {
+    width: 100%;
+    &__cards {
+      width: 100%;
+    }
+  }
+
+  .card {
+    max-width: 350px;
+  }
+}
