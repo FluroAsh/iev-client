@@ -30,7 +30,7 @@ export const ViewChargers = () => {
 
   useEffect(() => {
     fetchData(location.pathname, dispatch, setError, setLoading);
-  }, [location]);
+  }, [location, dispatch]);
 
   if (loading) {
     return <CssLoader />;
@@ -77,7 +77,7 @@ export async function fetchData(pathname, dispatch, setError, setLoading) {
     }
   }
 
-  if (location.pathname === "/chargers/mychargers") {
+  if (pathname === "/chargers/mychargers") {
     try {
       setLoading(true);
       const myChargers = await getMyChargers();

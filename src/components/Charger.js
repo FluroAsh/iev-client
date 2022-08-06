@@ -35,7 +35,7 @@ export const Charger = ({ charger, item }) => {
 
         <CardContent>
           <div>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography gutterBottom variant="h5">
               {charger.name}
             </Typography>
 

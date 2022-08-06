@@ -1,13 +1,15 @@
-// const { getChargers, getMyChargers } = require("../services/chargerServices");
 
-import { render, screen } from "@testing-library/react";
+import { useReducer } from "react";
+import { render } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import { Navbar } from "../layouts/Navbar";
+import { StateContext } from "../context/stateContext";
+import { MemoryRouter } from "react-router-dom";
+
+import { reducer } from "../utils/reducer";
 
 const { fetchData, ViewChargers } = require("./ViewChargers");
-const { App } = require("../");
 
-// const {ViewChargers} = require("../layouts/Navbar")
+// chargerList when at location.pathname / or /chargers (getChargers API called)
 const allChargers = [
   {
     id: 1,
@@ -185,6 +187,7 @@ const allChargers = [
   },
 ];
 
+// chargerList when at location.pathname /chargers/mychargers level (getMyChargers API called)
 const myChargers = [
   {
     id: 3,
@@ -303,52 +306,54 @@ const myChargers = [
   },
 ];
 
-jest.mock("../services/chargerServices", async () => {
-  const getChargers = jest.fn().mockResolvedValue({
-    status: 200,
-    json: jest.fn().mockResolvedValue(allChargers),
-  });
-  const getMyChargers = jest.fn().mockResolvedValue({
-    status: 200,
-    json: jest.fn().mockResolvedValue(myChargers),
-  });
-  return {getChargers, getMyChargers}
-});
+jest.mock("../services/chargerServices", () => ({
+  // Mock data values of chargerList at location / or /chargers
+  getChargers: async () => allChargers,
+  // Mock data values of chargerList at location / or /chargers/mychargers
+  getMyChargers: async () => myChargers,
+}));
 
-// chargerServices.getMyChargers.mockResolvedValue(myChargers);
+// Mock the App.js component
+const TestApp = () => {
+  const initialState = {
+    location: {
+      pathname: "/chargers",
+    },
+    chargerList: [],
+  };
 
-describe("Charger component", () => {
-  // afterEach(async () => {
-  //   getChargers.mockRestore();
-  // });
+  const [store, dispatch] = useReducer(reducer, initialState);
 
-  it("renders all charger cards at root route", async () => {
-    // mock the fetch results to be successful
+  return (
+    <StateContext.Provider value={{ store, dispatch }}>
+      <MemoryRouter>
+        <ViewChargers />
+      </MemoryRouter>
+    </StateContext.Provider>
+  );
+};
 
-    const dispatch = jest.fn();
-    const setError = jest.fn();
-    const setLoading = jest.fn();
+describe("ViewChargers component", () => {
 
-    fetchData("/chargers", dispatch, setError, setLoading);
+  it("renders chargers details", async () => {
 
-    // expect(dispatch).toHaveBeenCalled();
-    // expect(dispatch).toHaveBeenCalledWith({
-    //   type: "setChargerList",
-    //   data: chargers,
-    // })
+    // Use the asynchronous version of act to render resolved await
+    const result = await act(async () => render(<TestApp />));
 
-    // jest.spyOn(global, ).mockResolvedValue({
-    //   status: 200,
-    //   json: jest.fn().mockResolvedValue(allChargers),
-    // });
-
-    // Use the asynchronous version of act to apply resolved promises
-    const result = await act(async () => render(<ViewChargers />));
-    const names = result.container.querySelectorAll("h6");
+    const names = result.container.querySelectorAll("h5");
+    const city = result.container.querySelectorAll("h6");
     const prices = result.container.querySelectorAll("p");
 
+    // renders the correct amount of returned chargers in chargerList
+    expect(names).toHaveLength(5);
+
+    // render the correct details at the correct positions
     expect(names[0].textContent).toBe("Super Charger Test 1");
     expect(names[1].textContent).toBe("Ash's Jest Charger 1");
+
+    expect(city[0].textContent).toBe("Sydney");
+    expect(city[1].textContent).toBe("Melbourne");
+
     expect(prices[0].textContent).toBe("A$30.00");
     expect(prices[1].textContent).toBe("A$25.00");
   });

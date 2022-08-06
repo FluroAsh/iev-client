@@ -17,7 +17,7 @@ export const Navbar = () => {
       type: "setLocation",
       data: location,
     });
-  }, [location]);
+  }, [location, dispatch]);
 
   return (
     <>
