@@ -13,87 +13,24 @@ export const SignupForm = () => {
   const navigate = useNavigate();
 
   const initialFormData = {
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-    address: "",
-    city: "",
-    postcode: "",
-    state: "",
+    user: {
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+    },
+    address: {
+      address: "",
+      city: "",
+      postcode: "",
+      state: "",
+    },
   };
+
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState();
-
-  const UserDetails = () => {
-    return (
-      <form onSubmit={handleSubmit}>
-        <Typography className="form-heading" variant="h4">
-          Sign Up
-        </Typography>
-
-        <InputLabel>First Name:</InputLabel>
-        <TextField
-          type="text"
-          name="firstName"
-          id="firstName"
-          value={formData.firstName}
-          onChange={handleFormData}
-        />
-
-        <InputLabel>Last Name:</InputLabel>
-        <TextField
-          type="text"
-          name="lastName"
-          id="lastName"
-          value={formData.lastName}
-          onChange={handleFormData}
-        />
-
-        <InputLabel>Username:</InputLabel>
-        <TextField
-          type="text"
-          name="username"
-          id="username"
-          value={formData.username}
-          onChange={handleFormData}
-        />
-
-        <InputLabel>Email:</InputLabel>
-        <TextField
-          type="text"
-          name="email"
-          id="email"
-          value={formData.email}
-          onChange={handleFormData}
-        />
-
-        <InputLabel htmlFor="password">Password:</InputLabel>
-        <TextField
-          type="password"
-          name="password"
-          id="password"
-          value={formData.password}
-          onChange={handleFormData}
-        />
-
-        <InputLabel htmlFor="password">Password confirmation:</InputLabel>
-        <TextField
-          type="password"
-          name="password_confirmation"
-          id="password_confirmation"
-          value={formData.password_confirmation}
-          onChange={handleFormData}
-        />
-
-        <Button variant="outlined" onClick={handleNext}>
-          Next
-        </Button>
-      </form>
-    );
-  };
 
   const handleNext = () => {
     setStep((prevStep) => prevStep + 1);
@@ -137,11 +74,7 @@ export const SignupForm = () => {
       ...formData,
       [e.target.id]: e.target.value,
     });
-
-    console.log(formData);
   };
-
-  console.log("rendered");
 
   return (
     <AnimatePresence>
@@ -151,9 +84,95 @@ export const SignupForm = () => {
         animate={{ opacity: "100%" }}
       >
         {error && <AlertError message={error.message} setError={setError} />}
-        {step === 1 ? <UserDetails /> : <UserAddress />}
+        {step === 1 ? (
+          <UserDetails
+            handleFormData={handleFormData}
+            formData={formData}
+            handleNext={handleNext}
+          />
+        ) : (
+          <UserAddress
+            handleSubmit={handleSubmit}
+            handleFormData={handleFormData}
+            formData={formData}
+            handlePrev={handlePrev}
+          />
+        )}
       </motion.div>
     </AnimatePresence>
+  );
+};
+
+const UserDetails = ({ handleFormData, formData, handleNext }) => {
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleNext();
+      }}
+    >
+      <Typography className="form-heading" variant="h4">
+        Sign Up
+      </Typography>
+
+      <InputLabel>First Name:</InputLabel>
+      <TextField
+        type="text"
+        name="firstName"
+        id="firstName"
+        value={formData.firstName}
+        onChange={handleFormData}
+      />
+
+      <InputLabel>Last Name:</InputLabel>
+      <TextField
+        type="text"
+        name="lastName"
+        id="lastName"
+        value={formData.lastName}
+        onChange={handleFormData}
+      />
+
+      <InputLabel>Username:</InputLabel>
+      <TextField
+        type="text"
+        name="username"
+        id="username"
+        value={formData.username}
+        onChange={handleFormData}
+      />
+
+      <InputLabel>Email:</InputLabel>
+      <TextField
+        type="text"
+        name="email"
+        id="email"
+        value={formData.email}
+        onChange={handleFormData}
+      />
+
+      <InputLabel htmlFor="password">Password:</InputLabel>
+      <TextField
+        type="password"
+        name="password"
+        id="password"
+        value={formData.password}
+        onChange={handleFormData}
+      />
+
+      <InputLabel htmlFor="password">Password confirmation:</InputLabel>
+      <TextField
+        type="password"
+        name="password_confirmation"
+        id="password_confirmation"
+        value={formData.password_confirmation}
+        onChange={handleFormData}
+      />
+
+      <Button variant="outlined" type="submit" onSubmit={handleNext}>
+        Next
+      </Button>
+    </form>
   );
 };
 

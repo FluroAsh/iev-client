@@ -99,7 +99,6 @@ export async function fetchData(pathname, dispatch, setError, setLoading) {
     try {
       setLoading(true);
       const myChargers = await getMyChargers();
-      console.log("my chargers", myChargers);
       dispatch({
         type: "setChargerList",
         data: myChargers,
