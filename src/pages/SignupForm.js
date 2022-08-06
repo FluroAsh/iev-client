@@ -13,20 +13,16 @@ export const SignupForm = () => {
   const navigate = useNavigate();
 
   const initialFormData = {
-    user: {
-      firstName: "",
-      lastName: "",
-      username: "",
-      email: "",
-      password: "",
-      password_confirmation: "",
-    },
-    userAddress: {
-      address: "",
-      city: "",
-      postcode: "",
-      state: "",
-    },
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+    address: "",
+    city: "",
+    postcode: "",
+    state: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -48,13 +44,15 @@ export const SignupForm = () => {
         throw Error("Fields cannot be empty");
       }
 
-      await signUp(formData);
-      sessionStorage.setItem("username", formData.username);
+      const response = await signUp(formData);
+      console.log(response);
+
+      sessionStorage.setItem("username", formData.user.username);
       sessionStorage.setItem("token", formData.jwt);
 
       dispatch({
         type: "setLoggedInUser",
-        data: formData.username,
+        data: formData.user.username,
       });
 
       dispatch({
