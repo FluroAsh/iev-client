@@ -21,6 +21,7 @@ export async function fetchRequests(username, dispatch, setError, setLoading) {
     const requests = await getUserBookingRequests(username);
     const response = await checkHost();
 
+    // Check backend response for valid message
     if (response.message === "User is a host") {
       dispatch({
         type: "setHostStatus",
@@ -95,7 +96,7 @@ export const Dashboard = () => {
   useEffect(() => {
     fetchBookings(loggedInUser, dispatch, setError, setLoading);
     fetchRequests(loggedInUser, dispatch, setError, setLoading);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedInUser]);
 
   if (loading) {

@@ -3,6 +3,7 @@ import "react-multi-date-picker/styles/colors/green.css";
 import { Calendar } from "react-multi-date-picker";
 import { useGlobalState } from "../context/stateContext";
 
+// FUTURE FEATURE: Implement Unavailabilities
 export function ChargerCalendar({ dates, setDates }) {
   const { store } = useGlobalState();
   const { bookingDates } = store;
@@ -11,9 +12,6 @@ export function ChargerCalendar({ dates, setDates }) {
     setDates(...bookingDates, date);
   };
 
-  console.log(dates);
-
-  // console.log("DATE VALUES", bookingDates);
   return (
     <Calendar
       className="green"

@@ -26,7 +26,7 @@ export const Charger = ({ charger, item }) => {
             component="img"
             image={charger.imageUrl}
             alt={charger.name}
-            style={{ height: "400px"}}
+            style={{ height: "400px" }}
           />
           <div className="card__plug-pill">
             <span>{charger.Plug.plugName}</span>
@@ -40,7 +40,7 @@ export const Charger = ({ charger, item }) => {
             </Typography>
 
             <Typography variant="h6" color="text.primary">
-              {Object.values(charger.Address.city)}
+              {charger.Address.city}
             </Typography>
 
             <Typography variant="body1" color="text.primary">

@@ -1,5 +1,5 @@
 const ievAPI = require("../config/api");
-const { getChargers, getCharger, getMyChargers, addCharger,updateCharger, deleteCharger, updateChargerStatus } = require("./chargerServices");
+const { getChargers, getCharger, getMyChargers, addCharger,updateCharger, deleteCharger, updateChargerStatus } = require("../services/chargerServices");
 
 jest.mock("../config/api", () => ({
   get: jest.fn(),
