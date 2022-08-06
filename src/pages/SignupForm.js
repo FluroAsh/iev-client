@@ -21,7 +21,7 @@ export const SignupForm = () => {
       password: "",
       password_confirmation: "",
     },
-    address: {
+    userAddress: {
       address: "",
       city: "",
       postcode: "",
