@@ -13,16 +13,20 @@ export const SignupForm = () => {
   const navigate = useNavigate();
 
   const initialFormData = {
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-    address: "",
-    city: "",
-    postcode: "",
-    state: "",
+    user: {
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+    },
+    address: {
+      address: "",
+      city: "",
+      postcode: "",
+      state: "",
+    },
   };
 
   const [formData, setFormData] = useState(initialFormData);
