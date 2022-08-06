@@ -29,9 +29,8 @@ export const ViewChargers = () => {
   };
 
   useEffect(() => {
-    fetchData(location, dispatch, setError, setLoading);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+    fetchData(location.pathname, dispatch, setError, setLoading);
+  }, [location, dispatch]);
 
   if (loading) {
     return <CssLoader />;
@@ -60,8 +59,8 @@ export const ViewChargers = () => {
   );
 };
 
-async function fetchData(location, dispatch, setError, setLoading) {
-  if (location.pathname === "/chargers") {
+export async function fetchData(pathname, dispatch, setError, setLoading) {
+  if (pathname === "/chargers") {
     try {
       setLoading(true);
       const chargers = await getChargers();
@@ -77,7 +76,7 @@ async function fetchData(location, dispatch, setError, setLoading) {
     }
   }
 
-  if (location.pathname === "/chargers/mychargers") {
+  if (pathname === "/chargers/mychargers") {
     try {
       setLoading(true);
       const myChargers = await getMyChargers();

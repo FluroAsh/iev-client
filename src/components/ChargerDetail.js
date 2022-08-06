@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGlobalState } from "../context/stateContext";
 import { ChargerCalendar } from "./ChargerCalendar";
 import { useEffect, useState } from "react";
@@ -147,13 +147,8 @@ export const ChargerDetail = ({ charger }) => {
             alt={charger.name}
           />
 
-          <Typography gutterBottom variant="h5" component="div">
-            <Link
-              to={`/charger/${charger.id}`}
-              style={{ textDecoration: "none" }}
-            >
-              {charger.name}
-            </Link>
+          <Typography gutterBottom variant="h5">
+            {charger.name}
           </Typography>
           <Typography variant="h6">{displayAUD(charger.price)}</Typography>
           <Typography variant="h6">{charger.Address.city}</Typography>
@@ -222,7 +217,6 @@ export const ChargerDetail = ({ charger }) => {
 };
 
 export default function DeleteButton({ charger, setError }) {
-  const { dispatch } = useGlobalState();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
