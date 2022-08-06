@@ -123,78 +123,79 @@ export default function UserRequests({ setError, setSuccess }) {
 
   return (
     // TODO: Add pagination for Tablet -> Desktop Screens ⚠️
-    <>
-      <TableContainer sx={{ mb: 2 }} component={Paper}>
-        <Table sx={{ minWidth: 350 }} aria-label="requests table">
-          <TableHead>
-            <TableRow>
-              <TableCell className="table-header" sx={{ p: 2 }} colSpan={7}>
-                <Typography variant="h5">Requests</Typography>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              {!isMobile && <TableCell align="right">Vehicle</TableCell>}
-              {!isMobileXS && <TableCell align="right">Price</TableCell>}
-              <TableCell align="right">Booking Date</TableCell>
-              {!isTablet && <TableCell align="right">Sent Date</TableCell>}
-              <TableCell align="right">Station Name</TableCell>
-              {!isTablet && <TableCell></TableCell>}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <React.Fragment key={createUUID()}>
-                <TableRow
-                  key={createUUID()}
-                  onClick={() => handleRowClick(row.chargerId)}
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                    textDecoration: "none",
-                  }}
-                  hover
-                >
-                  <TableCell component="th">{row.name}</TableCell>
+    <TableContainer sx={{ mb: 2 }} component={Paper}>
+      <Table sx={{ minWidth: 350 }} aria-label="requests table">
+        <TableHead>
+          <TableRow>
+            <TableCell className="table-header" sx={{ p: 2 }} colSpan={7}>
+              <Typography variant="h5">Requests</Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            {/* Responsive headings dependent on MUI breakpoint(s) */}
+            <TableCell>Name</TableCell>
+            {!isMobile && <TableCell align="right">Vehicle</TableCell>}
+            {!isMobileXS && <TableCell align="right">Price</TableCell>}
+            <TableCell align="right">Booking Date</TableCell>
+            {!isTablet && <TableCell align="right">Sent Date</TableCell>}
+            <TableCell align="right">Station Name</TableCell>
+            {!isTablet && <TableCell></TableCell>}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {/* Renders each row with object data from rows array */}
+          {rows.map((row) => (
+            // Key for fragment required as it's at the top level of the map function
+            <React.Fragment key={createUUID()}>
+              <TableRow
+                key={createUUID()}
+                onClick={() => handleRowClick(row.chargerId)}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  textDecoration: "none",
+                }}
+                hover
+              >
+                <TableCell component="th">{row.name}</TableCell>
 
-                  {!isMobile && (
-                    <TableCell align="right">{row.vehicle}</TableCell>
-                  )}
-
-                  {!isMobileXS && (
-                    <TableCell align="right">{row.price}</TableCell>
-                  )}
-                  <TableCell align="right">{row.bookingDate}</TableCell>
-                  {!isTablet && (
-                    <TableCell align="right">{row.sentDate}</TableCell>
-                  )}
-                  <TableCell align="right">{row.stationName}</TableCell>
-                  {/* Laptop/Desktop View */}
-                  {!isTablet && (
-                    <RequestStatusLarge
-                      row={row}
-                      loading={loading}
-                      handleConfirmation={handleConfirmation}
-                      handleRejection={handleRejection}
-                    />
-                  )}
-                </TableRow>
-                {/* Mobile/Tablet View - 'Wrapped' 2nd Row */}
-                {isTablet && (
-                  <TableRow key={createUUID()}>
-                    <RequestStatusMobile
-                      row={row}
-                      loading={loading}
-                      handleConfirmation={handleConfirmation}
-                      handleRejection={handleRejection}
-                      isTablet={isTablet} // must be passed as a prop to get PAGE width
-                    />
-                  </TableRow>
+                {!isMobile && (
+                  <TableCell align="right">{row.vehicle}</TableCell>
                 )}
-              </React.Fragment>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+
+                {!isMobileXS && (
+                  <TableCell align="right">{row.price}</TableCell>
+                )}
+                <TableCell align="right">{row.bookingDate}</TableCell>
+                {!isTablet && (
+                  <TableCell align="right">{row.sentDate}</TableCell>
+                )}
+                <TableCell align="right">{row.stationName}</TableCell>
+                {/* Laptop/Desktop View */}
+                {!isTablet && (
+                  <RequestStatusLarge
+                    row={row}
+                    loading={loading}
+                    handleConfirmation={handleConfirmation}
+                    handleRejection={handleRejection}
+                  />
+                )}
+              </TableRow>
+              {/* Mobile/Tablet View -> 'Wrapped' 2nd Row */}
+              {isTablet && (
+                <TableRow key={createUUID()}>
+                  <RequestStatusMobile
+                    row={row}
+                    loading={loading}
+                    handleConfirmation={handleConfirmation}
+                    handleRejection={handleRejection}
+                    isTablet={isTablet} // must be passed as a prop to get PAGE width
+                  />
+                </TableRow>
+              )}
+            </React.Fragment>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

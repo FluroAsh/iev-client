@@ -5,15 +5,16 @@ import { ChargerDetail } from "../components/ChargerDetail";
 import { CssLoader } from "../components/CssLoader";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
+import { AlertError } from "../components/AlertError";
 
 export const ViewCharger = () => {
   const { chargerId } = useParams();
   const [charger, setCharger] = useState();
   const [loading, setLoading] = useState(true);
-  // TODO: Add error state
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    getChargerById(chargerId, setLoading).then((data) => {
+    getChargerById(chargerId, setLoading, setError).then((data) => {
       setCharger(data);
     });
   }, [chargerId]);
@@ -24,21 +25,20 @@ export const ViewCharger = () => {
 
   return (
     <>
-      {charger !== undefined ? (
-        <>
-          <AnimatePresence>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <ChargerDetail key={charger.id} charger={charger} />
-            </motion.div>
-          </AnimatePresence>
-        </>
+      {error && <AlertError message={error.message} setError={setError} />}
+      {Object.keys(charger).length !== 0 ? (
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <ChargerDetail key={charger.id} charger={charger} />
+          </motion.div>
+        </AnimatePresence>
       ) : (
-        <div>
-          <p>charger not found</p>
+        <div className="alert-error">
+          <p>Charger not found</p>
           <Link to="/chargers">Go back to the main page</Link>
         </div>
       )}
@@ -46,13 +46,13 @@ export const ViewCharger = () => {
   );
 };
 
-async function getChargerById(chargerId, setLoading) {
+async function getChargerById(chargerId, setLoading, setError) {
   try {
     setLoading(true);
     const chargerDetails = await getCharger(chargerId);
     return chargerDetails;
   } catch (err) {
-    console.log(err.message);
+    setError(err);
   } finally {
     setLoading(false);
   }

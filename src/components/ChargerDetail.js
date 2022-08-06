@@ -173,7 +173,6 @@ export const ChargerDetail = ({ charger }) => {
                 />
                 <Box sx={{ display: "inline-flex", flexDirection: "row" }}>
                   <Button
-                    // type="submit"
                     value="active"
                     variant="contained"
                     onClick={handleEdit}
@@ -229,7 +228,7 @@ export default function DeleteButton({ charger, setError }) {
   // TODO: to navigate to chargers/mychargers page but change the chargerlist in store
 
   return (
-    <div>
+  <div>
       <Button variant="outlined" onClick={() => setOpen(true)}>
         Delete
       </Button>

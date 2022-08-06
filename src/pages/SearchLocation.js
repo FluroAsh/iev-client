@@ -7,23 +7,20 @@ import { useGlobalState } from "../context/stateContext";
 import { GoogleMap } from "../components/GoogleMap";
 import { ViewChargers } from "./ViewChargers";
 import { AlertError } from "../components/AlertError";
-const pluralize = require("pluralize");
-
+import pluralize from "pluralize";
 
 export const SearchLocation = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
-  const { dispatch, store } = useGlobalState();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
-  const [coordinates, setCoordinates] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
+  const [coordinates, setCoordinates] = useState({}); // set coordinates for GoogleMap component
+  const { dispatch, store } = useGlobalState();
   const { location, chargerList } = store;
 
+  // Style definition override for AlertError
   const styles = {
     errorAlert: {
-      position: "absolute",
-      width: "100%",
       zIndex: 999,
       borderRadius: {
         borderTopLeftRadius: 0,
@@ -32,7 +29,7 @@ export const SearchLocation = () => {
     },
   };
 
-  // Load initial data for charger locations
+  // Load initial data for charger locations & parse the query in URL
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const queryLocation = searchParams.get("location");
@@ -44,8 +41,7 @@ export const SearchLocation = () => {
       setError,
       dispatch
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+  }, [location, dispatch]);
 
   if (loading) {
     return <CssLoader />;
@@ -53,6 +49,7 @@ export const SearchLocation = () => {
 
   return (
     <>
+      {/* Full width (100%) AlertError on mobile devices*/}
       {isMobile && error && (
         <AlertError message={error.message} setError={setError} />
       )}
@@ -74,6 +71,7 @@ export const SearchLocation = () => {
               background: "#e0e0e0",
             }}
           >
+            {/* Displays AlertError ontop of GoogleMap component (large screens) */}
             {error && (
               <AlertError
                 message={error.message}
@@ -81,6 +79,7 @@ export const SearchLocation = () => {
                 styles={styles}
               />
             )}
+            {/* Pass results of geocoding as a prop */}
             <GoogleMap coordinates={coordinates} />
           </div>
         )}
@@ -99,11 +98,13 @@ export async function populateSearch(
   try {
     setLoading(true);
     setError(false); // clear previous search errors
+    // If no queryLocation provided, pass an empty string (response will be all chargers)
     const chargers = await searchLocation(queryLocation || "");
     dispatch({
       type: "setChargerList",
       data: chargers,
     });
+    // destructure lat/lng from API as a result of passing in the first chargers city
     const { lat, lng } = await geocodeLocation(chargers[0].Address.city);
     setCoordinates({ lat, lng });
   } catch (err) {

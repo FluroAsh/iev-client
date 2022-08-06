@@ -6,12 +6,15 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { AlertError } from "../components/AlertError";
 import { CssLoader } from "../components/CssLoader";
+import { Link } from "react-router-dom";
 
 export const ViewChargers = () => {
   const { store, dispatch } = useGlobalState();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { location, chargerList } = store;
+
+  console.log("chargerList", chargerList);
 
   // Framer motion animation definition objects
   const container = {
@@ -40,7 +43,7 @@ export const ViewChargers = () => {
   return (
     <>
       {error && <AlertError message={error.message} setError={setError} />}
-      {chargerList.length > 0 && (
+      {chargerList.length > 0 ? (
         <>
           <AnimatePresence>
             <motion.div
@@ -55,6 +58,21 @@ export const ViewChargers = () => {
             </motion.div>
           </AnimatePresence>
         </>
+      ) : (
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <h2 style={{ textAlign: "center" }}>
+            No chargers yet...
+            <br />
+            <Link to="/chargers/new">Click here to create one!</Link>
+          </h2>
+        </div>
       )}
     </>
   );
@@ -78,10 +96,10 @@ export async function fetchData(pathname, dispatch, setError, setLoading) {
   }
 
   if (pathname === "/chargers/mychargers") {
-    
     try {
       setLoading(true);
       const myChargers = await getMyChargers();
+      console.log("my chargers", myChargers);
       dispatch({
         type: "setChargerList",
         data: myChargers,
