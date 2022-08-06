@@ -151,11 +151,11 @@ export const DesktopMenu = () => {
               List A Charger
             </MenuItem>
 
-            <MenuItem component={Link} to="/">
+            <MenuItem component={Link} to="/vehicle/new">
               <ListItemIcon>
                 <FontAwesomeIcon icon={faScrewdriverWrench} />
               </ListItemIcon>
-              Edit Vehicle
+              Add Vehicle
             </MenuItem>
             <Divider />
 

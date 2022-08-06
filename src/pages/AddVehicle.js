@@ -7,79 +7,55 @@ import {
   Alert,
 } from "@mui/material";
 import { useState } from "react";
+import { StateContext } from "../context/stateContext";
+import { AlertSuccess } from "../components/AlertSuccess";
+
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
-import { StateContext } from "../context/stateContext";
-
-import { addCharger, updateCharger } from "../services/chargerServices";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import { addVehicle } from "../services/vehicleServices";
 import { useGlobalState } from "../context/stateContext";
 
-export const ChargerForm = ({ editFormData }) => {
+export const AddVehicle = ({ editFormData }) => {
   const { store, dispatch } = useGlobalState();
+  const [success, setSuccess] = useState(undefined);
   const navigate = useNavigate();
-  const { loggedInUser, errorMessage } = store;
+  const { loggedInUser, errorMessage, successMessage } = store;
 
-  let initialFormData;
-
-  if (editFormData) {
-    initialFormData = {
-      name: editFormData.name,
-      instructions: editFormData.instructions,
-      price: editFormData.price,
-      // TODO: handle status(handle submit)
-      status: editFormData.status,
-      plugName: editFormData.plugName,
-      username: loggedInUser,
-    };
-  } else {
-    initialFormData = {
-      name: "",
-      instructions: "",
-      price: "",
-      // TODO: handle status(handle submit)
-      status: "",
-      plugName: "",
-      username: loggedInUser,
-    };
-  }
+  const initialFormData = {
+    make: "",
+    model: "",
+    variant: "",
+    plugName: "",
+    username: loggedInUser,
+  };
 
   const [formData, setFormData] = useState(initialFormData);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const data = new FormData();
-
-    for (const [key, value] of Object.entries(formData)) {
-      data.append(key, value);
-    }
-
-    let response;
-    if (editFormData) {
-      response = await updateCharger(data, editFormData.id);
-    } else {
-      response = await addCharger(data);
-    }
+    console.log("THIS IS data sent", formData);
+    const response = await addVehicle(formData);
 
     if (response.status === 500) {
       dispatch({
         type: "setErrorMessage",
-        data: response.data.message,
+        data: response.message,
       });
       return;
     } else {
       // TODO: handle success message
-      navigate(`/chargers/mychargers`);
+      //   dispatch({
+      //     type: "setSuccessMessage",
+      //     data: response.message,
+      //   });
+      setSuccess(response.message);
+      navigate(`/`);
     }
   }
-
-  const handleFile = (file) => {
-    setFormData({
-      ...formData,
-      image: file,
-    });
-  };
 
   const handleFormData = (e) => {
     setFormData({
@@ -97,40 +73,43 @@ export const ChargerForm = ({ editFormData }) => {
       <AnimatePresence>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
 
+        {success && <AlertSuccess message={success} setSuccess={setSuccess} />}
+
+        {/* {successMessage && <Alert severity="success">{successMessage}</Alert>} */}
+
         <motion.div
           className="form-container"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
           <form onSubmit={handleSubmit}>
-            <Typography variant="h4">List Charger</Typography>
+            <Typography variant="h4">Add Vehicle</Typography>
 
-            <InputLabel>Charger Name:</InputLabel>
+            <InputLabel>Vehicle Make:</InputLabel>
             <TextField
               type="text"
-              name="name"
-              id="name"
-              value={formData.name}
+              name="make"
+              id="make"
+              value={formData.make}
               onChange={handleFormData}
             />
 
-            <InputLabel>Instructions:</InputLabel>
+            <InputLabel>Model</InputLabel>
             <TextField
               type="text"
               multiline
-              rows={4}
-              name="instructions"
-              id="instructions"
-              value={formData.instructions}
+              name="model"
+              id="model"
+              value={formData.model}
               onChange={handleFormData}
             />
 
-            <InputLabel>Price:</InputLabel>
+            <InputLabel>Variant</InputLabel>
             <TextField
-              type="number"
-              name="price"
-              id="price"
-              value={formData.price}
+              type="text"
+              name="variant"
+              id="variant"
+              value={formData.variant}
               onChange={handleFormData}
             />
 
@@ -161,14 +140,6 @@ export const ChargerForm = ({ editFormData }) => {
               </select>
             </Box>
 
-            <input
-              style={{ display: "flex", justifyContent: "center" }}
-              name="image"
-              accept="image/*"
-              type="file"
-              onChange={(e) => handleFile(e.target.files[0])}
-            />
-
             <Box
               sx={{
                 display: "flex",
@@ -177,36 +148,15 @@ export const ChargerForm = ({ editFormData }) => {
               }}
             >
               <Button
-                sx={{ marginRight: "16px" }}
                 type="submit"
-                id="status"
-                value="pending"
+                //   id="status"
+                //   value="active"
                 variant="contained"
                 onClick={handleFormData}
               >
-                Save draft
+                Add Vehicle
               </Button>
-              {editFormData ? (
-                <Button
-                  type="submit"
-                  id="status"
-                  value="active"
-                  variant="contained"
-                  onClick={handleFormData}
-                >
-                  Update charger
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  id="status"
-                  value="active"
-                  variant="contained"
-                  onClick={handleFormData}
-                >
-                  List charger
-                </Button>
-              )}
+
               <Button
                 variant="contained"
                 sx={{ marginLeft: "16px" }}

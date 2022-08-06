@@ -14,6 +14,8 @@ import { Navbar } from "./layouts/Navbar.js";
 import { SignupForm } from "./pages/SignupForm";
 import { SigninForm } from "./pages/SigninForm";
 import { ChargerForm } from "./components/ChargerForm";
+import { AddVehicle } from "./pages/AddVehicle";
+
 import { NotFound } from "./pages/NotFound";
 import { ViewCharger } from "./pages/ViewCharger";
 import { ViewChargers } from "./pages/ViewChargers";
@@ -30,6 +32,7 @@ function App() {
     hostStatus: false,
     chargerStatus: "",
     editFormData: {},
+    successMessage: "",
     loggedInUser: sessionStorage.getItem("username") || "",
     currentUser: {
       firstName: sessionStorage.getItem("firstName") || "",
@@ -67,6 +70,8 @@ function App() {
               />
 
               <Route path="/search" element={<SearchLocation />} />
+              <Route path="/vehicle/new" element={<AddVehicle />} />
+
               <Route path="/auth/signup" element={<SignupForm />} />
               <Route path="/auth/signin" element={<SigninForm />} />
               <Route
