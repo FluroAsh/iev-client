@@ -14,8 +14,6 @@ export const ViewChargers = () => {
   const [loading, setLoading] = useState(false);
   const { location, chargerList } = store;
 
-  console.log("chargerList", chargerList);
-
   // Framer motion animation definition objects
   const container = {
     hidden: { opacity: 0 },

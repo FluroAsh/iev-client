@@ -18,40 +18,40 @@ export const SigninForm = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
+    setError(false);
 
     try {
       if (Object.values(formData).includes("")) {
         throw Error("Fields cannot be empty");
       }
 
-      signIn(formData)
-        .then((user) => {
-          setError();
-          sessionStorage.setItem("username", user.username);
-          sessionStorage.setItem("token", user.jwt);
-          sessionStorage.setItem("firstName", user.firstName);
-          sessionStorage.setItem("lastName", user.lastName);
-          dispatch({
-            type: "setLoggedInUser",
-            data: user.username,
-          });
-          dispatch({
-            type: "setToken",
-            data: user.jwt,
-          });
-          dispatch({
-            type: "setUserDetails",
-            data: { firstName: user.firstName, lastName: user.lastName },
-          });
-          setFormData(initialFormData);
-          navigate("/chargers");
-        })
-        .catch((err) => {
-          setError(err);
-        });
+      setError();
+
+      const response = await signIn(formData);
+      sessionStorage.setItem("username", response.username);
+      sessionStorage.setItem("token", response.jwt);
+      sessionStorage.setItem("firstName", response.firstName);
+      sessionStorage.setItem("lastName", response.lastName);
+
+      dispatch({
+        type: "setLoggedInUser",
+        data: response.username,
+      });
+
+      dispatch({
+        type: "setToken",
+        data: response.jwt,
+      });
+
+      dispatch({
+        type: "setUserDetails",
+        data: { firstName: response.firstName, lastName: response.lastName },
+      });
+
+      setFormData(initialFormData);
+      navigate("/chargers");
     } catch (err) {
       setError(err);
     }

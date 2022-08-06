@@ -13,6 +13,9 @@
 - Clone repo to local environment
 - NPM install
 
-### List of Dependencies 
-- NPM Packages
+### Libraries 
+- React
+- Jest
+- Material UI
+- 
 - 

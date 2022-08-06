@@ -18,7 +18,7 @@ export function capitalize(string) {
 }
 
 export function returnInitials(firstName, lastName) {
-  return firstName[0] + lastName[0];
+  return (firstName[0] + lastName[0]).toUpperCase();
 }
 
 // impromptu randomly generated UUID function
