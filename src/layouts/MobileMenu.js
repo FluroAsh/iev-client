@@ -64,9 +64,9 @@ export const MobileMenu = ({ setMenuOpen }) => {
               List a Charger
             </Link>
 
-            <Link to="/NotFound" onClick={() => setMenuOpen(false)}>
+            <Link to="/vehicle/new" onClick={() => setMenuOpen(false)}>
               <FontAwesomeIcon icon={faScrewdriverWrench} />
-              Edit Vehicle
+              Add Vehicle
             </Link>
             <hr></hr>
             <Link

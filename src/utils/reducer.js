@@ -65,6 +65,13 @@ export const reducer = (state, action) => {
         errorMessage: action.data,
       };
     }
+
+    case "setSuccessMessage": {
+      return {
+        ...state,
+        errorMessage: action.data,
+      };
+    }
     case "setChargerStatus": {
       return {
         ...state,
