@@ -52,7 +52,7 @@ function App() {
           <Container
             className="inner-container"
             disableGutters
-            sx={{ positon: "relative" }}
+            sx={{ position: "relative" }}
           >
             <Routes>
               <Route path="/" element={<Navigate to="chargers" replace />} />

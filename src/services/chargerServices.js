@@ -9,7 +9,7 @@ export async function addCharger(data) {
   } catch (err) {
     // console.log("Axios ERROR----");
     // console.log(err.message);
-    return err.message;
+    throw Error(err.response.data.error);
   }
 }
 
@@ -19,9 +19,7 @@ export async function updateCharger(data, id) {
     // TODO: Check what comes back from the data to handle messages
     return response.data;
   } catch (err) {
-    // console.log("Axios ERROR----");
-    // console.log(err.message);
-    return err.message;
+    throw Error(err.response.data.error);
   }
 }
 
@@ -30,19 +28,16 @@ export async function updateChargerStatus(data, id) {
     await ievAPI.patch(`/charger/${id}`, data);
     return { message: "Charger successfully updated!" };
   } catch (err) {
-    console.log("Axios ERROR----");
-    console.log(err);
-    return err.message;
+    throw Error(err.response.data.error);
   }
 }
 
 export async function deleteCharger(id) {
   try {
-    const response = await ievAPI.delete(`/charger/${id}`);
+    await ievAPI.delete(`/charger/${id}`);
     return { message: `Charger ${id} successfully deleted` };
   } catch (err) {
-    // console.log("Axios ERROR----");
-    return err.message;
+    throw Error(err.response.data.error);
   }
 }
 
@@ -53,9 +48,7 @@ export async function getCharger(id) {
     // TODO: Check what comes back from the data to handle messages
     return response.data;
   } catch (err) {
-    // console.log("Axios ERROR----");
-    // console.log(err.message);
-    return err.message;
+    throw Error(err.response.data.error);
   }
 }
 

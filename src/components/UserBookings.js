@@ -6,14 +6,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import { Typography } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import { useNavigate } from "react-router-dom";
 import { useTheme, useMediaQuery } from "@mui/material";
-import { useGlobalState } from "../context/stateContext";
 import { loadStripe } from "@stripe/stripe-js";
 
+import { useGlobalState } from "../context/stateContext";
+import { bookingStatusColor } from "../styles/statusColor";
 
 import {
   displayAUD,
@@ -26,19 +25,13 @@ import {
   confirmBooking,
   getUserBookings,
 } from "../services/bookingServices";
+import { BookingStatusMobile } from "../layouts/BookingStatusMobile";
+import { BookingStatusLarge } from "../layouts/BookingStatusLarge";
 
 const { createStripeSession } = require("../services/paymentServices");
 const stripePromise = loadStripe(
   "pk_test_51LSoj4KET1RwVGwUk9pp97jPW5HE0LOu0bpxtKqCfsgtb2WfRChRKOQTnkhfcVMfFjngjEDlBWkCgYgRVulTScwe00oRX9gUl9"
 );
-
-const statusColor = {
-  Pending: "#f57c00",
-  Rejected: "#d32f2f",
-  Cancelled: "#d32f2f",
-  Approved: "#2e7d32",
-  Paid: "#2e7d32",
-};
 
 function createData(id, city, stationName, price, date, status, chargerId) {
   return { id, city, stationName, price, date, status, chargerId };
@@ -70,7 +63,6 @@ export default function UserBookings({ setError, setSuccess }) {
     );
   });
 
-
   async function refreshUserBookings() {
     const updatedBookings = await getUserBookings(loggedInUser);
     dispatch({
@@ -80,19 +72,17 @@ export default function UserBookings({ setError, setSuccess }) {
   }
 
   const handlePayClick = async (e, RowId, bookingDetail) => {
-
-  // const handlePayClick = async (setLoading, RowId, bookingDetail) => {
+    // const handlePayClick = async (setLoading, RowId, bookingDetail) => {
     try {
       e.stopPropagation();
       setLoading({ [RowId]: { pay: true } });
 
       const res = await createStripeSession(bookingDetail);
 
-
       console.log("THIS IS RESULTS FROM STRIPE POST REQUEST", res);
 
       // Redirect to strip check out session form
-      window.location.href = res.url
+      window.location.href = res.url;
       //TODO: handle success and cancelled response from stripe
       // handle the API request here
       const response = await confirmBooking({ BookingId: RowId });
@@ -102,13 +92,12 @@ export default function UserBookings({ setError, setSuccess }) {
 
       // --> must wait for stripe checkout to complete before continuing
     } catch (err) {
-
       console.log("THIS IS STRIPE ERROR", err);
       setError(err);
     } finally {
       setLoading({ [RowId]: { pay: false } });
     }
-  }
+  };
 
   async function handleCancelClick(e, RowId) {
     try {
@@ -132,6 +121,7 @@ export default function UserBookings({ setError, setSuccess }) {
   };
 
   // Checks if the user/host has any active bookings (not rejected/cancelled)
+
   const activeBookings = bookings
     .map((booking) => booking.status)
     .includes("approved", "pending");
@@ -178,7 +168,7 @@ export default function UserBookings({ setError, setSuccess }) {
                       {row.city}
                     </TableCell>
                   )}
-                  <TableCell align={!isMobile ? "left" : "right"}>
+                  <TableCell align={isTablet ? "left" : "right"}>
                     {row.stationName}
                   </TableCell>
                   {!isMobileXS && (
@@ -186,7 +176,10 @@ export default function UserBookings({ setError, setSuccess }) {
                   )}
                   <TableCell align="right">{row.date}</TableCell>
                   <TableCell
-                    sx={{ color: statusColor[row.status], fontWeight: 600 }}
+                    sx={{
+                      color: bookingStatusColor[row.status],
+                      fontWeight: 600,
+                    }}
                     align="right"
                   >
                     {row.status}
@@ -194,97 +187,36 @@ export default function UserBookings({ setError, setSuccess }) {
                   {/* Laptop/Desktop View */}
                   {!isTablet &&
                     (row.status === "Approved" || row.status === "Pending") && (
-                      <TableCell
-                        className="extra-cell"
-                        align="center"
-                        style={{ background: "#f1f1f180" }}
-                      >
-                        <ButtonGroup
-                          variant="contained"
-                          sx={{
-                            width: "100%",
-                            height: 35,
-                            boxShadow: "none",
-                          }}
-                        >
-                          {row.status === "Approved" && (
-                            <LoadingButton
-                              sx={{ width: "100%" }}
-                              onClick={(e) => handlePayClick(e, row.id, row)}
-                              loading={loading[row.id]?.pay}
-                              variant="contained"
-                              color="success"
-                            >
-                              {!loading[row.id]?.pay && "Pay"}
-                            </LoadingButton>
-                          )}
-
-                          <LoadingButton
-                            onClick={(e) => handleCancelClick(e, row.id)}
-                            loading={loading[row.id]?.cancel}
-                            variant="contained"
-                            color="error"
-                            sx={{ width: "100%" }}
-                          >
-                            Cancel
-                          </LoadingButton>
-                        </ButtonGroup>
-                      </TableCell>
+                      <BookingStatusLarge
+                        row={row}
+                        loading={loading}
+                        handlePayClick={handlePayClick}
+                        handleCancelClick={handleCancelClick}
+                      />
                     )}
-                  {!isTablet &&
-                    activeBookings &&
-                    (row.status === "Rejected" ||
-                      row.status === "Cancelled") && (
+                  {/* Renders empty cell for Rejected/Cancelled if there are active bookings */}
+                  {activeBookings &&
+                    !isTablet &&
+                    !isMobile &&
+                    (row.status === "Cancelled" ||
+                      row.status === "Rejected") && (
                       <TableCell
                         align="center"
                         style={{ background: "#f1f1f180" }}
                       ></TableCell>
                     )}
                 </TableRow>
-                {/* Mobile/Tablet View */}
+                {/* Mobile/Tablet View - 'Wrapped' 2nd Row */}
                 {isTablet &&
                   (row.status === "Approved" || row.status === "Pending") && (
                     <TableRow key={createUUID()}>
-                      <TableCell
-                        className="extra-cell"
-                        colSpan={isTablet ? 5 : 4}
-                        sx={{ padding: 1 }}
-                      >
-                        {(row.status === "Approved" ||
-                          row.status === "Pending") && (
-                          <ButtonGroup
-                            variant="contained"
-                            sx={{
-                              width: "100%",
-                              height: 35,
-                              boxShadow: "none",
-                              textAlign: "center",
-                            }}
-                          >
-                            {row.status === "Approved" && (
-                              <LoadingButton
-                                onClick={(e) => handlePayClick(e, row.id, )}
-                                loading={loading[row.id]?.pay}
-                                variant="contained"
-                                color="success"
-                                sx={{ width: "100%" }}
-                              >
-                                {!loading[row.id]?.pay && "Pay"}
-                              </LoadingButton>
-                            )}
-
-                            <LoadingButton
-                              onClick={(e) => handleCancelClick(e, row.id)}
-                              loading={loading[row.id]?.cancel}
-                              variant="contained"
-                              color="error"
-                              sx={{ width: "100%" }}
-                            >
-                              Cancel
-                            </LoadingButton>
-                          </ButtonGroup>
-                        )}
-                      </TableCell>
+                      <BookingStatusMobile
+                        row={row}
+                        loading={loading}
+                        handlePayClick={handlePayClick}
+                        handleCancelClick={handleCancelClick}
+                        activeBookings={activeBookings}
+                      />
                     </TableRow>
                   )}
               </React.Fragment>

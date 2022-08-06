@@ -5,14 +5,17 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { AnimatePresence } from "framer-motion";
 
 import { MobileMenu } from "./MobileMenu";
-import { SearchBar } from "../components/SearchBar";
+import { SearchBar } from "../layouts/SearchBar";
 export const MobileNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  // TODO: Add useRef for click out of bounds (should setMenuOpen(false)
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       setMenuOpen((prevMenuOpen) => !prevMenuOpen);
+    }
+
+    if (e.key === "Escape") {
+      setMenuOpen(false);
     }
   };
 

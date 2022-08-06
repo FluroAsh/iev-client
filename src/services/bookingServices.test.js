@@ -1,5 +1,5 @@
-// const ievAPI = require("../config/api");
-// const { getUserBookings, getUserBookingRequests, createUserBookingRequest, rejectUserRequest, approveUserRequest, confirmBooking, cancelBooking} = require("./bookingServices");
+const ievAPI = require("../config/api");
+const { getUserBookings, getUserBookingRequests, createUserBookingRequest, rejectUserRequest, approveUserRequest, confirmBooking, cancelBooking} = require("./bookingServices");
 
 // jest.mock("../config/api", () => ({
 //   get: jest.fn(),
@@ -9,21 +9,21 @@
 //   patch: jest.fn(),
 // }));
 
-// describe("getUserBookings function", () => {
+describe("getUserBookings function", () => {
 //   beforeEach(() => {
 //     jest.clearAllMocks();
 //   });
-//   it("call a axios get API request", async () => {
+  it("call a axios get API request", async () => {
 
 //     // Mock axios get request
 //     const apiSpy = jest.spyOn(ievAPI, "get");
 
 //     await getUserBookings();
 //     expect(apiSpy).toHaveBeenCalledTimes(1);
-//   });
+  });
 
   
-// });
+});
 
 // describe("getUserBookingRequests function", () => {
 //   beforeEach(() => {

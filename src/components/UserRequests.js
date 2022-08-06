@@ -6,10 +6,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { LoadingButton } from "@mui/lab";
+import { Typography, useTheme, useMediaQuery } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import {
   displayAUD,
@@ -17,23 +15,14 @@ import {
   capitalize,
   createUUID,
 } from "../utils/helpers";
-import { Typography, useTheme, useMediaQuery } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import {
   rejectUserRequest,
   approveUserRequest,
   getUserBookingRequests,
 } from "../services/bookingServices";
 import { useGlobalState } from "../context/stateContext";
-
-const statusColor = {
-  Approved: "#f57c00",
-  Cancelled: "#d32f2f",
-  Paid: "#2e7d32",
-  background: {
-    Approved: "#aa7c00",
-  },
-};
+import { RequestStatusMobile } from "../layouts/RequestStatusMobile";
+import { RequestStatusLarge } from "../layouts/RequestStatusLarge";
 
 function createData(
   id,
@@ -133,12 +122,7 @@ export default function UserRequests({ setError, setSuccess }) {
   };
 
   return (
-    // /**
-    //  * TODO:
-    //  * 1. Add clickable row for popup actions ✅
-    //  * 2. Add pagination for Tablet -> Desktop Screens
-    //  * 3. Add mobile conditionals (should not display some columns, change styling etc) ✅
-    //  */
+    // TODO: Add pagination for Tablet -> Desktop Screens ⚠️
     <>
       <TableContainer sx={{ mb: 2 }} component={Paper}>
         <Table sx={{ minWidth: 350 }} aria-label="requests table">
@@ -186,137 +170,24 @@ export default function UserRequests({ setError, setSuccess }) {
                   <TableCell align="right">{row.stationName}</TableCell>
                   {/* Laptop/Desktop View */}
                   {!isTablet && (
-                    <TableCell
-                      className="extra-cell"
-                      align="center"
-                      style={{ background: "#f1f1f180" }}
-                    >
-                      <ButtonGroup
-                        variant="contained"
-                        sx={{ width: "100%", boxShadow: "none" }}
-                      >
-                        {row.status === "Pending" && (
-                          <>
-                            <LoadingButton
-                              onClick={(e) => handleConfirmation(e, row.id)}
-                              loading={loading[row.id]?.confirm}
-                              variant="contained"
-                              color="success"
-                              size="small"
-                              sx={{ width: "100%", height: 35 }}
-                            >
-                              <FontAwesomeIcon icon={faCheck} size="xl" />
-                            </LoadingButton>
-                            <LoadingButton
-                              onClick={(e) => handleRejection(e, row.id)}
-                              loading={loading[row.id]?.reject}
-                              variant="contained"
-                              color="error"
-                              size="small"
-                              sx={{ width: "100%", height: 35 }}
-                            >
-                              <FontAwesomeIcon icon={faXmark} size="xl" />
-                            </LoadingButton>
-                          </>
-                        )}
-                        {row.status === "Approved" && (
-                          <span
-                            style={{
-                              color: statusColor[row.status],
-                            }}
-                          >
-                            Awaiting payment...
-                          </span>
-                        )}
-                        {row.status === "Paid" && (
-                          <span
-                            style={{
-                              color: statusColor[row.status],
-                            }}
-                          >
-                            Paid
-                          </span>
-                        )}
-                        {row.status === "Cancelled" && (
-                          <span
-                            style={{
-                              color: statusColor[row.status],
-                            }}
-                          >
-                            Cancelled
-                          </span>
-                        )}
-                      </ButtonGroup>
-                    </TableCell>
+                    <RequestStatusLarge
+                      row={row}
+                      loading={loading}
+                      handleConfirmation={handleConfirmation}
+                      handleRejection={handleRejection}
+                    />
                   )}
                 </TableRow>
-                {/* Mobile/Tablet View */}
+                {/* Mobile/Tablet View - 'Wrapped' 2nd Row */}
                 {isTablet && (
                   <TableRow key={createUUID()}>
-                    <TableCell
-                      className="extra-cell"
-                      colSpan={isMobile ? 4 : 5}
-                      sx={{ padding: 1 }}
-                    >
-                      <ButtonGroup
-                        variant="contained"
-                        sx={{
-                          width: "100%",
-                          height: 35,
-                          boxShadow: "none",
-                        }}
-                      >
-                        {row.status === "Pending" && (
-                          <>
-                            <LoadingButton
-                              onClick={(e) => handleConfirmation(e, row.id)}
-                              loading={loading[row.id]?.confirm}
-                              variant="contained"
-                              color="success"
-                              sx={{ width: "100%" }}
-                            >
-                              <FontAwesomeIcon icon={faCheck} size="xl" />
-                            </LoadingButton>
-                            <LoadingButton
-                              onClick={(e) => handleRejection(e, row.id)}
-                              loading={loading[row.id]?.reject}
-                              variant="contained"
-                              color="error"
-                              sx={{ width: "100%" }}
-                            >
-                              <FontAwesomeIcon icon={faXmark} size="xl" />
-                            </LoadingButton>
-                          </>
-                        )}
-                        {row.status === "Approved" && (
-                          <span
-                            style={{
-                              color: statusColor[row.status],
-                            }}
-                          >
-                            Awaiting payment...
-                          </span>
-                        )}
-                        {row.status === "Paid" && (
-                          <span
-                            style={{
-                              color: statusColor[row.status],
-                            }}
-                          >
-                            Confirmed
-                          </span>
-                        )}
-                        {row.status === "Cancelled" && (
-                          <span
-                            style={{
-                              color: statusColor[row.status],
-                            }}
-                          >
-                            Confirmed
-                          </span>
-                        )}
-                      </ButtonGroup>
-                    </TableCell>
+                    <RequestStatusMobile
+                      row={row}
+                      loading={loading}
+                      handleConfirmation={handleConfirmation}
+                      handleRejection={handleRejection}
+                      isTablet={isTablet} // must be passed as a prop to get PAGE width
+                    />
                   </TableRow>
                 )}
               </React.Fragment>
