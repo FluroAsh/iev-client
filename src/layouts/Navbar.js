@@ -12,6 +12,7 @@ export const Navbar = () => {
   const location = useLocation();
   const { dispatch } = useGlobalState();
 
+  // Set new location object in state every time it's changed
   useEffect(() => {
     dispatch({
       type: "setLocation",
@@ -31,6 +32,7 @@ export const Navbar = () => {
             width: "100%",
           }}
         >
+          {/* Conditionally render navbar based on MUI breakpoint (md) */}
           {isMobile ? <MobileNavbar /> : <DesktopNavBar />}
         </Toolbar>
       </AppBar>

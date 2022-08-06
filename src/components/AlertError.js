@@ -4,11 +4,13 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
+
 import { capitalize } from "../utils/helpers";
 
 export const AlertError = ({ message, setError, styles }) => {
   const [open, setOpen] = useState(true);
 
+  // Set a 10s second timeout for AlertError
   setTimeout(() => {
     setError(false);
     setOpen(false);

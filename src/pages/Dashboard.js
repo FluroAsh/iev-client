@@ -16,8 +16,10 @@ import { AlertError } from "../components/AlertError";
 import { checkHost } from "../services/authServices";
 import { AlertSuccess } from "../components/AlertSuccess";
 
+// Handle fetching Hosts' requests
 export async function fetchRequests(username, dispatch, setError, setLoading) {
   try {
+    setLoading(true);
     const requests = await getUserBookingRequests(username);
     const response = await checkHost();
 
@@ -34,7 +36,7 @@ export async function fetchRequests(username, dispatch, setError, setLoading) {
       data: requests,
     });
   } catch (err) {
-    // Only throw an error if it's an unhandled exception
+    // Only throw an error if unhandled exception
     if (err.message === "User is not a host") return;
     setError(err);
   } finally {
@@ -42,8 +44,10 @@ export async function fetchRequests(username, dispatch, setError, setLoading) {
   }
 }
 
+// Handle fetching User/Hosts' bookings
 export async function fetchBookings(username, dispatch, setError, setLoading) {
   try {
+    setLoading(true);
     const bookings = await getUserBookings(username);
     dispatch({
       type: "setUserBookings",
@@ -56,6 +60,7 @@ export async function fetchBookings(username, dispatch, setError, setLoading) {
   }
 }
 
+// Only rendered in the dashboard given a User/Host has no Bookings/Requests
 const NoResults = ({ message }) => {
   return (
     <div className="no-results">
@@ -64,6 +69,7 @@ const NoResults = ({ message }) => {
   );
 };
 
+// Become a host component (rendered if user has no chargers)
 const BecomeHost = () => {
   return (
     <div className="host-container">
@@ -83,7 +89,7 @@ const BecomeHost = () => {
 export const Dashboard = () => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { store, dispatch } = useGlobalState();
   const {
     currentUser,
@@ -96,46 +102,45 @@ export const Dashboard = () => {
   useEffect(() => {
     fetchBookings(loggedInUser, dispatch, setError, setLoading);
     fetchRequests(loggedInUser, dispatch, setError, setLoading);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedInUser]);
+  }, [loggedInUser, dispatch]);
 
   if (loading) {
     return <CssLoader />;
   }
 
   return (
-    <>
-      <AnimatePresence>
-        <motion.div
-          className="page-container"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          {error && <AlertError message={error.message} setError={setError} />}
-          {success && (
-            <AlertSuccess message={success.message} setSuccess={setSuccess} />
-          )}
-          <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
-            Welcome Back {currentUser.firstName}! 👋
-          </Typography>
+    <AnimatePresence>
+      <motion.div
+        className="page-container"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        style={{ position: "relative" }}
+      >
+        {error && <AlertError message={error.message} setError={setError} />}
+        {success && (
+          <AlertSuccess message={success.message} setSuccess={setSuccess} />
+        )}
+        <Typography variant="h5" sx={{ textAlign: "center", py: 2 }}>
+          Welcome Back {currentUser.firstName}! 👋
+        </Typography>
 
-          {hostStatus &&
-            (bookingRequests.length > 0 ? (
-              <UserRequests setError={setError} setSuccess={setSuccess} />
-            ) : (
-              <NoResults message={"No requests... Yet! 🔌"} />
-            ))}
-
-          {/* NOTE: Not every host will have bookings */}
-          {bookings.length > 0 ? (
-            <UserBookings setError={setError} setSuccess={setSuccess} />
+        {/* User must be a Host & have > 0 booking requests */}
+        {hostStatus &&
+          (bookingRequests.length > 0 ? (
+            <UserRequests setError={setError} setSuccess={setSuccess} />
           ) : (
-            <NoResults message={"You haven't made any bookings... Yet 😉"} />
-          )}
+            <NoResults message={"No requests... Yet! 🔌"} />
+          ))}
 
-          {!hostStatus && <BecomeHost />}
-        </motion.div>
-      </AnimatePresence>
-    </>
+        {/* NOTE: Not every host will have bookings */}
+        {bookings.length > 0 ? (
+          <UserBookings setError={setError} setSuccess={setSuccess} />
+        ) : (
+          <NoResults message={"You haven't made any bookings... Yet 😉"} />
+        )}
+
+        {!hostStatus && <BecomeHost />}
+      </motion.div>
+    </AnimatePresence>
   );
 };

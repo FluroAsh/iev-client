@@ -8,8 +8,9 @@ import {
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { displayAUD } from "../utils/helpers";
 import { motion } from "framer-motion";
+
+import { displayAUD } from "../utils/helpers";
 
 export const Charger = ({ charger, item }) => {
   const navigate = useNavigate();
@@ -58,7 +59,6 @@ export const Charger = ({ charger, item }) => {
         >
           View
         </Button>
-        {/* <ButtonGroup key={charger.id} charger={charger} /> */}
       </CardActions>
     </Card>
   );

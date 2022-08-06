@@ -13,6 +13,7 @@ export const ViewChargers = () => {
   const [loading, setLoading] = useState(false);
   const { location, chargerList } = store;
 
+  // Framer motion animation definition objects
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -60,6 +61,7 @@ export const ViewChargers = () => {
 };
 
 export async function fetchData(pathname, dispatch, setError, setLoading) {
+  // Handle fetching & setting all existing chargers to state
   if (pathname === "/chargers") {
     try {
       setLoading(true);
@@ -69,7 +71,6 @@ export async function fetchData(pathname, dispatch, setError, setLoading) {
         data: chargers,
       });
     } catch (err) {
-      console.log("message", err.message);
       setError(err);
     } finally {
       setLoading(false);
@@ -77,6 +78,7 @@ export async function fetchData(pathname, dispatch, setError, setLoading) {
   }
 
   if (pathname === "/chargers/mychargers") {
+    
     try {
       setLoading(true);
       const myChargers = await getMyChargers();

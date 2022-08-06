@@ -49,9 +49,8 @@ export const ChargerDetail = ({ charger }) => {
     }
   }, [charger.status]);
 
-  const updateStatus = async (e) => {
+  const updateStatus = async () => {
     let data = {};
-    console.log("THIS IS DATA SENT", data);
 
     try {
       if (!checked) {
@@ -64,7 +63,6 @@ export const ChargerDetail = ({ charger }) => {
 
       const response = await updateChargerStatus(data, charger.id);
       setSuccess(response.message);
-      console.log("Update successful");
       // navigate(`/chargers/mychargers`);
     } catch (err) {
       setError(err);
@@ -94,7 +92,6 @@ export const ChargerDetail = ({ charger }) => {
       }
       const response = await createUserBookingRequest(bookings);
 
-      console.log("THIS IS RESPONSE AFTER CREATE POST REQUEST SENT", response);
       setSuccess(response.message);
     } catch (err) {
       setError(err);
@@ -223,7 +220,6 @@ export default function DeleteButton({ charger, setError }) {
   const handleDelete = async () => {
     try {
       setOpen(false);
-      console.log("CHARGER ID ", charger.id);
       await deleteCharger(charger.id);
       navigate(`/chargers/mychargers`);
     } catch (err) {

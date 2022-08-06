@@ -7,7 +7,7 @@ import { AlertError } from "../components/AlertError";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 
-const SigninForm = () => {
+export const SigninForm = () => {
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
 
@@ -30,7 +30,6 @@ const SigninForm = () => {
       signIn(formData)
         .then((user) => {
           setError();
-          console.log("THIS IS USER", user);
           sessionStorage.setItem("username", user.username);
           sessionStorage.setItem("token", user.jwt);
           sessionStorage.setItem("firstName", user.firstName);
@@ -48,7 +47,7 @@ const SigninForm = () => {
             data: { firstName: user.firstName, lastName: user.lastName },
           });
           setFormData(initialFormData);
-          navigate("/");
+          navigate("/chargers");
         })
         .catch((err) => {
           setError(err);
@@ -106,5 +105,3 @@ const SigninForm = () => {
     </>
   );
 };
-
-export default SigninForm;

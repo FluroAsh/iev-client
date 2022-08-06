@@ -89,12 +89,13 @@ div.MuiAlert-root {
   width: 100%;
 }
 div.alert-error {
-  position: relative;
+  position: sticky;
   top: 0;
   width: 100%;
 }
 div.alert-success {
-  position: relative;
-  top: 0;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 56px;
   width: 100%;
 }

@@ -63,6 +63,7 @@ export default function UserBookings({ setError, setSuccess }) {
     );
   });
 
+  // Refreshes bookings after an action is made with no error (cancelled, payed etc.)
   async function refreshUserBookings() {
     const updatedBookings = await getUserBookings(loggedInUser);
     dispatch({
@@ -77,22 +78,17 @@ export default function UserBookings({ setError, setSuccess }) {
       e.stopPropagation();
       setLoading({ [RowId]: { pay: true } });
 
+      // Creates the stripe session with 
       const res = await createStripeSession(bookingDetail);
-
-      console.log("THIS IS RESULTS FROM STRIPE POST REQUEST", res);
-
       // Redirect to strip check out session form
       window.location.href = res.url;
-      //TODO: handle success and cancelled response from stripe
-      // handle the API request here
+
+      // TODO: handle success and cancelled response from stripe
       const response = await confirmBooking({ BookingId: RowId });
 
       refreshUserBookings();
       setSuccess(response);
-
-      // --> must wait for stripe checkout to complete before continuing
     } catch (err) {
-      console.log("THIS IS STRIPE ERROR", err);
       setError(err);
     } finally {
       setLoading({ [RowId]: { pay: false } });
@@ -121,10 +117,9 @@ export default function UserBookings({ setError, setSuccess }) {
   };
 
   // Checks if the user/host has any active bookings (not rejected/cancelled)
-
   const activeBookings = bookings
     .map((booking) => booking.status)
-    .includes("approved", "pending");
+    .find((element) => element === "approved" || element === "pending");
 
   return (
     <>

@@ -7,7 +7,7 @@ import { AlertError } from "../components/AlertError";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 
-const SignupForm = () => {
+export const SignupForm = () => {
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const SignupForm = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState();
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     try {
@@ -30,29 +30,46 @@ const SignupForm = () => {
         throw Error("Fields cannot be empty");
       }
 
-      signUp(formData)
-        .then((user) => {
-          sessionStorage.setItem("username", user.username);
-          sessionStorage.setItem("token", user.jwt);
-          dispatch({
-            type: "setLoggedInUser",
-            data: user.username,
-          });
-          dispatch({
-            type: "setToken",
-            data: user.jwt,
-          });
-          setFormData(initialFormData);
-          navigate("/");
-        })
-        .catch((err) => {
-          console.log(err);
-          setError(err);
-        });
+      await signUp(formData);
+      sessionStorage.setItem("username", formData.username);
+      sessionStorage.setItem("token", formData.jwt);
+
+      dispatch({
+        type: "setLoggedInUser",
+        data: formData.username,
+      });
+
+      dispatch({
+        type: "setToken",
+        data: formData.jwt,
+      });
+
+      setFormData(initialFormData);
+      navigate("/");
+
+      // signUp(formData)
+      //   .then((user) => {
+      //     sessionStorage.setItem("username", user.username);
+      //     sessionStorage.setItem("token", user.jwt);
+      //     dispatch({
+      //       type: "setLoggedInUser",
+      //       data: user.username,
+      //     });
+      //     dispatch({
+      //       type: "setToken",
+      //       data: user.jwt,
+      //     });
+      //     setFormData(initialFormData);
+      //     navigate("/");
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     setError(err);
+      //   });
     } catch (err) {
       setError(err);
     }
-  };
+  }
 
   const handleFormData = (e) => {
     setFormData({
@@ -63,14 +80,13 @@ const SignupForm = () => {
 
   return (
     <>
-      {error && <AlertError message={error.message} setError={setError} />}
-
       <AnimatePresence>
         <motion.div
           className="form-container"
           initial={{ opacity: 0 }}
           animate={{ opacity: "100%" }}
         >
+          {error && <AlertError message={error.message} setError={setError} />}
           <form onSubmit={handleSubmit}>
             <Typography variant="h4">Sign Up</Typography>
 
@@ -137,5 +153,3 @@ const SignupForm = () => {
     </>
   );
 };
-
-export default SignupForm;
