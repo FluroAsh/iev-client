@@ -1,28 +1,17 @@
-import {
-  Button,
-  InputLabel,
-  TextField,
-  Typography,
-  Box,
-  Alert,
-} from "@mui/material";
+import { Button, InputLabel, TextField, Typography, Box } from "@mui/material";
 import { useState } from "react";
 import { StateContext } from "../context/stateContext";
-import { AlertSuccess } from "../components/AlertSuccess";
 
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
 import { addVehicle } from "../services/vehicleServices";
 import { useGlobalState } from "../context/stateContext";
 
-export const AddVehicle = ({ editFormData }) => {
+export const AddVehicle = () => {
   const { store, dispatch } = useGlobalState();
-  const [success, setSuccess] = useState(undefined);
   const navigate = useNavigate();
-  const { loggedInUser, errorMessage, successMessage } = store;
+  const { loggedInUser } = store;
 
   const initialFormData = {
     make: "",
@@ -47,12 +36,10 @@ export const AddVehicle = ({ editFormData }) => {
       });
       return;
     } else {
-      // TODO: handle success message
-      //   dispatch({
-      //     type: "setSuccessMessage",
-      //     data: response.message,
-      //   });
-      setSuccess(response.message);
+      dispatch({
+        type: "setSuccessMessage",
+        data: response.message,
+      });
       navigate(`/`);
     }
   }
@@ -71,12 +58,6 @@ export const AddVehicle = ({ editFormData }) => {
   return (
     <StateContext.Provider value={{ store, dispatch }}>
       <AnimatePresence>
-        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-
-        {success && <AlertSuccess message={success} setSuccess={setSuccess} />}
-
-        {/* {successMessage && <Alert severity="success">{successMessage}</Alert>} */}
-
         <motion.div
           className="form-container"
           initial={{ opacity: 0 }}

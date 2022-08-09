@@ -69,7 +69,7 @@ export const reducer = (state, action) => {
     case "setSuccessMessage": {
       return {
         ...state,
-        errorMessage: action.data,
+        successMessage: action.data,
       };
     }
     case "setChargerStatus": {

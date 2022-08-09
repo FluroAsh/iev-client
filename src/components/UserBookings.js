@@ -29,7 +29,7 @@ import { BookingStatusMobile } from "../layouts/BookingStatusMobile";
 import { BookingStatusLarge } from "../layouts/BookingStatusLarge";
 
 const { createStripeSession } = require("../services/paymentServices");
-const stripePromise = loadStripe(
+loadStripe(
   "pk_test_51LSoj4KET1RwVGwUk9pp97jPW5HE0LOu0bpxtKqCfsgtb2WfRChRKOQTnkhfcVMfFjngjEDlBWkCgYgRVulTScwe00oRX9gUl9"
 );
 
@@ -37,7 +37,7 @@ function createData(id, city, stationName, price, date, status, chargerId) {
   return { id, city, stationName, price, date, status, chargerId };
 }
 
-export default function UserBookings({ setError, setSuccess }) {
+export default function UserBookings() {
   const [loading, setLoading] = React.useState([]);
   const navigate = useNavigate();
   const theme = useTheme();
@@ -73,12 +73,11 @@ export default function UserBookings({ setError, setSuccess }) {
   }
 
   const handlePayClick = async (e, RowId, bookingDetail) => {
-    // const handlePayClick = async (setLoading, RowId, bookingDetail) => {
     try {
       e.stopPropagation();
       setLoading({ [RowId]: { pay: true } });
 
-      // Creates the stripe session with 
+      // Creates the stripe session with
       const res = await createStripeSession(bookingDetail);
       // Redirect to strip check out session form
       window.location.href = res.url;
@@ -87,9 +86,15 @@ export default function UserBookings({ setError, setSuccess }) {
       const response = await confirmBooking({ BookingId: RowId });
 
       refreshUserBookings();
-      setSuccess(response);
+      dispatch({
+        type: "setSuccessMessage",
+        data: response.message,
+      });
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
     } finally {
       setLoading({ [RowId]: { pay: false } });
     }
@@ -104,9 +109,15 @@ export default function UserBookings({ setError, setSuccess }) {
       }
       const response = await cancelBooking({ BookingId: RowId });
       refreshUserBookings();
-      setSuccess(response);
+      dispatch({
+        type: "setSuccessMessage",
+        data: response.message,
+      });
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
     } finally {
       setLoading({ [RowId]: { cancel: false } });
     }
