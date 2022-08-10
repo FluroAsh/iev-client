@@ -23,19 +23,13 @@ import {
   updateChargerStatus,
 } from "../services/chargerServices";
 import { createUserBookingRequest } from "../services/bookingServices";
-import { AlertError } from "./AlertError";
-import { AlertSuccess } from "./AlertSuccess";
-
 export const ChargerDetail = ({ charger }) => {
   const { store, dispatch } = useGlobalState();
   const { loggedInUser } = store;
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(undefined);
   const [checked, setChecked] = useState(false);
-  const navigate = useNavigate();
-
   const [status, setStatus] = useState("");
   const [dates, setDates] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (charger.status === "active") {
@@ -62,10 +56,16 @@ export const ChargerDetail = ({ charger }) => {
       }
 
       const response = await updateChargerStatus(data, charger.id);
-      setSuccess(response.message);
+      dispatch({
+        type: "setSuccessMessage",
+        data: response.message,
+      });
       // navigate(`/chargers/mychargers`);
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
     }
   };
 
@@ -92,15 +92,21 @@ export const ChargerDetail = ({ charger }) => {
       }
       const response = await createUserBookingRequest(bookings);
 
-      setSuccess(response.message);
+      dispatch({
+        type: "setSuccessMessage",
+        data: response.message,
+      });
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
     } finally {
       setDates([]);
     }
   };
 
-  const handleEdit = (e) => {
+  const handleEdit = () => {
     dispatch({
       type: "setEditFormData",
       data: charger,
@@ -120,99 +126,89 @@ export const ChargerDetail = ({ charger }) => {
   };
 
   return (
-    <>
-      <Container
-        sx={{
-          display: "inline-flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        <Box sx={{ display: "block", width: "100vw" }}>
-          {success !== undefined && (
-            <AlertSuccess message={success} setSuccess={setSuccess} />
-          )}
-          {error && <AlertError message={error.message} setError={setError} />}
-        </Box>
-        <Box
-          sx={{ display: "inline-flex", flexDirection: "column", margin: 2 }}
+    <Container
+      sx={{
+        display: "inline-flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        flexWrap: "wrap",
+      }}
+    >
+      <Box sx={{ display: "inline-flex", flexDirection: "column", margin: 2 }}>
+        <img
+          className="detailImage flex-box"
+          src={charger.imageUrl}
+          alt={charger.name}
+        />
+
+        <Typography gutterBottom variant="h5">
+          {charger.name}
+        </Typography>
+        <Typography variant="h6">{displayAUD(charger.price)}</Typography>
+        <Typography variant="h6">{charger.Address.city}</Typography>
+        <Typography
+          variant="body2 contained"
+          color="text.secondary"
+          style={{ maxWidth: "450px", marginBottom: "16px" }}
         >
-          <img
-            className="detailImage flex-box"
-            src={charger.imageUrl}
-            alt={charger.name}
-          />
+          {charger.instructions}
+        </Typography>
+      </Box>
 
-          <Typography gutterBottom variant="h5">
-            {charger.name}
-          </Typography>
-          <Typography variant="h6">{displayAUD(charger.price)}</Typography>
-          <Typography variant="h6">{charger.Address.city}</Typography>
-          <Typography
-            variant="body2 contained"
-            color="text.secondary"
-            style={{ maxWidth: "450px", marginBottom: "16px" }}
-          >
-            {charger.instructions}
-          </Typography>
-        </Box>
-
-        <div className="calendar">
-          <Box sx={{ display: "inline-flex", flexDirection: "column" }}>
-            <Typography variant="h6">Charger Status: {status}</Typography>
-            <Box style={{ marginBottom: "16px", marginTop: "16px" }}>
-              <ChargerCalendar dates={dates} setDates={setDates} />
-            </Box>
-            {charger.Host.username === loggedInUser ? (
-              <Box sx={{ display: "inline-flex", flexDirection: "column" }}>
-                {" "}
-                <FormControlLabel
-                  control={<Switch checked={checked} onChange={handleSwitch} />}
-                  label="Activate"
-                />
-                <Box sx={{ display: "inline-flex", flexDirection: "row" }}>
-                  <Button
-                    value="active"
-                    variant="contained"
-                    onClick={handleEdit}
-                    style={{ marginRight: "16px" }}
-                  >
-                    Edit
-                  </Button>
-                  <DeleteButton
-                    key={charger.id}
-                    charger={charger}
-                    setError={setError}
-                  />
-                </Box>
-              </Box>
-            ) : (
-              <div className="flexBox">
-                <Button
-                  variant="contained"
-                  size="large"
-                  color="primary"
-                  startIcon={
-                    <FontAwesomeIcon
-                      icon={faCalendarPlus}
-                      style={{ fontSize: "16px" }}
-                    />
-                  }
-                  onClick={handleBooking}
-                >
-                  Book
-                </Button>
-              </div>
-            )}
+      <div className="calendar">
+        <Box sx={{ display: "inline-flex", flexDirection: "column" }}>
+          <Typography variant="h6">Charger Status: {status}</Typography>
+          <Box style={{ marginBottom: "16px", marginTop: "16px" }}>
+            <ChargerCalendar dates={dates} setDates={setDates} />
           </Box>
-        </div>
-      </Container>
-    </>
+          {charger.Host.username === loggedInUser ? (
+            <Box sx={{ display: "inline-flex", flexDirection: "column" }}>
+              {" "}
+              <FormControlLabel
+                control={<Switch checked={checked} onChange={handleSwitch} />}
+                label="Activate"
+              />
+              <Box sx={{ display: "inline-flex", flexDirection: "row" }}>
+                <Button
+                  value="active"
+                  variant="contained"
+                  onClick={handleEdit}
+                  style={{ marginRight: "16px" }}
+                >
+                  Edit
+                </Button>
+                <DeleteButton
+                  key={charger.id}
+                  charger={charger}
+                  dispatch={dispatch}
+                />
+              </Box>
+            </Box>
+          ) : (
+            <div className="flexBox">
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                startIcon={
+                  <FontAwesomeIcon
+                    icon={faCalendarPlus}
+                    style={{ fontSize: "16px" }}
+                  />
+                }
+                onClick={handleBooking}
+              >
+                Book
+              </Button>
+            </div>
+          )}
+        </Box>
+      </div>
+    </Container>
   );
 };
 
-export default function DeleteButton({ charger, setError }) {
+export default function DeleteButton({ charger, dispatch }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -222,13 +218,17 @@ export default function DeleteButton({ charger, setError }) {
       await deleteCharger(charger.id);
       navigate(`/chargers/mychargers`);
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
     }
   };
+
   // TODO: to navigate to chargers/mychargers page but change the chargerlist in store
 
   return (
-  <div>
+    <div>
       <Button variant="outlined" onClick={() => setOpen(true)}>
         Delete
       </Button>

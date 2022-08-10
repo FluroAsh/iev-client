@@ -7,21 +7,21 @@ import {
 } from "react-router-dom";
 import { Container } from "@mui/material";
 
+import "./styles/main.scss";
 import { reducer } from "./utils/reducer";
 import { StateContext } from "./context/stateContext";
-import "./styles/main.scss";
 import { Navbar } from "./layouts/Navbar.js";
 import { SignupForm } from "./pages/SignupForm";
 import { SigninForm } from "./pages/SigninForm";
 import { ChargerForm } from "./components/ChargerForm";
 import { AddVehicle } from "./pages/AddVehicle";
-
 import { NotFound } from "./pages/NotFound";
 import { ViewCharger } from "./pages/ViewCharger";
 import { ViewChargers } from "./pages/ViewChargers";
 import { EditCharger } from "./pages/EditCharger";
 import { SearchLocation } from "./pages/SearchLocation";
 import { Dashboard } from "./pages/Dashboard";
+import { Alert } from "./components/Alert";
 
 function App() {
   const initialState = {
@@ -32,7 +32,6 @@ function App() {
     hostStatus: false,
     chargerStatus: "",
     editFormData: {},
-    successMessage: "",
     loggedInUser: sessionStorage.getItem("username") || "",
     currentUser: {
       firstName: sessionStorage.getItem("firstName") || "",
@@ -40,13 +39,12 @@ function App() {
     },
     token: sessionStorage.getItem("token") || null,
     location: {},
-    // TODO: handle these in the global context
+    successMessage: "",
     errorMessage: "",
-    // successMessage: "",
   };
 
   const [store, dispatch] = useReducer(reducer, initialState);
-  const { loggedInUser } = store;
+  const { loggedInUser, errorMessage, successMessage } = store;
 
   return (
     <div className="app">
@@ -58,12 +56,21 @@ function App() {
             disableGutters
             sx={{ position: "relative" }}
           >
+            {/* errorMessage is cleared on component render */}
+            {(errorMessage || successMessage) && (
+              <Alert
+                message={errorMessage || successMessage}
+                variant={errorMessage ? "error" : "success"}
+              />
+            )}
+
             <Routes>
               <Route path="/" element={<Navigate to="chargers" replace />} />
               <Route
                 path="/success"
                 element={<Navigate to="chargers" replace />}
               />
+              {/* typo */}
               <Route
                 path="/canceled"
                 element={<Navigate to="/bookings/:username" replace />}

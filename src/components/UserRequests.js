@@ -48,8 +48,8 @@ function createData(
   };
 }
 
-export default function UserRequests({ setError, setSuccess }) {
-  const [loading, setLoading] = React.useState([]);
+export default function UserRequests() {
+  const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -91,9 +91,15 @@ export default function UserRequests({ setError, setSuccess }) {
       }
       const response = await approveUserRequest({ BookingId: RowId });
       refreshUserRequests();
-      setSuccess(response);
+      dispatch({
+        type: "setSuccessMessage",
+        data: response.message,
+      });
     } catch (err) {
-      setError(err.message);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
     } finally {
       // BACKLOG/FUTURE ADDITION: Implement functionality to track multiple button states asynchronously
       setLoading({ RowId: { confirm: false } });
@@ -109,9 +115,15 @@ export default function UserRequests({ setError, setSuccess }) {
       }
       const response = await rejectUserRequest({ BookingId: RowId });
       refreshUserRequests();
-      setSuccess(response);
+      dispatch({
+        type: "setSuccessMessage",
+        data: response.message,
+      });
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
     } finally {
       setLoading({ [RowId]: { reject: false } });
     }

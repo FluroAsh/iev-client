@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
-import { AlertError } from "../components/AlertError";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 
@@ -26,7 +25,6 @@ export const SignupForm = () => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
-  const [error, setError] = useState();
 
   const handleNext = () => {
     setStep((prevStep) => prevStep + 1);
@@ -49,7 +47,6 @@ export const SignupForm = () => {
       sessionStorage.setItem("token", response.jwt);
       sessionStorage.setItem("firstName", response.firstName);
       sessionStorage.setItem("lastName", response.lastName);
-      console.log(response);
 
       dispatch({
         type: "setLoggedInUser",
@@ -69,7 +66,10 @@ export const SignupForm = () => {
       setFormData(initialFormData);
       navigate("/");
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
     }
   }
 
@@ -87,7 +87,6 @@ export const SignupForm = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: "100%" }}
       >
-        {error && <AlertError message={error.message} setError={setError} />}
         {step === 1 ? (
           <UserDetails
             handleFormData={handleFormData}

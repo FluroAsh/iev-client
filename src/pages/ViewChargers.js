@@ -4,13 +4,11 @@ import { useGlobalState } from "../context/stateContext";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { AlertError } from "../components/AlertError";
 import { CssLoader } from "../components/CssLoader";
 import { Link } from "react-router-dom";
 
 export const ViewChargers = () => {
   const { store, dispatch } = useGlobalState();
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { location, chargerList } = store;
 
@@ -31,7 +29,7 @@ export const ViewChargers = () => {
   };
 
   useEffect(() => {
-    fetchData(location.pathname, dispatch, setError, setLoading);
+    fetchData(location.pathname, dispatch, setLoading);
   }, [location, dispatch]);
 
   if (loading) {
@@ -40,7 +38,6 @@ export const ViewChargers = () => {
 
   return (
     <>
-      {error && <AlertError message={error.message} setError={setError} />}
       {chargerList.length > 0 ? (
         <>
           <AnimatePresence>
@@ -76,7 +73,7 @@ export const ViewChargers = () => {
   );
 };
 
-export async function fetchData(pathname, dispatch, setError, setLoading) {
+export async function fetchData(pathname, dispatch, setLoading) {
   // Handle fetching & setting all existing chargers to state
   if (pathname === "/chargers") {
     try {
@@ -87,7 +84,10 @@ export async function fetchData(pathname, dispatch, setError, setLoading) {
         data: chargers,
       });
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
     } finally {
       setLoading(false);
     }
@@ -102,7 +102,10 @@ export async function fetchData(pathname, dispatch, setError, setLoading) {
         data: myChargers,
       });
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
     } finally {
       setLoading(false);
     }
