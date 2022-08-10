@@ -13,9 +13,9 @@ import { motion } from "framer-motion";
 import { displayAUD } from "../utils/helpers";
 
 const types = {
-  typeOne: "",
-  typeTwo: "",
-  typeThree: "",
+  typeOne: "Mennekes",
+  typeTwo: "CCS",
+  typeThree: "CHAdeMO",
 };
 
 export const Charger = ({ charger, item }) => {
@@ -36,7 +36,7 @@ export const Charger = ({ charger, item }) => {
             style={{ height: "400px" }}
           />
           <div className="card__plug-pill">
-            <span>{charger.Plug.plugName}</span>
+            <span>{types[charger.Plug.plugName]}</span>
           </div>
         </div>
 

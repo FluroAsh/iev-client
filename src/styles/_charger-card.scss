@@ -64,7 +64,7 @@ div.card {
     align-items: center;
     position: absolute;
     height: 2.2em;
-    min-width: 7.5em;
+    max-width: 100%;
     top: 0;
     left: 0;
     color: #fff;
@@ -75,7 +75,7 @@ div.card {
     padding: 1em 1.5em;
     margin: 0.6em;
     span {
-      width: 100%;
+      // width: 100%;
       font-size: 1.2em;
     }
   }
