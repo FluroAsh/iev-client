@@ -7,8 +7,6 @@ export const Alert = ({ message, variant }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { dispatch } = useGlobalState();
 
-  console.log({ message });
-
   // clear errorMessage state on render
   useEffect(() => {
     if (variant === "error") {
@@ -26,30 +24,32 @@ export const Alert = ({ message, variant }) => {
     }
   }, [dispatch, variant]);
 
-  // const action = (snackbarId) => (
-  //   <button
-  //     style={{
-  //       all: "unset",
-  //       cursor: "pointer",
-  //       color: "#fff",
-  //       marginRight: "5px",
-  //     }}
-  //     onClick={() => {
-  //       closeSnackbar(snackbarId);
-  //     }}
-  //   >
-  //     Dismiss
-  //   </button>
-  // );
+  const action = (snackbarId) => (
+    <button
+      style={{
+        all: "unset",
+        cursor: "pointer",
+        color: "#fff",
+        marginRight: "5px",
+      }}
+      onClick={() => {
+        closeSnackbar(snackbarId);
+      }}
+    >
+      Dismiss
+    </button>
+  );
 
   enqueueSnackbar(message, {
-    // action,
+    action,
     variant: variant,
     anchorOrigin: {
       vertical: "bottom",
       horizontal: "center",
     },
     autoHideDuration: 5000,
-    preventDuplicate: true,
+    // preventDuplicate: true,
   });
+
+  return;
 };

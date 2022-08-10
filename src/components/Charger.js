@@ -12,6 +12,12 @@ import { motion } from "framer-motion";
 
 import { displayAUD } from "../utils/helpers";
 
+const types = {
+  typeOne: "",
+  typeTwo: "",
+  typeThree: "",
+};
+
 export const Charger = ({ charger, item }) => {
   const navigate = useNavigate();
 
