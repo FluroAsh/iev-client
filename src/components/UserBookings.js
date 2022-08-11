@@ -37,6 +37,10 @@ function createData(id, city, stationName, price, date, status, chargerId) {
   return { id, city, stationName, price, date, status, chargerId };
 }
 
+// useEffect(() => {
+
+// })
+
 export default function UserBookings() {
   const [loading, setLoading] = React.useState([]);
   const navigate = useNavigate();

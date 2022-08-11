@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 
 export const SigninForm = () => {
+  const [loading, setLoading] = useState(false);
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
 
@@ -18,11 +19,13 @@ export const SigninForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
 
     try {
       if (Object.values(formData).includes("")) {
         throw Error("Fields cannot be empty");
       }
+      setLoading(true);
 
       const response = await signIn(formData);
       sessionStorage.setItem("username", response.username);
@@ -52,6 +55,8 @@ export const SigninForm = () => {
         type: "setErrorMessage",
         data: err.message,
       });
+    } finally {
+      setLoading(false);
     }
   };
 

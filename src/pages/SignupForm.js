@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 
 export const SignupForm = () => {
+  const [loading, setLoading] = useState();
   const [step, setStep] = useState(1);
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
@@ -36,11 +37,13 @@ export const SignupForm = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (loading) return;
 
     try {
       if (Object.values(formData).includes("")) {
         throw Error("Fields cannot be empty");
       }
+      setLoading(true);
 
       const response = await signUp(formData);
       sessionStorage.setItem("username", response.username);
@@ -64,12 +67,14 @@ export const SignupForm = () => {
       });
 
       setFormData(initialFormData);
-      navigate("/");
+      navigate("/chargers");
     } catch (err) {
       dispatch({
         type: "setErrorMessage",
         data: err.message,
       });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -85,7 +90,7 @@ export const SignupForm = () => {
       <motion.div
         className="form-container"
         initial={{ opacity: 0 }}
-        animate={{ opacity: "100%" }}
+        animate={{ opacity: 1 }}
       >
         {step === 1 ? (
           <UserDetails
@@ -109,9 +114,8 @@ export const SignupForm = () => {
 const UserDetails = ({ handleFormData, formData, handleNext }) => {
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleNext();
+      onKeyDown={(e) => {
+        if (e.key === "Enter") handleNext();
       }}
     >
       <Typography className="form-heading" variant="h4">
@@ -172,7 +176,7 @@ const UserDetails = ({ handleFormData, formData, handleNext }) => {
         onChange={handleFormData}
       />
 
-      <Button variant="outlined" type="submit" onSubmit={handleNext}>
+      <Button variant="contained" onClick={handleNext}>
         Next
       </Button>
     </form>

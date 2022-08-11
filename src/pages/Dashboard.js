@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import { AnimatePresence } from "framer-motion";
@@ -21,7 +21,7 @@ export async function fetchRequests(username, dispatch) {
     const response = await checkHost();
 
     // Check backend response for valid message
-    if (response.message === "User is a host") {
+    if (response.status === 200) {
       dispatch({
         type: "setHostStatus",
         data: true,
@@ -33,6 +33,7 @@ export async function fetchRequests(username, dispatch) {
     });
   } catch (err) {
     // Only throw an error if unhandled exception
+    console.log(err.status);
     if (err.message === "User is not a host") return;
     dispatch({
       type: "setErrorMessage",
@@ -85,24 +86,17 @@ const BecomeHost = () => {
 
 export const Dashboard = () => {
   // loading default true to resolve host status etc.
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { store, dispatch } = useGlobalState();
   const { currentUser, loggedInUser, bookings, bookingRequests, hostStatus } =
     store;
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        await fetchBookings(loggedInUser, dispatch);
-        await fetchRequests(loggedInUser, dispatch);
-      } catch (err) {
-        dispatch({
-          type: "setErrorMessage",
-          data: err.message,
-        });
-      } finally {
-        setLoading(false);
-      }
+      setLoading(true);
+      await fetchBookings(loggedInUser, dispatch);
+      await fetchRequests(loggedInUser, dispatch);
+      setLoading(false);
     };
 
     fetchData();
