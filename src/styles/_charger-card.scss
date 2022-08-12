@@ -55,6 +55,7 @@ div.card {
   max-width: 350px;
   button {
     border-radius: 10px;
+    padding: 0.3em;
   }
   &__img-plug {
     position: relative;
@@ -72,10 +73,9 @@ div.card {
     border-top-left-radius: 10px;
     background: linear-gradient(#5da361, $mui-primary);
     border: 1px solid $mui-primary;
-    padding: 1em 1.5em;
+    padding: 1em;
     margin: 0.6em;
     span {
-      // width: 100%;
       font-size: 1.2em;
     }
   }
