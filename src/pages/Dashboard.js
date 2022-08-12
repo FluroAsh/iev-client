@@ -20,8 +20,9 @@ export async function fetchRequests(username, dispatch) {
     const requests = await getUserBookingRequests(username);
     const response = await checkHost();
 
-    // Check backend response for valid message
-    if (response.status === 200) {
+    // Backend should return a charger where the status is active
+    // if user is a host
+    if (response.status === "active") {
       dispatch({
         type: "setHostStatus",
         data: true,
