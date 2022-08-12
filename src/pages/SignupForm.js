@@ -3,11 +3,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
-import { AlertError } from "../components/AlertError";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 
 export const SignupForm = () => {
+  const [loading, setLoading] = useState();
   const [step, setStep] = useState(1);
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
@@ -26,7 +26,6 @@ export const SignupForm = () => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
-  const [error, setError] = useState();
 
   const handleNext = () => {
     setStep((prevStep) => prevStep + 1);
@@ -38,18 +37,19 @@ export const SignupForm = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (loading) return;
 
     try {
       if (Object.values(formData).includes("")) {
         throw Error("Fields cannot be empty");
       }
+      setLoading(true);
 
       const response = await signUp(formData);
       sessionStorage.setItem("username", response.username);
       sessionStorage.setItem("token", response.jwt);
       sessionStorage.setItem("firstName", response.firstName);
       sessionStorage.setItem("lastName", response.lastName);
-      console.log(response);
 
       dispatch({
         type: "setLoggedInUser",
@@ -67,9 +67,14 @@ export const SignupForm = () => {
       });
 
       setFormData(initialFormData);
-      navigate("/");
+      navigate("/chargers");
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -85,9 +90,8 @@ export const SignupForm = () => {
       <motion.div
         className="form-container"
         initial={{ opacity: 0 }}
-        animate={{ opacity: "100%" }}
+        animate={{ opacity: 1 }}
       >
-        {error && <AlertError message={error.message} setError={setError} />}
         {step === 1 ? (
           <UserDetails
             handleFormData={handleFormData}
@@ -110,9 +114,8 @@ export const SignupForm = () => {
 const UserDetails = ({ handleFormData, formData, handleNext }) => {
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleNext();
+      onKeyDown={(e) => {
+        if (e.key === "Enter") handleNext();
       }}
     >
       <Typography className="form-heading" variant="h4">
@@ -173,7 +176,7 @@ const UserDetails = ({ handleFormData, formData, handleNext }) => {
         onChange={handleFormData}
       />
 
-      <Button variant="outlined" type="submit" onSubmit={handleNext}>
+      <Button variant="contained" onClick={handleNext}>
         Next
       </Button>
     </form>

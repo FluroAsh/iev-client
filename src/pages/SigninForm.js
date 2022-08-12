@@ -3,11 +3,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../services/authServices";
 import { useGlobalState } from "../context/stateContext";
-import { AlertError } from "../components/AlertError";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 
 export const SigninForm = () => {
+  const [loading, setLoading] = useState(false);
   const { dispatch } = useGlobalState();
   const navigate = useNavigate();
 
@@ -16,18 +16,16 @@ export const SigninForm = () => {
     password: "",
   };
   const [formData, setFormData] = useState(initialFormData);
-  const [error, setError] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(false);
+    if (loading) return;
 
     try {
       if (Object.values(formData).includes("")) {
         throw Error("Fields cannot be empty");
       }
-
-      setError();
+      setLoading(true);
 
       const response = await signIn(formData);
       sessionStorage.setItem("username", response.username);
@@ -53,7 +51,12 @@ export const SigninForm = () => {
       setFormData(initialFormData);
       navigate("/chargers");
     } catch (err) {
-      setError(err);
+      dispatch({
+        type: "setErrorMessage",
+        data: err.message,
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,44 +67,40 @@ export const SigninForm = () => {
     });
   };
   return (
-    <>
-      {error && <AlertError message={error.message} setError={setError} />}
+    <AnimatePresence>
+      <motion.div
+        className="form-container"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <form onSubmit={handleSubmit}>
+          <Typography variant="h4">Sign in</Typography>
 
-      <AnimatePresence>
-        <motion.div
-          className="form-container"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          <form onSubmit={handleSubmit}>
-            <Typography variant="h4">Sign in</Typography>
+          <InputLabel>Username / Email:</InputLabel>
+          <TextField
+            type="text"
+            name="username"
+            id="username"
+            autoComplete="off"
+            value={formData.username}
+            onChange={handleFormData}
+          />
 
-            <InputLabel>Username / Email:</InputLabel>
-            <TextField
-              type="text"
-              name="username"
-              id="username"
-              autoComplete="off"
-              value={formData.username}
-              onChange={handleFormData}
-            />
+          <InputLabel htmlFor="password">Password:</InputLabel>
+          <TextField
+            type="password"
+            name="password"
+            id="password"
+            autoComplete="off"
+            value={formData.password}
+            onChange={handleFormData}
+          />
 
-            <InputLabel htmlFor="password">Password:</InputLabel>
-            <TextField
-              type="password"
-              name="password"
-              id="password"
-              autoComplete="off"
-              value={formData.password}
-              onChange={handleFormData}
-            />
-
-            <Button variant="contained" type="submit">
-              Login
-            </Button>
-          </form>
-        </motion.div>
-      </AnimatePresence>
-    </>
+          <Button variant="contained" type="submit">
+            Login
+          </Button>
+        </form>
+      </motion.div>
+    </AnimatePresence>
   );
 };
