@@ -53,7 +53,7 @@ div.card {
   border-radius: 15px;
   box-shadow: $box-shadow-mui;
   max-width: 350px;
-  button {
+  button.MuiButton-contained {
     border-radius: 10px;
     padding: 0.3em;
   }
@@ -79,6 +79,18 @@ div.card {
       font-size: 1.2em;
     }
   }
+}
+
+img.MuiCardMedia-root {
+  transition: $transition-fast;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+button.MuiCardActionArea-root:hover div.card__img-plug > img.MuiCardMedia-root {
+  filter: brightness(90%);
 }
 
 @media only screen and (max-width: $tablet-width) {
