@@ -19,11 +19,13 @@ A Google API key is required in order to correctly render the Google Map compone
     - For geocoding user search input into latitude/longitude coordinates (centers the Googlemap position based on fetched chargers)
 
 Your `.env` file should look like something this:
-```js
+```env
 REACT_APP_BACKEND_URL=<your_local_ip>
 REACT_APP_GOOGLE_API_KEY=<your_unique_google_api_key>
 BROWSER=none // not necessary
 ```
+
+You can find the file [here](./sample.env)]
 
 ### Installation
 1. Begin by cloning the repository via the `Git CLI` to your local environment or downloading the `ZIP` file and placing it in a locally accessible location.

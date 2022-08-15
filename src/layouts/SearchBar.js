@@ -21,7 +21,7 @@ export const SearchBar = ({ setMenuOpen }) => {
   };
 
   return (
-    <form id="searchbar-form" onSubmit={handleSubmit}>
+    <form id="searchbar-form" onSubmit={handleSubmit} data-testid="form">
       <input
         type="text"
         value={input}
